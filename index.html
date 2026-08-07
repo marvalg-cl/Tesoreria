@@ -1,0 +1,2534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+<title>LUMO GESTIÓN FINANCIERA</title>
+<meta name="theme-color" content="#36454F" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="LUMO GESTIÓN" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+<!-- Google Identity Services + API client, para la importación de Contactos (People API) -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://apis.google.com/js/api.js" async defer></script>
+<style>
+    :root { --gris: #36454F; --naranja: #FF5A00; }
+    * { box-sizing: border-box; }
+    body { background: #eef1f4; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; min-height: 100vh; padding-bottom: 5rem; }
+    .app-container { max-width: 480px; margin: 0 auto; padding: 1rem 0.75rem 5rem; }
+    .card { background: #fff; border-radius: 1.1rem; box-shadow: 0 6px 18px rgba(0,0,0,0.04); padding: 1.25rem 1rem; }
+    .card-dark { background: var(--gris); color: #fff; border-radius: 1.1rem; padding: 1.25rem 1rem; }
+    .label-sm { font-size: 0.7rem; font-weight: 600; color: var(--gris); letter-spacing: 0.02em; text-transform: uppercase; opacity: 0.7; }
+    .divider-light { border-top: 1px solid rgba(0,0,0,0.06); margin: 1rem 0; }
+    .kpi-card { background: var(--gris); color: #fff; border-radius: 1rem; padding: 1rem; }
+    .kpi-value { font-size: 1.45rem; font-weight: 800; line-height: 1.2; }
+    .kpi-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; color: #cbd3d9; font-weight: 600; }
+    .accent { color: var(--naranja); }
+    .bg-accent { background: var(--naranja); }
+    input, select { font-size: 0.92rem; }
+    .file-input-wrapper { position: relative; overflow: hidden; }
+    .file-input-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+    .logo-preview { max-width: 64px; max-height: 64px; border-radius: 10px; object-fit: contain; background: #f8fafc; }
+    .cuota-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+    .cuota-item { background: #f4f6f8; border-radius: 0.7rem; padding: 0.4rem 0.2rem; text-align: center; font-size: 0.68rem; border: 1px solid #e3e7ea; }
+    .cuota-item select { font-size: 0.62rem; padding: 0.1rem; border-radius: 20px; border: 1px solid #d1d9e6; background: white; width: 100%; }
+    .actividad-item { background: #fafbfc; border-radius: 0.7rem; padding: 0.5rem; border: 1px solid #eef1f3; margin-bottom: 0.4rem; }
+    .btn-icon { background: transparent; border: none; cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 30px; }
+    .btn-icon:hover { background: #f1f5f9; }
+    .ficha-modal { background: #fff; border-radius: 1.3rem; padding: 1.4rem; max-width: 480px; width: 100%; margin: auto; max-height: 95vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
+    .overlay { background: rgba(20,25,30,0.5); backdrop-filter: blur(4px); position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; background: #cbd5e1; border-radius: 40px; transition: 0.2s; cursor: pointer; flex-shrink: 0; }
+    .toggle-switch.active { background: var(--naranja); }
+    .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: 0.2s; }
+    .toggle-switch.active::after { left: 22px; }
+    .tab-btn { padding: 0.4rem 1rem; border-radius: 30px; font-size: 0.73rem; font-weight: 600; background: transparent; border: 1px solid #d7dce0; color: var(--gris); }
+    .tab-btn.active { background: var(--gris); color: white; border-color: var(--gris); }
+    .chip { padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.7rem; font-weight: 600; border: 1px solid #d7dce0; color: var(--gris); background: white; }
+    .chip.active { background: var(--naranja); color: white; border-color: var(--naranja); }
+    .toolbar-btn { background: white; border: 1px solid #d7dce0; padding: 0.4rem 0.8rem; border-radius: 30px; font-size: 0.68rem; font-weight: 600; color: var(--gris); display: inline-flex; align-items: center; gap: 0.3rem; }
+    .toolbar-btn:hover { background: #f1f5f9; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 0.2rem 0.4rem; color: #94a3b8; }
+    .row-alumno { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.4rem; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+    .row-alumno:hover { background: #fafcff; }
+    .avatar-circle { width: 38px; height: 38px; border-radius: 50%; background: #e9edf0; color: var(--gris); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.82rem; flex-shrink: 0; overflow: hidden; }
+    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .empty-state { text-align: center; padding: 2rem 1rem; color: #94a3b8; font-size: 0.85rem; }
+    .fab-add { position: fixed; bottom: 5.2rem; right: calc(50% - 240px + 1rem); background: var(--naranja); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 6px 16px rgba(255,90,0,0.35); z-index: 40; }
+    @media (max-width: 540px) { .fab-add { right: 1rem; } }
+    .org-bar { background: white; border-radius: 1.1rem; padding: 0.6rem 0.7rem; box-shadow: 0 6px 18px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 0.5rem; }
+    .org-select { flex: 1; border: 1px solid #d7dce0; border-radius: 0.7rem; padding: 0.5rem 0.6rem; font-size: 0.82rem; font-weight: 700; color: var(--gris); background: #fafcff; }
+    .foto-upload-box { width: 84px; height: 84px; border-radius: 1rem; background: #f4f6f8; border: 1.5px dashed #cbd5e1; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .foto-upload-box img { width: 100%; height: 100%; object-fit: cover; }
+    .origen-badge { font-size: 0.58rem; padding: 0.1rem 0.5rem; border-radius: 20px; font-weight: 700; }
+    .origen-manual { background: #fef3c7; color: #92400e; }
+    .origen-digital { background: #dbeafe; color: #1e40af; }
+    .socio-badge { font-size: 0.58rem; padding: 0.1rem 0.45rem; border-radius: 20px; font-weight: 700; background: #fff1e8; color: var(--naranja); }
+    .foto-ficha { width: 70px; height: 70px; border-radius: 1rem; object-fit: cover; background: #f1f5f9; flex-shrink: 0; }
+    .alerta-critica { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; border-radius: 0.9rem; padding: 0.6rem 0.8rem; font-size: 0.78rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+    .dato-oculto { letter-spacing: 2px; }
+    .banner-privado { background: var(--gris); color: white; text-align: center; font-size: 0.7rem; padding: 0.35rem; border-radius: 20px; margin-bottom: 0.6rem; }
+    @media print {
+        nav, .org-bar, .fab-add, .no-print { display: none !important; }
+        body { background: white !important; padding-bottom: 0 !important; }
+        .app-container { max-width: 100% !important; padding: 0 !important; }
+        .card, .kpi-card { box-shadow: none !important; border: 1px solid #ddd !important; }
+        .kpi-card { background: white !important; color: #111 !important; border: 1px solid #999 !important; }
+        .kpi-label { color: #555 !important; }
+    }
+    body.modo-impresion-modal .app-container > *:not(#modalContainer) { display: none !important; }
+    body.modo-impresion-modal nav { display: none !important; }
+    body.modo-impresion-modal #modalContainer { position: static !important; background: none !important; backdrop-filter: none !important; padding: 0 !important; display: block !important; }
+    body.modo-impresion-modal .ficha-modal, body.modo-impresion-modal .planilla-modal { box-shadow: none !important; max-height: none !important; overflow: visible !important; max-width: 100% !important; }
+    .toast-container { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 200; display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 440px; padding: 0 12px; pointer-events: none; }
+    .toast { pointer-events: auto; padding: 0.7rem 1rem; border-radius: 0.9rem; font-size: 0.82rem; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.18); display: flex; align-items: center; gap: 0.5rem; animation: toast-in 0.25s ease; transition: opacity 0.3s, transform 0.3s; }
+    .toast.success { background: #16a34a; color: #fff; }
+    .toast.error { background: #dc2626; color: #fff; }
+    .toast.warning { background: var(--gris); color: #fff; }
+    @keyframes toast-in { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+    .ficha-modal, .planilla-modal { animation: modal-in 0.18s ease; }
+    @keyframes modal-in { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+    mark { background: #fde68a; color: inherit; border-radius: 3px; padding: 0 1px; }
+
+    body.dark-mode { background: #0f1419; color: #e2e8f0; }
+    body.dark-mode .card, body.dark-mode .ficha-modal, body.dark-mode .planilla-modal, body.dark-mode .org-bar { background: #1a2129; color: #e2e8f0; }
+    body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #232b34; color: #e2e8f0; border-color: #333f4a; }
+    body.dark-mode .cuota-item, body.dark-mode .actividad-item, body.dark-mode .foto-upload-box, body.dark-mode .foto-upload-box { background: #232b34; border-color: #333f4a; }
+    body.dark-mode .row-alumno:hover { background: #232b34; }
+    body.dark-mode .row-alumno { border-color: #232b34; }
+    body.dark-mode nav { background: rgba(26,33,41,0.95) !important; border-color: #333f4a !important; }
+    body.dark-mode .toolbar-btn { background: #232b34; color: #e2e8f0; border-color: #333f4a; }
+    body.dark-mode .tab-btn { background: #232b34; color: #e2e8f0; border-color: #333f4a; }
+    body.dark-mode .chip { background: #232b34; color: #e2e8f0; border-color: #333f4a; }
+    body.dark-mode table.planilla th { background: #232b34; }
+    body.dark-mode table.planilla td, body.dark-mode table.planilla th { border-color: #333f4a; }
+    body.dark-mode table.planilla tr:nth-child(even) td { background: #171e26; }
+    body.dark-mode .empty-state { color: #64748b; }
+    body.dark-mode .divider-light { border-color: #2d3748; }
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+    body.dark-mode .text-slate-700, body.dark-mode .text-slate-800 { color: #e2e8f0 !important; }
+    body.dark-mode .text-slate-400, body.dark-mode .text-slate-500 { color: #7c8a9a !important; }
+    body.dark-mode .bg-white\/95 { background: rgba(26,33,41,0.95) !important; }
+    body.dark-mode .bg-white { background: #1a2129 !important; }
+    body.dark-mode mark { background: #92650a; color: #fff7e6; }
+    .planilla-modal { background: #fff; border-radius: 1.1rem; padding: 1rem; max-width: 96vw; width: 100%; max-height: 92vh; overflow: auto; margin: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
+    table.planilla { border-collapse: collapse; font-size: 0.72rem; white-space: nowrap; }
+    table.planilla th, table.planilla td { border: 1px solid #e2e8f0; padding: 4px 7px; text-align: center; }
+    table.planilla th { background: var(--gris); color: #fff; position: sticky; top: 0; z-index: 5; }
+    table.planilla td:nth-child(3), table.planilla th:nth-child(3) { text-align: left; }
+    table.planilla tr:nth-child(even) td { background: #fafbfc; }
+    table.planilla td.moroso { color: var(--naranja); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="app-container" id="app">
+    <header class="flex items-center justify-between mb-3">
+        <h1 class="text-lg font-bold tracking-tight" style="color: var(--gris);">LUMO <span class="accent">GESTIÓN</span></h1>
+        <div class="flex items-center gap-2">
+            <button class="btn-icon no-print" id="btnInstalarPWA" title="Instalar aplicación" onclick="instalarPWA()" style="display:none;">📲</button>
+            <button class="btn-icon no-print" id="btnModoOscuro" title="Modo oscuro" onclick="toggleModoOscuro()">🌙</button>
+            <button class="btn-icon no-print" id="btnPantallaCompartida" title="Modo pantalla compartida" onclick="togglePantallaCompartida()">🙈</button>
+            <span class="text-xs bg-white px-3 py-1 rounded-full shadow-sm text-slate-500 no-print">v3.1</span>
+        </div>
+    </header>
+
+    <div class="org-bar mb-3 no-print">
+        <span class="text-lg">🏛️</span>
+        <select id="orgSelect" class="org-select" onchange="cambiarOrganizacion(this.value)"></select>
+        <button class="btn-icon" title="Nueva organización" onclick="abrirFormOrganizacion()">➕</button>
+        <button class="btn-icon" title="Gestionar organizaciones" onclick="abrirGestionOrganizaciones()">⚙️</button>
+    </div>
+
+    <div id="bannerPrivado" class="banner-privado hidden">🙈 Modo pantalla compartida activo — valores ocultos</div>
+    <div id="alertaCritica" class="alerta-critica mb-3 hidden"></div>
+
+    <main id="main-modules" class="space-y-5">
+
+        <!-- RESUMEN -->
+        <section id="secResumen" class="space-y-5">
+            <div class="space-y-3">
+                <div class="flex flex-col gap-2">
+                    <h2 class="text-md font-semibold flex items-center gap-2" style="color: var(--gris);"><span>📈</span> Panel de control</h2>
+                    <div class="flex gap-2 flex-wrap no-print">
+                        <button onclick="exportarExcel()" class="toolbar-btn">📊 Excel</button>
+                        <button onclick="exportarJSON()" class="toolbar-btn">💾 JSON</button>
+                        <button onclick="generarInformeGeneralPDF()" class="toolbar-btn">🖨️ Informe PDF</button>
+                        <button onclick="imprimirResumen()" class="toolbar-btn">🖶 Imprimir</button>
+                        <div class="file-input-wrapper">
+                            <button class="toolbar-btn">📂 Importar</button>
+                            <input type="file" accept="application/json" onchange="importarJSON(event)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="kpi-card col-span-2 flex justify-between items-center">
+                        <div>
+                            <span class="kpi-label">Saldo en tesorería</span>
+                            <div class="kpi-value" id="kpiSaldo">$0</div>
+                        </div>
+                        <span class="badge-state text-xs font-bold px-3 py-1 rounded-full" id="kpiSaldoBadge">A favor</span>
+                    </div>
+                    <div class="kpi-card"><span class="kpi-label">Recaudado (cuotas)</span><div class="kpi-value" id="kpiRecaudado">$0</div></div>
+                    <div class="kpi-card"><span class="kpi-label">Deuda vencida (cuotas)</span><div class="kpi-value" id="kpiAdeudado">$0</div></div>
+                    <div class="kpi-card col-span-2" style="background: var(--naranja);"><span class="kpi-label" style="color:#fff0e6;">Monto en tránsito / no rendido</span><div class="kpi-value" id="kpiSinRendir">$0</div></div>
+                    <div class="kpi-card"><span class="kpi-label">Ingresos totales</span><div class="kpi-value" id="kpiIngresosTotal">$0</div></div>
+                    <div class="kpi-card"><span class="kpi-label">Egresos totales</span><div class="kpi-value" id="kpiGastosTotal">$0</div></div>
+                    <div class="kpi-card col-span-2"><span class="kpi-label">Otros ingresos (actividades: día profesor, día alumno, día libro, rifas, etc.)</span><div class="kpi-value" id="kpiOtrosIngresos">$0</div></div>
+                    <div class="kpi-card"><span class="kpi-label" id="kpiIntegrantesLabel">Integrantes</span><div class="kpi-value" id="kpiIntegrantes">0</div></div>
+                    <div class="kpi-card"><span class="kpi-label">Socios</span><div class="kpi-value" id="kpiSocios">0</div></div>
+                </div>
+                <p class="text-xs text-slate-400 px-1">La deuda vencida solo considera cuotas mensuales de meses ya cumplidos (hasta el día 30) y actividades marcadas como obligatorias. Las demás actividades se muestran en "Otros ingresos".</p>
+            </div>
+
+            <div class="card">
+                <h2 class="text-md font-semibold flex items-center gap-2 mb-3" style="color: var(--gris);"><span>🕒</span> Actividad reciente</h2>
+                <div id="actividadReciente"></div>
+            </div>
+
+            <div class="card">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-md font-semibold flex items-center gap-2" style="color: var(--gris);"><span>🔍</span> Auditoría: dineros no rendidos</h2>
+                </div>
+                <div id="listaNoRendidos"></div>
+            </div>
+        </section>
+
+        <!-- INTEGRANTES -->
+        <section id="secAlumnos" class="space-y-3 hidden">
+            <div class="flex justify-between items-center">
+                <h2 class="text-md font-semibold flex items-center gap-2" id="tituloIntegrantes" style="color: var(--gris);"><span>👥</span> Integrantes</h2>
+                <span class="text-xs text-slate-400" id="totalAlumnosTxt">0 registrados</span>
+            </div>
+            <div class="card">
+                <input type="text" id="buscarAlumno" placeholder="Buscar por nombre o RUT..." class="w-full p-2.5 border border-slate-200 rounded-xl text-sm mb-2" oninput="renderAlumnos()" />
+                <div class="flex gap-2 mb-3 flex-wrap">
+                    <button class="chip active" id="chipTodos" onclick="filtrarMiembros('todos')">Todos</button>
+                    <button class="chip" id="chipSocios" onclick="filtrarMiembros('socios')">Socios</button>
+                    <button class="chip" id="chipMorosos" onclick="filtrarMiembros('morosos')">Morosos</button>
+                    <button class="chip" id="chipAlDia" onclick="filtrarMiembros('aldia')">Al día</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <button onclick="abrirAsignacionMasiva()" class="toolbar-btn justify-center" style="border-color: var(--naranja); color: var(--naranja);">🎯 Asignación masiva</button>
+                    <button onclick="abrirPlanillaGeneral()" class="toolbar-btn justify-center" style="border-color: var(--gris); color: var(--gris);">📋 Planilla general</button>
+                </div>
+                <div id="listaAlumnos"></div>
+            </div>
+        </section>
+
+        <!-- CAJA -->
+        <section id="secTransacciones" class="space-y-3 hidden">
+            <div class="flex justify-between items-center">
+                <h2 class="text-md font-semibold flex items-center gap-2" style="color: var(--gris);"><span>💳</span> Libro de caja</h2>
+            </div>
+            <div class="card">
+                <div class="flex gap-2 mb-3 flex-wrap">
+                    <button class="tab-btn active" id="tabTodas" onclick="filtrarTransacciones('todas')">Todas</button>
+                    <button class="tab-btn" id="tabIngresos" onclick="filtrarTransacciones('ingreso')">Ingresos</button>
+                    <button class="tab-btn" id="tabGastos" onclick="filtrarTransacciones('gasto')">Gastos</button>
+                </div>
+                <div id="listaTransacciones"></div>
+                <div class="divider-light"></div>
+                <button onclick="abrirFormTransaccion()" class="w-full text-white text-sm font-medium py-2.5 rounded-xl bg-accent">+ Nuevo movimiento</button>
+            </div>
+        </section>
+
+        <!-- CONFIGURACIÓN -->
+        <section id="secConfig" class="space-y-3 hidden">
+            <div class="card">
+                <h2 class="text-md font-semibold flex items-center gap-2 mb-3" style="color: var(--gris);"><span>⚙️</span> Configuración de <span id="configOrgNombre" class="accent">-</span></h2>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center overflow-hidden" id="logoPreviewWrap"><span class="text-2xl opacity-30">🏫</span></div>
+                        <div class="file-input-wrapper flex-1">
+                            <button class="text-xs px-4 py-2 rounded-full border" style="border-color: var(--naranja); color: var(--naranja);">Cargar logo</button>
+                            <input type="file" accept="image/*" id="logoInput" onchange="cargarLogo(event)" />
+                        </div>
+                    </div>
+                    <div><label class="label-sm">Nombre institución</label><input type="text" id="configNombre" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                    <div>
+                        <label class="label-sm">Tipo de organización</label>
+                        <select id="configTipoOrg" class="w-full p-2 border border-slate-200 rounded-xl text-sm" onchange="cambiarTipoOrg(this.value)">
+                            <option value="curso">Curso (Alumno / Apoderado)</option>
+                            <option value="club">Club deportivo (Deportista / Contacto)</option>
+                            <option value="junta">Junta de vecinos (Vecino / Co-propietario)</option>
+                            <option value="general">General (Integrante / Contacto)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="label-sm">RUT / Identificación</label><input type="text" id="configRut" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                        <div><label class="label-sm">Año contable</label><input type="text" id="configAnio" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="label-sm">Clave de administrador</label><input type="password" id="configClave" placeholder="Opcional" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                        <div><label class="label-sm">Alerta caja crítica ($)</label><input type="number" id="configAlerta" placeholder="Ej: 20000" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                    </div>
+
+                    <div class="divider-light"></div>
+                    <p class="label-sm">Cuenta bancaria</p>
+                    <div class="flex gap-2 mb-2">
+                        <select id="configCuentaGuardadaSelect" class="w-full p-2 border border-slate-200 rounded-xl text-sm" onchange="aplicarCuentaGuardada(this.value)">
+                            <option value="">— Elegir una cuenta guardada —</option>
+                        </select>
+                        <button class="btn-icon" title="Gestionar cuentas bancarias" onclick="abrirGestionCuentasBancarias()">💳</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="label-sm">Banco</label>
+                            <select id="configBanco" class="w-full p-2 border border-slate-200 rounded-xl text-sm"></select>
+                        </div>
+                        <div><label class="label-sm">Tipo de cuenta</label>
+                            <select id="configTipo" class="w-full p-2 border border-slate-200 rounded-xl text-sm"></select>
+                        </div>
+                        <div><label class="label-sm">Número</label><input type="text" id="configNumero" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                        <div><label class="label-sm">Correo confirmación</label><input type="email" id="configCorreo" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                    </div>
+                    <p class="text-xs text-slate-400">Puedes reutilizar la misma cuenta guardada en varias organizaciones, o usar cuentas distintas para cada una.</p>
+
+                    <div class="divider-light"></div>
+                    <p class="label-sm">Firma del gestor (aparece en PDFs y mensajes)</p>
+                    <div class="grid grid-cols-1 gap-2">
+                        <input type="text" id="firmaNombre" placeholder="Nombre" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                        <input type="text" id="firmaCargo" placeholder="Título / Cargo" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                        <input type="text" id="firmaSectores" placeholder="Sectores" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                        <input type="text" id="firmaCelular" placeholder="Celular" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                        <input type="text" id="firmaLema" placeholder="Lema de marca personal" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                    </div>
+
+                    <div class="divider-light"></div>
+                    <p class="label-sm">Integración Google Contactos (People API)</p>
+                    <div class="grid grid-cols-1 gap-2">
+                        <input type="text" id="googleClientId" placeholder="Google Client ID" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                        <input type="text" id="googleApiKey" placeholder="Google API Key" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                    </div>
+                    <p class="text-xs text-slate-400">Debes crear tus propias credenciales en Google Cloud Console (OAuth Client ID + API Key con People API habilitada) y registrar el dominio donde publiques este archivo como origen autorizado. Con credenciales de ejemplo, el botón de importación mostrará un aviso en vez de conectarse.</p>
+
+                    <button onclick="guardarConfig()" class="w-full text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Guardar configuración</button>
+                    <div class="divider-light"></div>
+                    <p class="label-sm">Respaldo general (todas las organizaciones)</p>
+                    <p class="text-xs text-slate-400 mb-1" id="ultimaActualizacionTxt"></p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="exportarJSON()" class="toolbar-btn justify-center">💾 Exportar JSON</button>
+                        <div class="file-input-wrapper">
+                            <button class="toolbar-btn justify-center w-full">📂 Importar JSON</button>
+                            <input type="file" accept="application/json" onchange="importarJSON(event)" />
+                        </div>
+                    </div>
+
+                    <div class="divider-light"></div>
+                    <p class="label-sm" style="color:#dc2626;">⚠️ Zona de peligro</p>
+                    <p class="text-xs text-slate-400 mb-2">Recomendado: exporta un respaldo JSON antes de restablecer cualquier dato.</p>
+                    <div class="grid grid-cols-1 gap-2">
+                        <button onclick="restablecerOrganizacionActual()" class="toolbar-btn justify-center" style="border-color:#dc2626; color:#dc2626;">🧹 Vaciar esta organización (integrantes y caja)</button>
+                        <button onclick="restablecerTodo()" class="toolbar-btn justify-center" style="border-color:#dc2626; color:#dc2626; background:#fef2f2;">🗑️ Borrar TODOS los datos de la Suite</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modalContainer" class="hidden overlay" onclick="if(event.target===this) cerrarModal()"></div>
+    <div class="fab-add" id="fabAdd" onclick="fabAction()">+</div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-slate-200/60 px-4 py-2 flex justify-around items-center max-w-[480px] mx-auto rounded-t-2xl shadow-lg" style="margin: 0 auto;">
+        <div class="nav-item" data-nav="secResumen" onclick="cambiarSeccion('secResumen')"><span class="text-base">📊</span><span class="text-[0.65rem] font-medium">Resumen</span></div>
+        <div class="nav-item" data-nav="secAlumnos" onclick="cambiarSeccion('secAlumnos')"><span class="text-base">👥</span><span class="text-[0.65rem] font-medium" id="navIntegrantesLabel">Integrantes</span></div>
+        <div class="nav-item" data-nav="secTransacciones" onclick="cambiarSeccion('secTransacciones')"><span class="text-base">💳</span><span class="text-[0.65rem] font-medium">Caja</span></div>
+        <div class="nav-item" data-nav="secConfig" onclick="cambiarSeccion('secConfig')"><span class="text-base">⚙️</span><span class="text-[0.65rem] font-medium">Config</span></div>
+    </nav>
+</div>
+
+<script>
+/* ==================================================================
+   PWA: MANIFIESTO DINÁMICO + ÍCONO CORPORATIVO (CANVAS) + SERVICE WORKER
+================================================================== */
+function generarIconoLGF(size) {
+    const canvas = document.createElement('canvas');
+    canvas.width = size; canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#36454F';
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = '#FF5A00';
+    ctx.lineWidth = size * 0.06;
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2 - ctx.lineWidth/2, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = `bold ${Math.round(size*0.34)}px system-ui, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('LGF', size/2, size/2 + size*0.02);
+    return canvas.toDataURL('image/png');
+}
+
+let eventoInstalarPWA = null;
+
+function registrarPWA() {
+    try {
+        const yaTieneManifestEstatico = !!document.querySelector('link[rel="manifest"]');
+        if (!yaTieneManifestEstatico) {
+            const icon192 = generarIconoLGF(192);
+            const icon512 = generarIconoLGF(512);
+            const manifest = {
+                name: 'LUMO GESTION FINANCIERA',
+                short_name: 'LUMO GESTIÓN',
+                start_url: '.',
+                scope: '.',
+                display: 'standalone',
+                background_color: '#36454F',
+                theme_color: '#36454F',
+                icons: [
+                    { src: icon192, sizes: '192x192', type: 'image/png' },
+                    { src: icon512, sizes: '512x512', type: 'image/png' }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            const manifestUrl = URL.createObjectURL(manifestBlob);
+            const link = document.createElement('link');
+            link.rel = 'manifest';
+            link.href = manifestUrl;
+            document.head.appendChild(link);
+
+            const favicon = document.createElement('link');
+            favicon.rel = 'icon';
+            favicon.href = icon192;
+            document.head.appendChild(favicon);
+        }
+
+        const esHttpOHttps = location.protocol === 'https:' || location.protocol === 'http:';
+        if ('serviceWorker' in navigator && esHttpOHttps) {
+            if (yaTieneManifestEstatico) {
+                // Este paquete incluye sw.js como archivo real junto al index.html
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.warn('No se pudo registrar sw.js:', err.message);
+                });
+            } else {
+                // Archivo HTML suelto, sin sw.js al lado: se genera uno de respaldo
+                const swCode = `
+                    const CACHE_NAME = 'lumo-gf-cache-v1';
+                    const RECURSOS = [
+                        self.registration.scope,
+                        'https://cdn.tailwindcss.com',
+                        'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+                        'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+                        'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js'
+                    ];
+                    self.addEventListener('install', e => {
+                        e.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => Promise.all(RECURSOS.map(url => cache.add(url).catch(() => null))))
+                        );
+                        self.skipWaiting();
+                    });
+                    self.addEventListener('activate', e => {
+                        e.waitUntil(
+                            caches.keys().then(nombres => Promise.all(nombres.filter(n => n !== CACHE_NAME).map(n => caches.delete(n))))
+                        );
+                        self.clients.claim();
+                    });
+                    self.addEventListener('fetch', e => {
+                        e.respondWith(
+                            caches.match(e.request).then(respuestaCache => {
+                                const redFetch = fetch(e.request).then(respuestaRed => {
+                                    if (respuestaRed && respuestaRed.status === 200) {
+                                        const copia = respuestaRed.clone();
+                                        caches.open(CACHE_NAME).then(cache => cache.put(e.request, copia));
+                                    }
+                                    return respuestaRed;
+                                }).catch(() => respuestaCache);
+                                return respuestaCache || redFetch;
+                            })
+                        );
+                    });
+                `;
+                const swBlob = new Blob([swCode], { type: 'text/javascript' });
+                const swUrl = URL.createObjectURL(swBlob);
+                navigator.serviceWorker.register(swUrl).catch(err => {
+                    console.warn('No se pudo registrar el Service Worker:', err.message);
+                });
+            }
+        } else if (!esHttpOHttps) {
+            console.info('PWA: para instalar esta app y usarla offline, sirve este archivo desde http/https (por ejemplo GitHub Pages, Netlify o un servidor local). Abrirlo como archivo local (file://) no permite instalación.');
+        }
+
+        window.addEventListener('beforeinstallprompt', e => {
+            e.preventDefault();
+            eventoInstalarPWA = e;
+            const btn = document.getElementById('btnInstalarPWA');
+            if (btn) btn.style.display = 'inline-flex';
+        });
+        window.addEventListener('appinstalled', () => {
+            eventoInstalarPWA = null;
+            const btn = document.getElementById('btnInstalarPWA');
+            if (btn) btn.style.display = 'none';
+            toast('¡Aplicación instalada correctamente!', 'success');
+        });
+    } catch (e) {
+        console.warn('PWA no disponible en este entorno:', e.message);
+    }
+}
+
+function instalarPWA() {
+    if (!eventoInstalarPWA) {
+        toast('Para instalar la app, este archivo debe abrirse desde una dirección http/https (no funciona abriéndolo directamente como archivo local). Súbelo a un hosting como GitHub Pages o Netlify y ábrelo desde ahí.', 'warning');
+        return;
+    }
+    eventoInstalarPWA.prompt();
+    eventoInstalarPWA.userChoice.then(() => { eventoInstalarPWA = null; });
+}
+
+/* ==================================================================
+   GOOGLE CONTACTOS (People API) — requiere credenciales reales del usuario
+================================================================== */
+let googleTokenClient = null;
+
+function importarDesdeGoogle() {
+    const org = getOrgActiva();
+    const clientId = org.config.googleClientId || '';
+    const apiKey = org.config.googleApiKey || '';
+    if (!clientId || clientId.includes('TU_CLIENT_ID') || !apiKey || apiKey.includes('TU_API_KEY')) {
+        toast('Para importar contactos de Google necesitas configurar tus propias credenciales (Client ID y API Key) en la sección Configuración → Integración Google Contactos. Estas credenciales se crean gratis en Google Cloud Console habilitando la People API, y este archivo debe publicarse en el dominio autorizado que registres allí.', 'warning');
+        return;
+    }
+    if (typeof google === 'undefined' || !google.accounts) {
+        toast('La librería de Google aún no ha cargado. Verifica tu conexión a internet e inténtalo de nuevo.', 'warning');
+        return;
+    }
+    try {
+        googleTokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: clientId,
+            scope: 'https://www.googleapis.com/auth/contacts.readonly',
+            callback: (resp) => {
+                if (resp.error) { toast('No se pudo autenticar con Google: ' + resp.error, 'error'); return; }
+                fetchGoogleContacts(resp.access_token, apiKey);
+            }
+        });
+        googleTokenClient.requestAccessToken();
+    } catch (e) {
+        toast('Ocurrió un error iniciando la autenticación de Google: ' + e.message, 'error');
+    }
+}
+
+function fetchGoogleContacts(token, apiKey) {
+    fetch(`https://people.googleapis.com/v1/people/me/connections?personFields=names,phoneNumbers,emailAddresses&pageSize=50&key=${apiKey}`, {
+        headers: { Authorization: 'Bearer ' + token }
+    })
+    .then(r => r.json())
+    .then(data => mostrarSelectorContactos(data.connections || []))
+    .catch(err => toast('Error al obtener contactos: ' + err.message, 'error'));
+}
+
+let ultimosContactosGoogle = [];
+
+function mostrarSelectorContactos(contactos) {
+    if (!contactos.length) { toast('No se encontraron contactos.', 'warning'); return; }
+    ultimosContactosGoogle = contactos.map(c => ({
+        nombre: c.names && c.names[0] ? c.names[0].displayName : 'Sin nombre',
+        correo: c.emailAddresses && c.emailAddresses[0] ? c.emailAddresses[0].value : '',
+        telefono: c.phoneNumbers && c.phoneNumbers[0] ? c.phoneNumbers[0].value : ''
+    }));
+    const filas = ultimosContactosGoogle.map((c, i) => `<div class="row-alumno" onclick="autollenarDesdeContacto(${i})">
+            <div class="text-sm font-medium">${escapeHtml(c.nombre)}</div>
+            <div class="text-xs text-slate-400">${escapeHtml(c.telefono || c.correo || '')}</div>
+        </div>`).join('');
+    mostrarModal(`<div class="ficha-modal"><div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold" style="color:var(--gris);">Selecciona un contacto</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>${filas}</div>`);
+}
+
+function autollenarDesdeContacto(indice) {
+    const datos = ultimosContactosGoogle[indice];
+    if (!datos) return;
+    if (document.getElementById('nfNombre')) document.getElementById('nfNombre').value = datos.nombre || '';
+    if (document.getElementById('nfCorreo')) document.getElementById('nfCorreo').value = datos.correo || '';
+    if (document.getElementById('nfTelefono')) document.getElementById('nfTelefono').value = (datos.telefono || '').replace(/\D/g, '').slice(-8);
+    cerrarModal();
+}
+
+/* ==================================================================
+   ESTADO GLOBAL Y PERSISTENCIA (MULTI-ORGANIZACIÓN)
+================================================================== */
+const STORAGE_KEY = 'lumo_gestion_financiera_v3';
+const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+const ETIQUETAS_POR_TIPO = {
+    curso:   { miembro: 'Alumno',      contacto: 'Apoderado',       grupo: 'Curso',           plural: 'Alumnos' },
+    club:    { miembro: 'Deportista',  contacto: 'Contacto',        grupo: 'Disciplina',      plural: 'Deportistas' },
+    junta:   { miembro: 'Vecino',      contacto: 'Co-propietario',  grupo: 'Sector / Calle',  plural: 'Vecinos' },
+    general: { miembro: 'Integrante',  contacto: 'Contacto',        grupo: 'Grupo',           plural: 'Integrantes' }
+};
+
+const CHILE_BANCOS = [
+    'Banco de Chile', 'Banco Estado', 'Banco Santander', 'Banco BCI', 'Banco Scotiabank',
+    'Banco Itaú', 'Banco Security', 'Banco Falabella', 'Banco Ripley', 'Banco Consorcio',
+    'Banco BICE', 'Banco Internacional', 'HSBC Bank Chile', 'Coopeuch', 'Banco Edwards (Chile)', 'Otro'
+];
+const TIPOS_CUENTA = ['Cuenta Vista', 'Cuenta Corriente', 'Cuenta RUT', 'Cuenta de Ahorro'];
+
+let db = { organizaciones: [], orgActivaId: null, cuentasBancarias: [] };
+let seccionActual = 'secResumen';
+let filtroTransaccion = 'todas';
+let filtroMiembro = 'todos';
+let pantallaCompartida = false;
+
+function uid() { return 'id_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8); }
+
+function organizacionVacia(nombre) {
+    return {
+        id: uid(),
+        nombre: nombre || 'Nueva organización',
+        tipoOrg: 'general',
+        config: {
+            rut: '', banco: CHILE_BANCOS[0], tipo: TIPOS_CUENTA[0], numero: '', correo: '', logo: null,
+            anioContable: String(new Date().getFullYear()), clave: '', alertaCaja: '',
+            googleClientId: 'TU_CLIENT_ID.apps.googleusercontent.com', googleApiKey: 'TU_API_KEY',
+            firmaNombre: 'Mario Valdés González',
+            firmaCargo: 'TNS Forestal • Estratega de Procesos',
+            firmaSectores: 'Agroindustrial | Obras | Logística | IT | B2B',
+            firmaCelular: '+56 9 6756 7970',
+            firmaLema: 'Con la robustez de los viejos robles'
+        },
+        alumnos: [],
+        transacciones: []
+    };
+}
+
+const IDB_NOMBRE_BASE = 'lumo_gestion_financiera_idb';
+const IDB_ALMACEN = 'estado';
+const IDB_CLAVE = 'principal';
+let idbConexion = null;
+
+function abrirIndexedDB() {
+    return new Promise((resolve, reject) => {
+        if (!('indexedDB' in window)) { reject(new Error('IndexedDB no disponible en este navegador')); return; }
+        const solicitud = indexedDB.open(IDB_NOMBRE_BASE, 1);
+        solicitud.onupgradeneeded = e => {
+            const base = e.target.result;
+            if (!base.objectStoreNames.contains(IDB_ALMACEN)) base.createObjectStore(IDB_ALMACEN);
+        };
+        solicitud.onsuccess = e => resolve(e.target.result);
+        solicitud.onerror = e => reject(e.target.error);
+    });
+}
+
+function idbLeer() {
+    return new Promise((resolve, reject) => {
+        if (!idbConexion) { resolve(null); return; }
+        const tx = idbConexion.transaction(IDB_ALMACEN, 'readonly');
+        const req = tx.objectStore(IDB_ALMACEN).get(IDB_CLAVE);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = e => reject(e.target.error);
+    });
+}
+
+function idbEscribir(datos) {
+    return new Promise((resolve, reject) => {
+        if (!idbConexion) { resolve(); return; }
+        const tx = idbConexion.transaction(IDB_ALMACEN, 'readwrite');
+        tx.objectStore(IDB_ALMACEN).put(datos, IDB_CLAVE);
+        tx.oncomplete = () => resolve();
+        tx.onerror = e => reject(e.target.error);
+    });
+}
+
+async function cargarEstado() {
+    try {
+        idbConexion = await abrirIndexedDB();
+    } catch (e) {
+        console.error('No se pudo abrir IndexedDB, la app funcionará solo en memoria de esta sesión:', e);
+    }
+
+    let datos = null;
+    try { datos = await idbLeer(); } catch (e) { console.error('Error al leer IndexedDB:', e); }
+
+    if (!datos) {
+        // Migración automática desde versiones anteriores que usaban localStorage
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            try {
+                const parsed = JSON.parse(raw);
+                if (parsed.organizaciones && parsed.organizaciones.length) {
+                    datos = parsed;
+                    await idbEscribir(datos);
+                    console.info('Datos migrados desde localStorage a IndexedDB correctamente.');
+                }
+            } catch (e) { console.error('Error migrando datos antiguos:', e); }
+        }
+    }
+
+    if (datos && datos.organizaciones && datos.organizaciones.length) {
+        db = datos;
+        if (!db.cuentasBancarias) db.cuentasBancarias = [];
+    } else {
+        const org = organizacionVacia('Mi Organización');
+        db = { organizaciones: [org], orgActivaId: org.id, cuentasBancarias: [] };
+        guardarEstado();
+    }
+}
+
+function guardarEstado() {
+    db.actualizadoEn = new Date().toISOString();
+    idbEscribir(db).catch(e => {
+        toast('⚠️ No se pudo guardar en la base de datos local del navegador. Exporta un respaldo JSON por seguridad.', 'error');
+        console.error('Error al guardar en IndexedDB:', e);
+    });
+}
+function getOrgActiva() { return db.organizaciones.find(o => o.id === db.orgActivaId) || db.organizaciones[0]; }
+function getEtiquetas() { return ETIQUETAS_POR_TIPO[getOrgActiva().tipoOrg] || ETIQUETAS_POR_TIPO.general; }
+
+/* ==================================================================
+   CUENTAS BANCARIAS COMPARTIDAS (reutilizables entre organizaciones)
+================================================================== */
+function renderSelectsBancarios() {
+    const selBanco = document.getElementById('configBanco');
+    const selTipo = document.getElementById('configTipo');
+    const org = getOrgActiva();
+    selBanco.innerHTML = CHILE_BANCOS.map(b => `<option value="${b}" ${org.config.banco === b ? 'selected' : ''}>${b}</option>`).join('');
+    selTipo.innerHTML = TIPOS_CUENTA.map(t => `<option value="${t}" ${org.config.tipo === t ? 'selected' : ''}>${t}</option>`).join('');
+    renderSelectorCuentasGuardadas();
+}
+
+function renderSelectorCuentasGuardadas() {
+    const sel = document.getElementById('configCuentaGuardadaSelect');
+    sel.innerHTML = '<option value="">— Elegir una cuenta guardada —</option>' +
+        db.cuentasBancarias.map(c => `<option value="${c.id}">${escapeHtml(c.alias || c.banco)} · ${c.banco} · ${c.numero}</option>`).join('');
+}
+
+function aplicarCuentaGuardada(id) {
+    if (!id) return;
+    const cuenta = db.cuentasBancarias.find(c => c.id === id); if (!cuenta) return;
+    document.getElementById('configBanco').value = cuenta.banco;
+    document.getElementById('configTipo').value = cuenta.tipoCuenta;
+    document.getElementById('configNumero').value = cuenta.numero;
+}
+
+function abrirGestionCuentasBancarias() {
+    const filas = db.cuentasBancarias.map(c => `
+        <div class="flex justify-between items-center py-2 border-b border-slate-100">
+            <div><div class="text-sm font-medium">${escapeHtml(c.alias || c.banco)}</div><div class="text-xs text-slate-400">${escapeHtml(c.banco)} · ${escapeHtml(c.tipoCuenta)} · ${escapeHtml(c.numero)}</div></div>
+            <button class="btn-icon" onclick="eliminarCuentaBancaria('${c.id}')">🗑️</button>
+        </div>`).join('') || '<p class="text-xs text-slate-400 mb-2">Sin cuentas guardadas aún.</p>';
+    mostrarModal(`<div class="ficha-modal">
+        <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold" style="color:var(--gris);">Cuentas bancarias guardadas</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
+        <div class="mb-3">${filas}</div>
+        <div class="divider-light"></div>
+        <p class="label-sm mb-2">Agregar nueva cuenta</p>
+        <div class="space-y-2">
+            <input type="text" id="cbAlias" placeholder="Alias (ej: Cuenta del curso)" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+            <select id="cbBanco" class="w-full p-2 border border-slate-200 rounded-xl text-sm">${CHILE_BANCOS.map(b => `<option value="${b}">${b}</option>`).join('')}</select>
+            <select id="cbTipo" class="w-full p-2 border border-slate-200 rounded-xl text-sm">${TIPOS_CUENTA.map(t => `<option value="${t}">${t}</option>`).join('')}</select>
+            <input type="text" id="cbNumero" placeholder="Número de cuenta" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+            <input type="text" id="cbRutTitular" placeholder="RUT del titular" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+        </div>
+        <button onclick="guardarCuentaBancaria()" class="w-full mt-3 text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Guardar cuenta</button>
+    </div>`);
+}
+
+function guardarCuentaBancaria() {
+    const numero = document.getElementById('cbNumero').value.trim();
+    if (!numero) { toast('Ingresa el número de cuenta.', 'warning'); return; }
+    db.cuentasBancarias.push({
+        id: uid(),
+        alias: document.getElementById('cbAlias').value.trim(),
+        banco: document.getElementById('cbBanco').value,
+        tipoCuenta: document.getElementById('cbTipo').value,
+        numero,
+        rutTitular: document.getElementById('cbRutTitular').value.trim()
+    });
+    guardarEstado();
+    abrirGestionCuentasBancarias();
+}
+
+function eliminarCuentaBancaria(id) {
+    confirmModal('¿Eliminar esta cuenta guardada? No afecta a las organizaciones que ya la tengan cargada.', () => {
+        db.cuentasBancarias = db.cuentasBancarias.filter(c => c.id !== id);
+        guardarEstado();
+        abrirGestionCuentasBancarias();
+    }, 'Eliminar');
+}
+
+function formatoMoneda(valor) {
+    if (pantallaCompartida) return '$••••••';
+    valor = Math.round(valor || 0);
+    return '$' + valor.toLocaleString('es-CL');
+}
+
+function escapeHtml(str) {
+    if (str === undefined || str === null) return '';
+    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function toast(mensaje, tipo) {
+    tipo = tipo || 'warning';
+    let cont = document.getElementById('toastContainer');
+    if (!cont) {
+        cont = document.createElement('div');
+        cont.id = 'toastContainer';
+        cont.className = 'toast-container';
+        document.body.appendChild(cont);
+    }
+    const el = document.createElement('div');
+    el.className = 'toast ' + tipo;
+    const icono = tipo === 'success' ? '✅' : tipo === 'error' ? '⚠️' : 'ℹ️';
+    el.innerHTML = `<span>${icono}</span><span>${escapeHtml(mensaje)}</span>`;
+    cont.appendChild(el);
+    setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-8px)';
+        setTimeout(() => el.remove(), 300);
+    }, 3200);
+}
+
+/* ==================================================================
+   SEGURIDAD LOCAL (clave de administrador) — protección básica, no criptográfica
+================================================================== */
+let estadoModalAnterior = null;
+
+function confirmModal(mensaje, onConfirm, tituloBoton) {
+    const modal = document.getElementById('modalContainer');
+    estadoModalAnterior = { html: modal.innerHTML, hidden: modal.classList.contains('hidden') };
+    mostrarModal(`<div class="ficha-modal" style="max-width:360px;">
+        <div class="text-center mb-3"><span style="font-size:2rem;">⚠️</span></div>
+        <p class="text-sm text-center mb-4" style="color:var(--gris);">${escapeHtml(mensaje)}</p>
+        <div class="grid grid-cols-2 gap-2">
+            <button onclick="cancelarModalAnidado()" class="toolbar-btn justify-center">Cancelar</button>
+            <button id="btnConfirmModal" class="w-full text-white text-sm font-medium py-2 rounded-xl" style="background:#dc2626;">${tituloBoton || 'Confirmar'}</button>
+        </div>
+    </div>`);
+    document.getElementById('btnConfirmModal').onclick = () => { estadoModalAnterior = null; onConfirm(); };
+}
+
+function cancelarModalAnidado() {
+    const modal = document.getElementById('modalContainer');
+    if (estadoModalAnterior) {
+        modal.innerHTML = estadoModalAnterior.html;
+        modal.classList.toggle('hidden', estadoModalAnterior.hidden);
+        estadoModalAnterior = null;
+    } else {
+        cerrarModal();
+    }
+}
+
+function requiereClave(callback) {
+    const clave = getOrgActiva().config.clave;
+    if (!clave) { callback(); return; }
+    const modal = document.getElementById('modalContainer');
+    estadoModalAnterior = { html: modal.innerHTML, hidden: modal.classList.contains('hidden') };
+    mostrarModal(`<div class="ficha-modal" style="max-width:340px;">
+        <p class="label-sm mb-2">Clave de administrador</p>
+        <p class="text-xs text-slate-400 mb-2">Esta organización tiene protegidas sus acciones administrativas.</p>
+        <input type="password" id="claveAdminInput" class="w-full p-2 border border-slate-200 rounded-xl text-sm mb-3" autofocus />
+        <div class="grid grid-cols-2 gap-2">
+            <button onclick="cancelarModalAnidado()" class="toolbar-btn justify-center">Cancelar</button>
+            <button id="btnClaveConfirmar" class="w-full text-white text-sm font-medium py-2 rounded-xl bg-accent">Desbloquear</button>
+        </div>
+    </div>`);
+    document.getElementById('btnClaveConfirmar').onclick = () => {
+        const intento = document.getElementById('claveAdminInput').value;
+        if (intento !== clave) { toast('Clave incorrecta.', 'error'); return; }
+        const previo = estadoModalAnterior;
+        estadoModalAnterior = null;
+        if (previo) { modal.innerHTML = previo.html; modal.classList.toggle('hidden', previo.hidden); }
+        callback();
+    };
+}
+
+function togglePantallaCompartida() {
+    pantallaCompartida = !pantallaCompartida;
+    document.getElementById('btnPantallaCompartida').textContent = pantallaCompartida ? '👁️' : '🙈';
+    document.getElementById('bannerPrivado').classList.toggle('hidden', !pantallaCompartida);
+    renderTodo();
+}
+
+function toggleModoOscuro() {
+    const activo = document.body.classList.toggle('dark-mode');
+    document.getElementById('btnModoOscuro').textContent = activo ? '☀️' : '🌙';
+    localStorage.setItem('lumo_modo_oscuro', activo ? '1' : '0');
+}
+
+function cargarPreferenciaModoOscuro() {
+    if (localStorage.getItem('lumo_modo_oscuro') === '1') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('btnModoOscuro').textContent = '☀️';
+    }
+}
+
+/* ==================================================================
+   SELECTOR Y GESTIÓN DE ORGANIZACIONES
+================================================================== */
+function renderSelectorOrg() {
+    const sel = document.getElementById('orgSelect');
+    sel.innerHTML = db.organizaciones.map(o => `<option value="${o.id}" ${o.id === db.orgActivaId ? 'selected' : ''}>${escapeHtml(o.nombre)}</option>`).join('');
+}
+
+function cambiarOrganizacion(id) { db.orgActivaId = id; guardarEstado(); renderTodo(); }
+
+function abrirFormOrganizacion(idEditar) {
+    const org = idEditar ? db.organizaciones.find(o => o.id === idEditar) : null;
+    const opcionesBase = db.organizaciones.map(o => `<option value="${o.id}">${escapeHtml(o.nombre)}</option>`).join('');
+    const html = `
+        <div class="ficha-modal">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold" style="color:var(--gris);">${org ? 'Renombrar organización' : 'Nueva organización'}</h3>
+                <button class="btn-icon" onclick="cerrarModal()">✕</button>
+            </div>
+            <label class="label-sm">Nombre</label>
+            <input type="text" id="ofNombre" value="${org ? escapeHtml(org.nombre) : ''}" placeholder="Ej: Curso 6° Medio A" class="w-full p-2 border border-slate-200 rounded-xl text-sm mb-3" />
+            ${org || !db.organizaciones.length ? '' : `
+            <div class="p-2 rounded-xl mb-3" style="background:#f8fafc; border:1px solid #e2e8f0;">
+                <p class="label-sm mb-2">Continuar desde un período anterior (opcional)</p>
+                <p class="text-xs text-slate-400 mb-2">Útil por ejemplo si este año fue "5°A" y el próximo será "6°A".</p>
+                <label class="label-sm">Copiar integrantes desde</label>
+                <select id="ofCopiarDesde" class="w-full p-2 border border-slate-200 rounded-xl text-sm mb-2">
+                    <option value="">— Ninguna —</option>${opcionesBase}
+                </select>
+                <label class="label-sm">Trasladar saldo de caja desde</label>
+                <select id="ofSaldoDesde" class="w-full p-2 border border-slate-200 rounded-xl text-sm">
+                    <option value="">— Ninguna —</option>${opcionesBase}
+                </select>
+            </div>`}
+            <button onclick="guardarOrganizacion(${org ? `'${org.id}'` : 'null'})" class="w-full text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Guardar</button>
+        </div>`;
+    mostrarModal(html);
+}
+
+function guardarOrganizacion(id) {
+    const nombre = document.getElementById('ofNombre').value.trim();
+    if (!nombre) { toast('El nombre es obligatorio.', 'warning'); return; }
+    if (id) {
+        db.organizaciones.find(o => o.id === id).nombre = nombre;
+        guardarEstado(); cerrarModal(); renderTodo();
+        return;
+    }
+
+    const nueva = organizacionVacia(nombre);
+    const copiarDesdeId = document.getElementById('ofCopiarDesde') ? document.getElementById('ofCopiarDesde').value : '';
+    const saldoDesdeId = document.getElementById('ofSaldoDesde') ? document.getElementById('ofSaldoDesde').value : '';
+
+    if (copiarDesdeId) {
+        const origen = db.organizaciones.find(o => o.id === copiarDesdeId);
+        if (origen) {
+            nueva.tipoOrg = origen.tipoOrg;
+            nueva.alumnos = origen.alumnos.map(a => ({
+                id: uid(), nombre: a.nombre, rut: a.rut, grupo: a.grupo, telefono: a.telefono, correo: a.correo,
+                foto: a.foto, tutores: a.tutores ? JSON.parse(JSON.stringify(a.tutores)) : [],
+                mensualidad: a.mensualidad, vigenciaDesde: 1, vigenciaHasta: 12,
+                cuotas: crearCuotasAnuales(a.mensualidad, 1, 12), extraordinarias: [],
+                esSocio: a.esSocio, numeroSocio: a.numeroSocio, categoriaSocio: a.categoriaSocio
+            }));
+        }
+    }
+    if (saldoDesdeId) {
+        const origen = db.organizaciones.find(o => o.id === saldoDesdeId);
+        if (origen) {
+            const orgActivaAnterior = db.orgActivaId;
+            db.orgActivaId = origen.id;
+            const kOrigen = calcularKPIs();
+            db.orgActivaId = orgActivaAnterior;
+            if (kOrigen.saldo !== 0) {
+                nueva.transacciones.push({
+                    id: uid(), fecha: new Date().toISOString().slice(0, 10),
+                    tipo: kOrigen.saldo >= 0 ? 'ingreso' : 'gasto', origen: 'manual', destino: 'tesoreria', custodio: '',
+                    concepto: `Saldo trasladado desde "${origen.nombre}"`, monto: Math.abs(kOrigen.saldo), rendido: true
+                });
+            }
+        }
+    }
+
+    db.organizaciones.push(nueva);
+    db.orgActivaId = nueva.id;
+    guardarEstado(); cerrarModal(); renderTodo();
+}
+
+function abrirGestionOrganizaciones() {
+    const filas = db.organizaciones.map(o => `
+        <div class="flex justify-between items-center py-2 border-b border-slate-100">
+            <span class="text-sm font-medium">${escapeHtml(o.nombre)}</span>
+            <div class="flex gap-1">
+                <button class="btn-icon" onclick="abrirFormOrganizacion('${o.id}')">✏️</button>
+                <button class="btn-icon" onclick="eliminarOrganizacion('${o.id}')">🗑️</button>
+            </div>
+        </div>`).join('');
+    mostrarModal(`<div class="ficha-modal">
+        <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold" style="color:var(--gris);">Organizaciones</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
+        <div class="mb-3">${filas}</div>
+        <button onclick="cerrarModal(); abrirFormOrganizacion();" class="w-full toolbar-btn justify-center" style="border-color:var(--naranja); color:var(--naranja);">➕ Nueva organización</button>
+    </div>`);
+}
+
+function eliminarOrganizacion(id) {
+    if (db.organizaciones.length <= 1) { toast('Debe existir al menos una organización.', 'warning'); return; }
+    requiereClave(() => {
+        confirmModal('¿Eliminar esta organización y TODOS sus datos? Esta acción no se puede deshacer.', () => {
+            db.organizaciones = db.organizaciones.filter(o => o.id !== id);
+            if (db.orgActivaId === id) db.orgActivaId = db.organizaciones[0].id;
+            guardarEstado(); cerrarModal(); renderTodo();
+        }, 'Eliminar');
+    });
+}
+
+/* ==================================================================
+   NAVEGACIÓN
+================================================================== */
+function cambiarSeccion(id) {
+    seccionActual = id;
+    ['secResumen', 'secAlumnos', 'secTransacciones', 'secConfig'].forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
+    document.querySelectorAll('.nav-item').forEach(el => el.style.color = el.getAttribute('data-nav') === id ? 'var(--naranja)' : '#94a3b8');
+    document.getElementById('fabAdd').style.display = (id === 'secAlumnos' || id === 'secTransacciones') ? 'flex' : 'none';
+    if (id === 'secAlumnos') renderAlumnos();
+    if (id === 'secTransacciones') renderTransacciones();
+}
+function fabAction() { if (seccionActual === 'secAlumnos') abrirFormAlumno(); if (seccionActual === 'secTransacciones') abrirFormTransaccion(); }
+
+/* ==================================================================
+   COMPRESIÓN DE IMÁGENES (Canvas API) — máx 300x300, JPEG 0.7
+================================================================== */
+function comprimirImagen(file, callback) {
+    const reader = new FileReader();
+    reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+            const MAX = 300;
+            let w = img.width, h = img.height;
+            if (w > h) { if (w > MAX) { h = Math.round(h * (MAX / w)); w = MAX; } }
+            else { if (h > MAX) { w = Math.round(w * (MAX / h)); h = MAX; } }
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+            callback(canvas.toDataURL('image/jpeg', 0.7));
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+/* ==================================================================
+   CONFIGURACIÓN DE LA ORGANIZACIÓN ACTIVA
+================================================================== */
+function cargarLogo(event) {
+    const file = event.target.files[0]; if (!file) return;
+    comprimirImagen(file, dataUrl => { getOrgActiva().config.logo = dataUrl; renderLogoPreview(); });
+}
+function renderLogoPreview() {
+    const wrap = document.getElementById('logoPreviewWrap');
+    const logo = getOrgActiva().config.logo;
+    wrap.innerHTML = logo ? `<img src="${logo}" class="logo-preview" />` : `<span class="text-2xl opacity-30">🏫</span>`;
+}
+function cambiarTipoOrg(valor) { document.getElementById('configTipoOrg').value = valor; }
+
+function guardarConfig() {
+    requiereClave(() => {
+        const org = getOrgActiva();
+        const c = org.config;
+        org.nombre = document.getElementById('configNombre').value.trim() || org.nombre;
+        org.tipoOrg = document.getElementById('configTipoOrg').value;
+        c.rut = document.getElementById('configRut').value.trim();
+        c.anioContable = document.getElementById('configAnio').value.trim();
+        c.clave = document.getElementById('configClave').value;
+        c.alertaCaja = document.getElementById('configAlerta').value;
+        c.banco = document.getElementById('configBanco').value.trim();
+        c.tipo = document.getElementById('configTipo').value.trim();
+        c.numero = document.getElementById('configNumero').value.trim();
+        c.correo = document.getElementById('configCorreo').value.trim();
+        c.firmaNombre = document.getElementById('firmaNombre').value.trim();
+        c.firmaCargo = document.getElementById('firmaCargo').value.trim();
+        c.firmaSectores = document.getElementById('firmaSectores').value.trim();
+        c.firmaCelular = document.getElementById('firmaCelular').value.trim();
+        c.firmaLema = document.getElementById('firmaLema').value.trim();
+        c.googleClientId = document.getElementById('googleClientId').value.trim();
+        c.googleApiKey = document.getElementById('googleApiKey').value.trim();
+        guardarEstado();
+        renderTodo();
+        toast('Configuración guardada correctamente.', 'success');
+    });
+}
+
+function restablecerOrganizacionActual() {
+    const org = getOrgActiva();
+    requiereClave(() => {
+        confirmModal(`Esto eliminará TODOS los integrantes y movimientos de "${org.nombre}" (la configuración y el logo se mantienen). Esta acción no se puede deshacer.`, () => {
+            org.alumnos = [];
+            org.transacciones = [];
+            guardarEstado(); cerrarModal(); renderTodo();
+            toast('La organización quedó vacía. La configuración y el logo se mantuvieron.', 'success');
+        }, 'Sí, vaciar');
+    });
+}
+
+function restablecerTodo() {
+    const modal = document.getElementById('modalContainer');
+    estadoModalAnterior = { html: modal.innerHTML, hidden: modal.classList.contains('hidden') };
+    mostrarModal(`<div class="ficha-modal" style="max-width:380px;">
+        <div class="text-center mb-2"><span style="font-size:2rem;">🗑️</span></div>
+        <p class="text-sm mb-3" style="color:var(--gris);">Esta acción borrará <b>todas</b> las organizaciones, integrantes, movimientos y cuentas bancarias guardadas en este dispositivo. No se puede deshacer.</p>
+        <label class="label-sm">Escribe <b>BORRAR TODO</b> para confirmar</label>
+        <input type="text" id="confirmarBorrarTodoInput" class="w-full p-2 border border-slate-200 rounded-xl text-sm mb-3" autofocus />
+        <div class="grid grid-cols-2 gap-2">
+            <button onclick="cancelarModalAnidado()" class="toolbar-btn justify-center">Cancelar</button>
+            <button id="btnBorrarTodoConfirmar" class="w-full text-white text-sm font-medium py-2 rounded-xl" style="background:#dc2626;">Borrar todo</button>
+        </div>
+    </div>`);
+    document.getElementById('btnBorrarTodoConfirmar').onclick = () => {
+        const texto = document.getElementById('confirmarBorrarTodoInput').value;
+        if (texto !== 'BORRAR TODO') { toast('El texto no coincide. No se borró nada.', 'error'); return; }
+        localStorage.removeItem(STORAGE_KEY);
+        idbEscribir(null).finally(() => location.reload());
+    };
+}
+
+function generarInformeGeneralPDF() {
+    const org = getOrgActiva();
+    const k = calcularKPIs();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    let y = dibujarEncabezadoPDF(doc, org, 'Informe general de tesorería');
+
+    doc.autoTable({
+        startY: y,
+        head: [['Concepto', 'Monto']],
+        body: [
+            ['Ingresos totales', formatoMoneda(k.ingresos)],
+            ['Egresos totales', formatoMoneda(k.gastos)],
+            ['Saldo en tesorería', formatoMoneda(k.saldo)],
+            ['Recaudado (cuotas)', formatoMoneda(k.recaudado)],
+            ['Deuda vencida (cuotas)', formatoMoneda(k.adeudado)],
+            ['Otros ingresos (actividades)', formatoMoneda(k.otrosIngresos)],
+            ['Monto en tránsito / sin rendir', formatoMoneda(k.sinRendir)],
+            ['Integrantes', String(k.integrantes)],
+            ['Socios', String(k.socios)]
+        ],
+        theme: 'grid', headStyles: { fillColor: [54, 69, 79] }, styles: { fontSize: 9, cellPadding: 2 }
+    });
+
+    y = doc.lastAutoTable.finalY + 10;
+    doc.setFont(undefined, 'bold'); doc.setFontSize(11); doc.setTextColor(54, 69, 79);
+    doc.text('Detalle por integrante', 14, y);
+
+    const filasIntegrantes = [...org.alumnos].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')).map(a => {
+        const deudaFija = (a.cuotas || []).filter(c => c.estado === 'pendiente' && cuotaVencida(c.numero)).reduce((s, c) => s + Number(c.monto), 0);
+        const deudaExtra = (a.extraordinarias || []).filter(c => c.estado === 'pendiente' && c.obligatoria && extraVencida(c)).reduce((s, c) => s + Number(c.monto), 0);
+        const deuda = deudaFija + deudaExtra;
+        return [a.nombre, a.rut || '-', deuda > 0 ? 'Con deuda' : 'Al día', formatoMoneda(deuda)];
+    });
+    doc.autoTable({ startY: y + 4, head: [['Nombre', 'RUT', 'Estado', 'Deuda vencida']], body: filasIntegrantes, theme: 'grid', headStyles: { fillColor: [255, 90, 0] }, styles: { fontSize: 8.5, cellPadding: 2 } });
+
+    dibujarFirmaPDF(doc, org, doc.lastAutoTable.finalY + 10);
+    doc.save(`Informe_General_${org.nombre.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+function renderConfigForm() {
+    const org = getOrgActiva(); const c = org.config;
+    document.getElementById('configOrgNombre').textContent = org.nombre;
+    document.getElementById('ultimaActualizacionTxt').textContent = db.actualizadoEn
+        ? `Última actualización en este dispositivo: ${new Date(db.actualizadoEn).toLocaleString('es-CL')}`
+        : 'Aún no se ha guardado ningún cambio.';
+    document.getElementById('configNombre').value = org.nombre || '';
+    document.getElementById('configTipoOrg').value = org.tipoOrg || 'general';
+    document.getElementById('configRut').value = c.rut || '';
+    document.getElementById('configAnio').value = c.anioContable || '';
+    document.getElementById('configClave').value = c.clave || '';
+    document.getElementById('configAlerta').value = c.alertaCaja || '';
+    renderSelectsBancarios();
+    document.getElementById('configNumero').value = c.numero || '';
+    document.getElementById('configCorreo').value = c.correo || '';
+    document.getElementById('firmaNombre').value = c.firmaNombre || '';
+    document.getElementById('firmaCargo').value = c.firmaCargo || '';
+    document.getElementById('firmaSectores').value = c.firmaSectores || '';
+    document.getElementById('firmaCelular').value = c.firmaCelular || '';
+    document.getElementById('firmaLema').value = c.firmaLema || '';
+    document.getElementById('googleClientId').value = c.googleClientId || '';
+    document.getElementById('googleApiKey').value = c.googleApiKey || '';
+    renderLogoPreview();
+
+    const et = getEtiquetas();
+    document.getElementById('tituloIntegrantes').innerHTML = `<span>👥</span> ${et.plural}`;
+    document.getElementById('navIntegrantesLabel').textContent = et.plural;
+    document.getElementById('kpiIntegrantesLabel').textContent = et.plural;
+}
+
+/* ==================================================================
+   KPIs Y DASHBOARD
+================================================================== */
+function ultimoDiaHabilDelMes(anio, mesNumero) {
+    // mesNumero: 1-12. Retorna el día (1-31) del último día hábil (no sábado/domingo) de ese mes/año.
+    let fecha = new Date(anio, mesNumero, 0); // día 0 del mes siguiente = último día del mes actual
+    while (fecha.getDay() === 0 || fecha.getDay() === 6) { // 0=domingo, 6=sábado
+        fecha.setDate(fecha.getDate() - 1);
+    }
+    return fecha.getDate();
+}
+
+function extraVencida(e) {
+    if (!e.fechaFin) return true; // sin plazo definido: se considera exigible de inmediato
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const limite = new Date(e.fechaFin + 'T00:00:00');
+    return hoy >= limite;
+}
+
+function cuotaVencida(numeroMes) {
+    const hoy = new Date();
+    const mesActual = hoy.getMonth() + 1; // 1-12
+    const anioActual = hoy.getFullYear();
+    if (numeroMes < mesActual) return true;
+    if (numeroMes === mesActual) {
+        const ultimoHabil = ultimoDiaHabilDelMes(anioActual, mesActual);
+        return hoy.getDate() >= ultimoHabil;
+    }
+    return false;
+}
+
+function calcularKPIs() {
+    const org = getOrgActiva();
+    let ingresos = 0, gastos = 0, sinRendir = 0;
+    org.transacciones.filter(t => !t.anulada).forEach(t => {
+        if (t.tipo === 'ingreso') ingresos += Number(t.monto) || 0;
+        if (t.tipo === 'gasto') {
+            gastos += Number(t.monto) || 0;
+            if (t.destino === 'tercero' && !t.rendido) sinRendir += Number(t.monto) || 0;
+        }
+    });
+    let recaudado = 0, adeudado = 0, otrosIngresos = 0;
+    org.alumnos.forEach(a => {
+        (a.cuotas || []).forEach(c => {
+            if (c.estado === 'pagado') recaudado += Number(c.monto) || 0;
+            else if (cuotaVencida(c.numero)) adeudado += Number(c.monto) || 0;
+        });
+        (a.extraordinarias || []).forEach(e => {
+            if (e.obligatoria) {
+                if (e.estado === 'pagado') recaudado += Number(e.monto) || 0;
+                else if (extraVencida(e)) adeudado += Number(e.monto) || 0;
+            } else if (e.estado === 'pagado') {
+                otrosIngresos += Number(e.monto) || 0;
+            }
+        });
+    });
+    const saldo = ingresos - gastos;
+    const socios = org.alumnos.filter(a => a.esSocio).length;
+    return { ingresos, gastos, sinRendir, recaudado, adeudado, otrosIngresos, saldo, integrantes: org.alumnos.length, socios };
+}
+
+function renderDashboard() {
+    const org = getOrgActiva();
+    const k = calcularKPIs();
+    document.getElementById('kpiSaldo').textContent = formatoMoneda(k.saldo);
+    const badge = document.getElementById('kpiSaldoBadge');
+    badge.textContent = k.saldo >= 0 ? 'A favor' : 'En contra';
+    badge.style.background = k.saldo >= 0 ? '#16a34a' : '#dc2626';
+    badge.style.color = '#fff';
+    document.getElementById('kpiRecaudado').textContent = formatoMoneda(k.recaudado);
+    document.getElementById('kpiAdeudado').textContent = formatoMoneda(k.adeudado);
+    document.getElementById('kpiSinRendir').textContent = formatoMoneda(k.sinRendir);
+    document.getElementById('kpiIntegrantes').textContent = pantallaCompartida ? '•••' : k.integrantes;
+    document.getElementById('kpiSocios').textContent = pantallaCompartida ? '•••' : k.socios;
+    document.getElementById('kpiIngresosTotal').textContent = formatoMoneda(k.ingresos);
+    document.getElementById('kpiGastosTotal').textContent = formatoMoneda(k.gastos);
+    document.getElementById('kpiOtrosIngresos').textContent = formatoMoneda(k.otrosIngresos);
+
+    const alertaEl = document.getElementById('alertaCritica');
+    const umbral = Number(org.config.alertaCaja);
+    if (umbral && k.saldo < umbral) {
+        alertaEl.classList.remove('hidden');
+        alertaEl.innerHTML = `⚠️ Alerta de caja crítica: el saldo (${formatoMoneda(k.saldo)}) está por debajo del umbral configurado (${formatoMoneda(umbral)}).`;
+    } else {
+        alertaEl.classList.add('hidden');
+    }
+    renderActividadReciente();
+    renderNoRendidos();
+}
+
+function renderActividadReciente() {
+    const org = getOrgActiva();
+    const cont = document.getElementById('actividadReciente');
+    const ultimas = [...org.transacciones].filter(t => !t.anulada).sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).slice(0, 6);
+    if (ultimas.length === 0) { cont.innerHTML = '<div class="empty-state">Aún no hay movimientos registrados.</div>'; return; }
+    cont.innerHTML = ultimas.map(t => {
+        const esIngreso = t.tipo === 'ingreso';
+        return `<div class="actividad-item flex justify-between items-center">
+            <div>
+                <div class="text-sm font-medium">${escapeHtml(t.concepto)}</div>
+                <div class="text-xs text-slate-400 flex items-center gap-1">${t.fecha}<span class="origen-badge ${t.origen === 'digital' ? 'origen-digital' : 'origen-manual'}">${t.origen === 'digital' ? 'Digital' : 'Manual'}</span></div>
+            </div>
+            <div class="text-sm font-semibold" style="color: ${esIngreso ? '#16a34a' : '#dc2626'};">${esIngreso ? '+' : '-'}${formatoMoneda(t.monto)}</div>
+        </div>`;
+    }).join('');
+}
+
+function renderNoRendidos() {
+    const org = getOrgActiva();
+    const cont = document.getElementById('listaNoRendidos');
+    const lista = org.transacciones.filter(t => t.tipo === 'gasto' && t.destino === 'tercero' && !t.rendido && !t.anulada);
+    if (lista.length === 0) { cont.innerHTML = '<div class="empty-state">No hay dineros pendientes de rendición.</div>'; return; }
+    cont.innerHTML = lista.map(t => `
+        <div class="actividad-item flex justify-between items-center">
+            <div>
+                <div class="text-sm font-medium">${escapeHtml(t.concepto)}</div>
+                <div class="text-xs text-slate-400">Custodio: ${escapeHtml(t.custodio || '-')} · ${t.fecha}</div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="text-sm font-semibold accent">${formatoMoneda(t.monto)}</div>
+                <button class="toolbar-btn" onclick="marcarRendido('${t.id}')">✅ Rendir</button>
+            </div>
+        </div>`).join('');
+}
+
+function marcarRendido(id) {
+    requiereClave(() => {
+        const org = getOrgActiva();
+        const t = org.transacciones.find(x => x.id === id);
+        if (t) t.rendido = true;
+        guardarEstado(); renderDashboard(); renderTransacciones();
+    });
+}
+
+/* ==================================================================
+   INTEGRANTES / MIEMBROS (estándar o socio)
+================================================================== */
+function crearCuotasAnuales(monto, desde, hasta) {
+    desde = desde || 1; hasta = hasta || 12;
+    return MESES.map((m, i) => {
+        const numero = i + 1;
+        const aplica = numero >= desde && numero <= hasta;
+        return aplica
+            ? { numero, mes: m, monto: Number(monto) || 0, estado: 'pendiente', fechaPago: '' }
+            : { numero, mes: m, monto: 0, estado: 'pagado', fechaPago: '' };
+    });
+}
+
+function siguienteNumeroSocio(org) {
+    const nums = org.alumnos.filter(a => a.esSocio).map(a => Number(a.numeroSocio) || 0);
+    return nums.length ? Math.max(...nums) + 1 : 1;
+}
+
+function esMoroso(a) {
+    const pendFijas = (a.cuotas || []).some(c => c.estado === 'pendiente' && cuotaVencida(c.numero));
+    const pendExtraObligatoria = (a.extraordinarias || []).some(c => c.estado === 'pendiente' && c.obligatoria && extraVencida(c));
+    return pendFijas || pendExtraObligatoria;
+}
+
+function filtrarMiembros(tipo) {
+    filtroMiembro = tipo;
+    ['chipTodos', 'chipSocios', 'chipMorosos', 'chipAlDia'].forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById(tipo === 'todos' ? 'chipTodos' : tipo === 'socios' ? 'chipSocios' : tipo === 'morosos' ? 'chipMorosos' : 'chipAlDia').classList.add('active');
+    renderAlumnos();
+}
+
+function resaltar(texto, filtro) {
+    if (!filtro) return escapeHtml(texto);
+    const escapado = escapeHtml(texto);
+    const filtroEscapado = filtro.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return escapado.replace(new RegExp('(' + filtroEscapado + ')', 'ig'), '<mark>$1</mark>');
+}
+
+function renderAlumnos() {
+    const org = getOrgActiva();
+    const et = getEtiquetas();
+    const cont = document.getElementById('listaAlumnos');
+    const filtro = (document.getElementById('buscarAlumno').value || '').toLowerCase();
+    let lista = [...org.alumnos].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+    if (filtro) lista = lista.filter(a => a.nombre.toLowerCase().includes(filtro) || (a.rut || '').toLowerCase().includes(filtro));
+    if (filtroMiembro === 'socios') lista = lista.filter(a => a.esSocio);
+    if (filtroMiembro === 'morosos') lista = lista.filter(esMoroso);
+    if (filtroMiembro === 'aldia') lista = lista.filter(a => !esMoroso(a));
+
+    document.getElementById('totalAlumnosTxt').textContent = org.alumnos.length + ' ' + (org.alumnos.length === 1 ? et.miembro.toLowerCase() : et.plural.toLowerCase());
+    if (lista.length === 0) { cont.innerHTML = `<div class="empty-state">No se encontraron ${et.plural.toLowerCase()}.<br>Usa el botón + para agregar uno.</div>`; return; }
+
+    cont.innerHTML = lista.map(a => {
+        const deudaFija = (a.cuotas || []).filter(c => c.estado === 'pendiente' && cuotaVencida(c.numero)).reduce((s, c) => s + Number(c.monto), 0);
+        const deudaExtra = (a.extraordinarias || []).filter(c => c.estado === 'pendiente' && c.obligatoria && extraVencida(c)).reduce((s, c) => s + Number(c.monto), 0);
+        const deuda = deudaFija + deudaExtra;
+        const inicial = (a.nombre || '?').trim().charAt(0).toUpperCase();
+        const avatar = a.foto ? `<img src="${a.foto}" />` : inicial;
+        return `<div class="row-alumno" onclick="abrirFicha('${a.id}')">
+            <div class="flex items-center gap-3">
+                <div class="avatar-circle">${avatar}</div>
+                <div>
+                    <div class="text-sm font-medium flex items-center gap-1">${resaltar(a.nombre, filtro)} ${a.esSocio ? `<span class="socio-badge">Socio N°${a.numeroSocio}</span>` : ''}</div>
+                    <div class="text-xs text-slate-400">${escapeHtml(a.grupo || 'Sin ' + et.grupo.toLowerCase())}</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="text-right">
+                    <div class="text-xs font-semibold" style="color: ${deuda > 0 ? 'var(--naranja)' : '#16a34a'};">${deuda > 0 ? formatoMoneda(deuda) : 'Al día'}</div>
+                </div>
+                ${a.telefono ? `<a href="tel:+569${a.telefono}" onclick="event.stopPropagation()" class="btn-icon" title="Llamar">📞</a>` : ''}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+let prefillNuevoAlumno = null;
+let ultimasPersonasGlobal = [];
+let tutoresTemp = [];
+
+function normalizarRut(rut) { return (rut || '').replace(/[^0-9kK]/g, '').toUpperCase(); }
+
+function validarRut(rutCompleto) {
+    const limpio = normalizarRut(rutCompleto);
+    if (limpio.length < 2) return false;
+    const cuerpo = limpio.slice(0, -1);
+    const dv = limpio.slice(-1);
+    if (!/^\d+$/.test(cuerpo)) return false;
+    let suma = 0, multiplo = 2;
+    for (let i = cuerpo.length - 1; i >= 0; i--) {
+        suma += parseInt(cuerpo[i], 10) * multiplo;
+        multiplo = multiplo === 7 ? 2 : multiplo + 1;
+    }
+    const resto = 11 - (suma % 11);
+    const dvEsperado = resto === 11 ? '0' : resto === 10 ? 'K' : String(resto);
+    return dv === dvEsperado;
+}
+
+function buscarPersonaPorRutGlobal(rutBuscado) {
+    const rutNorm = normalizarRut(rutBuscado);
+    if (!rutNorm) return null;
+    for (const org of db.organizaciones) {
+        const encontrado = org.alumnos.find(a => a.rut && normalizarRut(a.rut) === rutNorm);
+        if (encontrado) return encontrado;
+    }
+    return null;
+}
+
+function autocompletarPorRut() {
+    const encontrado = buscarPersonaPorRutGlobal(document.getElementById('nfRut').value);
+    if (!encontrado) return;
+    if (!document.getElementById('nfNombre').value.trim()) document.getElementById('nfNombre').value = encontrado.nombre;
+    if (!document.getElementById('nfTelefono').value.trim()) document.getElementById('nfTelefono').value = encontrado.telefono || '';
+    if (!document.getElementById('nfCorreo').value.trim()) document.getElementById('nfCorreo').value = encontrado.correo || '';
+    if (!document.getElementById('nfFotoData').value && encontrado.foto) {
+        document.getElementById('nfFotoData').value = encontrado.foto;
+        document.getElementById('nfFotoPreview').innerHTML = `<img src="${encontrado.foto}" />`;
+    }
+    if (tutoresTemp.length === 0 && encontrado.tutores && encontrado.tutores.length) {
+        tutoresTemp = JSON.parse(JSON.stringify(encontrado.tutores));
+        renderTutoresContainer();
+    }
+}
+
+function abrirBuscadorPersonasGlobal() {
+    const org = getOrgActiva();
+    const vistos = new Set();
+    const lista = [];
+    db.organizaciones.forEach(o => o.alumnos.forEach(a => {
+        const key = normalizarRut(a.rut) || ('n_' + a.nombre.toLowerCase());
+        const yaEnEsteOrg = o.id === org.id;
+        if (!vistos.has(key) && !(yaEnEsteOrg && normalizarRut(a.rut))) { vistos.add(key); lista.push(a); }
+    }));
+    if (!lista.length) { toast('Aún no hay integrantes registrados en otras organizaciones.', 'warning'); return; }
+    ultimasPersonasGlobal = lista;
+    const filas = lista.map((a, i) => `<div class="row-alumno" onclick="autocompletarDesdePersonaGlobal(${i})">
+        <div class="text-sm font-medium">${escapeHtml(a.nombre)}</div>
+        <div class="text-xs text-slate-400">${escapeHtml(a.rut || 'Sin RUT')}</div>
+    </div>`).join('');
+    mostrarModal(`<div class="ficha-modal">
+        <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold" style="color:var(--gris);">Integrantes de otras organizaciones</h3><button class="btn-icon" onclick="cerrarModal(); abrirFormAlumno();">✕</button></div>
+        <p class="text-xs text-slate-400 mb-2">Selecciona a alguien para copiar sus datos personales a este integrante nuevo.</p>
+        ${filas}
+    </div>`);
+}
+
+function autocompletarDesdePersonaGlobal(indice) {
+    prefillNuevoAlumno = ultimasPersonasGlobal[indice];
+    abrirFormAlumno();
+}
+
+function tutoresFilasHtml() {
+    return tutoresTemp.map((t, i) => `
+        <div class="tutor-fila p-2 rounded-xl mb-2" style="background:#f8fafc; border:1px solid #e2e8f0;">
+            <div class="flex justify-between items-center mb-1"><span class="label-sm">Responsable/Tutor ${i + 1}</span><button class="btn-icon" onclick="eliminarTutorFila(${i})">🗑️</button></div>
+            <input type="text" class="tutorNombre w-full p-2 border border-slate-200 rounded-xl text-sm mb-1" placeholder="Nombre" value="${escapeHtml(t.nombre || '')}" />
+            <div class="grid grid-cols-2 gap-1 mb-1">
+                <input type="text" class="tutorRut w-full p-2 border border-slate-200 rounded-xl text-sm" placeholder="RUT" value="${escapeHtml(t.rut || '')}" />
+                <input type="text" class="tutorTelefono w-full p-2 border border-slate-200 rounded-xl text-sm" placeholder="Teléfono" value="${escapeHtml(t.telefono || '')}" />
+            </div>
+            <input type="text" class="tutorWhatsapp w-full p-2 border border-slate-200 rounded-xl text-sm" placeholder="WhatsApp (si es distinto al teléfono)" value="${escapeHtml(t.whatsapp || '')}" />
+        </div>`).join('') || '<p class="text-xs text-slate-400 mb-2">Sin responsables agregados.</p>';
+}
+
+function sincronizarTutoresDesdeDOM() {
+    const filas = document.querySelectorAll('#nfTutoresContainer .tutor-fila');
+    tutoresTemp = Array.from(filas).map(fila => ({
+        nombre: fila.querySelector('.tutorNombre').value.trim(),
+        rut: fila.querySelector('.tutorRut').value.trim(),
+        telefono: fila.querySelector('.tutorTelefono').value.trim(),
+        whatsapp: fila.querySelector('.tutorWhatsapp').value.trim()
+    }));
+}
+
+function agregarTutorFila() {
+    sincronizarTutoresDesdeDOM();
+    tutoresTemp.push({ nombre: '', rut: '', telefono: '', whatsapp: '' });
+    renderTutoresContainer();
+}
+
+function eliminarTutorFila(i) {
+    sincronizarTutoresDesdeDOM();
+    tutoresTemp.splice(i, 1);
+    renderTutoresContainer();
+}
+
+function renderTutoresContainer() {
+    document.getElementById('nfTutoresContainer').innerHTML = tutoresFilasHtml();
+}
+
+function aplicarVigenciaCuotas(a, desde, hasta) {
+    a.vigenciaDesde = desde; a.vigenciaHasta = hasta;
+    (a.cuotas || []).forEach(c => {
+        const dentro = c.numero >= desde && c.numero <= hasta;
+        if (!dentro) { c.monto = 0; c.estado = 'pagado'; c.fechaPago = ''; }
+        else if (c.monto === 0 && c.estado === 'pagado') { c.monto = a.mensualidad; c.estado = 'pendiente'; }
+    });
+}
+
+function abrirFormAlumno(idEditar) {
+    const et = getEtiquetas();
+    const org = getOrgActiva();
+    const aExistente = idEditar ? org.alumnos.find(x => x.id === idEditar) : null;
+    const datos = aExistente || prefillNuevoAlumno;
+    prefillNuevoAlumno = null;
+    tutoresTemp = datos && datos.tutores ? JSON.parse(JSON.stringify(datos.tutores)) : [];
+    const vigDesde = datos && datos.vigenciaDesde ? datos.vigenciaDesde : 1;
+    const vigHasta = datos && datos.vigenciaHasta ? datos.vigenciaHasta : 12;
+    const opcionesMes = (seleccionado) => MESES.map((m, i) => `<option value="${i + 1}" ${i + 1 === seleccionado ? 'selected' : ''}>${m}</option>`).join('');
+
+    const html = `
+        <div class="ficha-modal">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold" style="color:var(--gris);">${aExistente ? 'Editar' : 'Nuevo'} ${et.miembro.toLowerCase()}</h3>
+                <button class="btn-icon" onclick="cerrarModal()">✕</button>
+            </div>
+            ${aExistente ? '' : `
+            <div class="grid grid-cols-1 gap-2 mb-3">
+                <button onclick="importarDesdeGoogle()" class="w-full toolbar-btn justify-center" style="border-color:#4285F4; color:#4285F4;">🔵 Importar desde Google Contactos</button>
+                <button onclick="abrirBuscadorPersonasGlobal()" class="w-full toolbar-btn justify-center" style="border-color:var(--gris); color:var(--gris);">🔎 Buscar integrante de otra organización</button>
+            </div>`}
+            <div class="flex items-center gap-3 mb-3">
+                <div class="foto-upload-box" id="nfFotoPreview">${datos && datos.foto ? `<img src="${datos.foto}" />` : '<span class="text-2xl opacity-30">📷</span>'}</div>
+                <div class="file-input-wrapper flex-1">
+                    <button class="text-xs px-4 py-2 rounded-full border" style="border-color: var(--naranja); color: var(--naranja);">Cargar foto</button>
+                    <input type="file" accept="image/*" onchange="previsualizarFotoNuevo(event)" />
+                </div>
+            </div>
+            <div class="space-y-2">
+                <div><label class="label-sm">Nombre completo</label><input type="text" id="nfNombre" value="${datos ? escapeHtml(datos.nombre) : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                <div><label class="label-sm">RUT</label><input type="text" id="nfRut" value="${datos ? escapeHtml(datos.rut || '') : ''}" placeholder="12.345.678-9" onblur="autocompletarPorRut()" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                <div><label class="label-sm">${et.grupo}</label><input type="text" id="nfGrupo" value="${datos ? escapeHtml(datos.grupo || '') : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="label-sm">Teléfono</label>
+                        <div class="flex items-center gap-1">
+                            <span class="text-sm text-slate-500 bg-slate-50 px-2 py-2 rounded-xl border border-slate-200">+569</span>
+                            <input type="text" id="nfTelefono" maxlength="8" value="${datos ? escapeHtml(datos.telefono || '') : ''}" placeholder="12345678" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                        </div>
+                    </div>
+                    <div><label class="label-sm">Correo</label><input type="email" id="nfCorreo" value="${datos ? escapeHtml(datos.correo || '') : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                </div>
+                <div><label class="label-sm">Cuota mensual fija ($)</label><input type="number" id="nfMensualidad" value="${aExistente ? aExistente.mensualidad : 0}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="label-sm">Cuota vigente desde</label><select id="nfVigenciaDesde" class="w-full p-2 border border-slate-200 rounded-xl text-sm">${opcionesMes(vigDesde)}</select></div>
+                    <div><label class="label-sm">Hasta</label><select id="nfVigenciaHasta" class="w-full p-2 border border-slate-200 rounded-xl text-sm">${opcionesMes(vigHasta)}</select></div>
+                </div>
+                <p class="text-xs text-slate-400">Si no cambias "Hasta", se cobrará la cuota hasta diciembre del año en curso. Los meses fuera de este rango no se contabilizan como deuda.</p>
+
+                <div class="divider-light"></div>
+                <div class="flex justify-between items-center mb-1"><label class="label-sm mb-0">Responsables / Tutores</label><button class="btn-icon" onclick="agregarTutorFila()">➕</button></div>
+                <div id="nfTutoresContainer">${tutoresFilasHtml()}</div>
+
+                <div class="divider-light"></div>
+                <div class="flex items-center justify-between pt-1">
+                    <label class="label-sm">¿Es socio?</label>
+                    <div class="toggle-switch ${datos && datos.esSocio ? 'active' : ''}" id="nfEsSocioToggle" onclick="this.classList.toggle('active'); document.getElementById('nfCamposSocio').classList.toggle('hidden');"></div>
+                </div>
+                <div id="nfCamposSocio" class="${datos && datos.esSocio ? '' : 'hidden'} space-y-2 p-2 rounded-xl" style="background:#fff8f4;">
+                    <div class="text-xs text-slate-400">${aExistente && aExistente.esSocio ? 'N° de socio: ' + aExistente.numeroSocio : 'N° de socio correlativo: se asignará automáticamente.'}</div>
+                    <div><label class="label-sm">Categoría de socio</label>
+                        <select id="nfCategoriaSocio" class="w-full p-2 border border-slate-200 rounded-xl text-sm">
+                            <option value="Activo" ${datos && datos.categoriaSocio === 'Activo' ? 'selected' : ''}>Activo</option>
+                            <option value="Honorario" ${datos && datos.categoriaSocio === 'Honorario' ? 'selected' : ''}>Honorario</option>
+                            <option value="Cadete" ${datos && datos.categoriaSocio === 'Cadete' ? 'selected' : ''}>Cadete</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="nfFotoData" value="${datos && datos.foto ? datos.foto : ''}" />
+            <input type="hidden" id="nfIdEditar" value="${aExistente ? aExistente.id : ''}" />
+            <button onclick="guardarNuevoAlumno()" class="w-full mt-4 text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Guardar ${et.miembro.toLowerCase()}</button>
+        </div>`;
+    mostrarModal(html);
+}
+
+function previsualizarFotoNuevo(event) {
+    const file = event.target.files[0]; if (!file) return;
+    comprimirImagen(file, dataUrl => { document.getElementById('nfFotoData').value = dataUrl; document.getElementById('nfFotoPreview').innerHTML = `<img src="${dataUrl}" />`; });
+}
+
+function guardarNuevoAlumno() {
+    const nombre = document.getElementById('nfNombre').value.trim();
+    if (!nombre) { toast('El nombre es obligatorio.', 'warning'); return; }
+    const org = getOrgActiva();
+    const mensualidad = Number(document.getElementById('nfMensualidad').value) || 0;
+    const esSocio = document.getElementById('nfEsSocioToggle').classList.contains('active');
+    const idEditar = document.getElementById('nfIdEditar').value;
+    const vigDesde = Number(document.getElementById('nfVigenciaDesde').value);
+    const vigHasta = Number(document.getElementById('nfVigenciaHasta').value);
+    const rutIngresado = document.getElementById('nfRut').value.trim();
+    sincronizarTutoresDesdeDOM();
+    const tutores = tutoresTemp.filter(t => t.nombre);
+
+    if (rutIngresado && !validarRut(rutIngresado)) {
+        toast('El RUT ingresado no parece válido (revisa el dígito verificador). Se guardará igual.', 'warning');
+    }
+
+    if (idEditar) {
+        const a = org.alumnos.find(x => x.id === idEditar);
+        a.nombre = nombre;
+        a.rut = rutIngresado;
+        a.grupo = document.getElementById('nfGrupo').value.trim();
+        a.telefono = document.getElementById('nfTelefono').value.trim();
+        a.correo = document.getElementById('nfCorreo').value.trim();
+        a.foto = document.getElementById('nfFotoData').value || null;
+        a.tutores = tutores;
+        const vigenciaCambio = a.vigenciaDesde !== vigDesde || a.vigenciaHasta !== vigHasta;
+        a.mensualidad = mensualidad;
+        if (vigenciaCambio) aplicarVigenciaCuotas(a, vigDesde, vigHasta);
+        (a.cuotas || []).forEach(c => { if (c.estado === 'pendiente' && c.numero >= vigDesde && c.numero <= vigHasta) c.monto = mensualidad; });
+        const eraSocio = a.esSocio;
+        a.esSocio = esSocio;
+        if (esSocio && !eraSocio) a.numeroSocio = siguienteNumeroSocio(org);
+        if (!esSocio) { a.numeroSocio = null; a.categoriaSocio = null; }
+        if (esSocio) a.categoriaSocio = document.getElementById('nfCategoriaSocio').value;
+        org.alumnos.sort((x, y) => x.nombre.localeCompare(y.nombre, 'es'));
+        guardarEstado(); cerrarModal(); renderAlumnos(); renderDashboard();
+        return;
+    }
+
+    const duplicado = rutIngresado ? org.alumnos.find(x => x.rut && normalizarRut(x.rut) === normalizarRut(rutIngresado)) : null;
+    const datosNuevo = {
+        grupo: document.getElementById('nfGrupo').value.trim(),
+        telefono: document.getElementById('nfTelefono').value.trim(),
+        correo: document.getElementById('nfCorreo').value.trim(),
+        foto: document.getElementById('nfFotoData').value || null,
+        categoriaSocio: esSocio ? document.getElementById('nfCategoriaSocio').value : null
+    };
+    if (duplicado) {
+        confirmModal(`Ya existe "${duplicado.nombre}" con este mismo RUT en esta organización. ¿Deseas agregarlo de todas formas?`, () => crearAlumnoDefinitivo(org, nombre, rutIngresado, tutores, mensualidad, vigDesde, vigHasta, esSocio, datosNuevo), 'Agregar igual');
+        return;
+    }
+    crearAlumnoDefinitivo(org, nombre, rutIngresado, tutores, mensualidad, vigDesde, vigHasta, esSocio, datosNuevo);
+}
+
+function crearAlumnoDefinitivo(org, nombre, rutIngresado, tutores, mensualidad, vigDesde, vigHasta, esSocio, datosNuevo) {
+    const alumno = {
+        id: uid(), nombre,
+        rut: rutIngresado,
+        grupo: datosNuevo.grupo,
+        telefono: datosNuevo.telefono,
+        correo: datosNuevo.correo,
+        foto: datosNuevo.foto,
+        tutores,
+        mensualidad,
+        vigenciaDesde: vigDesde, vigenciaHasta: vigHasta,
+        cuotas: crearCuotasAnuales(mensualidad, vigDesde, vigHasta),
+        extraordinarias: [],
+        esSocio,
+        numeroSocio: esSocio ? siguienteNumeroSocio(org) : null,
+        categoriaSocio: datosNuevo.categoriaSocio
+    };
+    org.alumnos.push(alumno);
+    org.alumnos.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+    guardarEstado(); cerrarModal(); renderAlumnos(); renderDashboard();
+    toast(`${nombre} agregado correctamente.`, 'success');
+}
+
+function abrirFicha(id) {
+    const org = getOrgActiva(); const et = getEtiquetas();
+    const a = org.alumnos.find(x => x.id === id); if (!a) return;
+    const totalPagadoFijo = (a.cuotas || []).filter(c => c.estado === 'pagado').reduce((s, c) => s + Number(c.monto), 0);
+    const totalPendienteFijo = (a.cuotas || []).filter(c => c.estado === 'pendiente' && cuotaVencida(c.numero)).reduce((s, c) => s + Number(c.monto), 0);
+    const totalPagadoExtra = (a.extraordinarias || []).filter(c => c.estado === 'pagado').reduce((s, c) => s + Number(c.monto), 0);
+    const totalPendienteExtra = (a.extraordinarias || []).filter(c => c.estado === 'pendiente' && c.obligatoria && extraVencida(c)).reduce((s, c) => s + Number(c.monto), 0);
+    const alDia = !esMoroso(a);
+
+    const cuotasHtml = (a.cuotas || []).map(c => `
+        <div class="cuota-item" style="${c.estado === 'pagado' && c.monto > 0 ? 'background:#eafbf1; border-color:#bbf0d0;' : ''}">
+            <div class="font-semibold">${c.mes}</div>
+            <div class="text-slate-400 mb-1">${formatoMoneda(c.monto)}</div>
+            <select onchange="cambiarEstadoCuota('${a.id}', ${c.numero}, this.value)" style="${c.estado === 'pagado' ? 'color:#16a34a; font-weight:700;' : ''}">
+                <option value="pendiente" ${c.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                <option value="pagado" ${c.estado === 'pagado' ? 'selected' : ''}>Pagado</option>
+            </select>
+        </div>`).join('');
+
+    const extraHtml = (a.extraordinarias || []).map(c => `
+        <div class="actividad-item flex justify-between items-center" style="${c.estado === 'pagado' ? 'background:#eafbf1; border-color:#bbf0d0;' : ''}">
+            <div><div class="text-sm font-medium">${escapeHtml(c.concepto)} ${c.obligatoria ? '<span class="socio-badge" style="background:#fee2e2; color:#991b1b;">Obligatorio</span>' : '<span class="socio-badge">Otros ingresos</span>'} ${c.estado === 'pagado' ? '<span style="color:#16a34a;">✔</span>' : ''}</div><div class="text-xs text-slate-400">${formatoMoneda(c.monto)}</div></div>
+            <div class="flex items-center gap-2">
+                <select onchange="cambiarEstadoExtra('${a.id}', '${c.id}', this.value)" class="text-xs border border-slate-200 rounded-full px-2 py-1">
+                    <option value="pendiente" ${c.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                    <option value="pagado" ${c.estado === 'pagado' ? 'selected' : ''}>Pagado</option>
+                </select>
+                <button class="btn-icon" onclick="eliminarExtra('${a.id}', '${c.id}')">🗑️</button>
+            </div>
+        </div>`).join('') || '<div class="empty-state">Sin cargos extraordinarios.</div>';
+
+    const tutoresHtml = (a.tutores || []).map(t => `
+        <div class="actividad-item">
+            <div class="text-sm font-medium">${escapeHtml(t.nombre)}</div>
+            <div class="text-xs text-slate-400">${escapeHtml(t.rut || '')}</div>
+            <div class="flex gap-3 mt-1">
+                ${t.telefono ? `<a href="tel:+569${t.telefono.replace(/\D/g,'')}" class="text-xs accent font-medium">📞 Llamar</a>` : ''}
+                ${(t.whatsapp || t.telefono) ? `<a href="https://wa.me/569${(t.whatsapp || t.telefono).replace(/\D/g,'')}" target="_blank" class="text-xs font-medium" style="color:#16a34a;">💬 WhatsApp</a>` : ''}
+            </div>
+        </div>`).join('') || '<div class="empty-state">Sin responsables registrados.</div>';
+
+    const html = `
+        <div class="ficha-modal">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-bold" style="color:var(--gris);">Ficha del ${et.miembro.toLowerCase()}</h3>
+                <button class="btn-icon no-print" onclick="cerrarModal()">✕</button>
+                ${a.foto ? `<img src="${a.foto}" class="foto-ficha" style="border:3px solid ${alDia ? '#16a34a' : 'var(--naranja)'};" />` : `<div class="foto-ficha flex items-center justify-center text-2xl opacity-30" style="border:3px solid ${alDia ? '#16a34a' : 'var(--naranja)'};">👤</div>`}
+                <div>
+                    <div class="font-semibold flex items-center gap-1 flex-wrap">${escapeHtml(a.nombre)} ${a.esSocio ? `<span class="socio-badge">Socio N°${a.numeroSocio} · ${escapeHtml(a.categoriaSocio || '')}</span>` : ''}
+                        <span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:${alDia ? '#dcfce7' : '#ffe4d5'}; color:${alDia ? '#15803d' : '#c2410c'};">${alDia ? '✅ Al día' : '⚠️ Con deuda'}</span>
+                    </div>
+                    <div class="text-xs text-slate-400">${escapeHtml(a.grupo || '-')} · ${escapeHtml(a.rut || 'Sin RUT')}</div>
+                    <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                        ${a.telefono ? `<a href="tel:+569${a.telefono}" class="text-xs accent font-medium">📞 Llamar</a>` : ''}
+                        <button onclick="cerrarModal(); abrirFormAlumno('${a.id}');" class="text-xs font-medium" style="color:var(--gris);">✏️ Editar datos</button>
+                        ${a.rut ? `<button onclick="verEnOtrasOrganizaciones('${a.id}')" class="text-xs font-medium" style="color:#7c3aed;">🔗 Ver en otras organizaciones</button>` : ''}
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mb-4">
+                <div class="kpi-card"><span class="kpi-label">Total pagado</span><div class="text-lg font-bold">${formatoMoneda(totalPagadoFijo + totalPagadoExtra)}</div></div>
+                <div class="kpi-card" style="background: ${(totalPendienteFijo + totalPendienteExtra) > 0 ? 'var(--naranja)' : '#16a34a'};"><span class="kpi-label" style="color:#fff0e6;">Deuda vencida</span><div class="text-lg font-bold">${formatoMoneda(totalPendienteFijo + totalPendienteExtra)}</div></div>
+            </div>
+
+            <p class="label-sm mb-2">Cuotas mensuales fijas (vigencia: ${MESES[(a.vigenciaDesde || 1) - 1]}-${MESES[(a.vigenciaHasta || 12) - 1]})</p>
+            <div class="cuota-grid mb-4">${cuotasHtml}</div>
+
+            <div class="flex justify-between items-center mb-2"><p class="label-sm mb-0">Cuotas extraordinarias</p><button class="btn-icon" onclick="abrirFormExtra('${a.id}')">➕</button></div>
+            <div class="mb-4">${extraHtml}</div>
+
+            <div class="divider-light"></div>
+            <p class="label-sm mb-2">Responsables / Tutores</p>
+            <div class="mb-2">${tutoresHtml}</div>
+
+            <div class="divider-light"></div>
+            <p class="label-sm mb-2">Documentos y notificaciones</p>
+            <div class="grid grid-cols-2 gap-2 mb-2">
+                <button onclick="descargarFichaIndividualPDF('${a.id}')" class="toolbar-btn justify-center" style="border-color:var(--gris); color:var(--gris);">🪪 Ficha PDF</button>
+                <button onclick="descargarEstadoCuentaPDF('${a.id}')" class="toolbar-btn justify-center" style="border-color:var(--naranja); color:var(--naranja);">📄 Estado de cuenta</button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mb-3">
+                <button onclick="enviarWhatsapp('${a.id}')" class="toolbar-btn justify-center" style="border-color:#16a34a; color:#16a34a;">💬 WhatsApp</button>
+                <button onclick="enviarCorreo('${a.id}')" class="toolbar-btn justify-center" style="border-color:#0ea5e9; color:#0ea5e9;">✉️ Correo</button>
+            </div>
+            <button onclick="imprimirModalActual()" class="w-full toolbar-btn justify-center mb-3">🖶 Imprimir esta ficha</button>
+
+            <div class="divider-light"></div>
+            <button onclick="eliminarAlumno('${a.id}')" class="w-full text-red-500 text-xs font-medium py-2">Eliminar ${et.miembro.toLowerCase()}</button>
+        </div>`;
+    mostrarModal(html);
+}
+
+function verEnOtrasOrganizaciones(alumnoId) {
+    const orgActual = getOrgActiva();
+    const a = orgActual.alumnos.find(x => x.id === alumnoId); if (!a || !a.rut) return;
+    const rutNorm = normalizarRut(a.rut);
+    const presencias = [];
+    db.organizaciones.forEach(org => {
+        const encontrado = org.alumnos.find(x => x.rut && normalizarRut(x.rut) === rutNorm);
+        if (encontrado) {
+            const pendFijas = (encontrado.cuotas || []).filter(c => c.estado === 'pendiente' && cuotaVencida(c.numero)).reduce((s, c) => s + Number(c.monto), 0);
+            const pendExtra = (encontrado.extraordinarias || []).filter(c => c.estado === 'pendiente' && c.obligatoria && extraVencida(c)).reduce((s, c) => s + Number(c.monto), 0);
+            presencias.push({ orgId: org.id, orgNombre: org.nombre, alumno: encontrado, deuda: pendFijas + pendExtra });
+        }
+    });
+    const totalGeneral = presencias.reduce((s, p) => s + p.deuda, 0);
+    const filas = presencias.map(p => `
+        <div class="actividad-item flex justify-between items-center">
+            <div><input type="checkbox" class="chkOrgReporte" value="${p.orgId}" checked style="margin-right:6px;" /><span class="text-sm font-medium">${escapeHtml(p.orgNombre)}</span></div>
+            <div class="text-sm font-semibold" style="color:${p.deuda > 0 ? 'var(--naranja)' : '#16a34a'};">${p.deuda > 0 ? formatoMoneda(p.deuda) : 'Al día'}</div>
+        </div>`).join('');
+    mostrarModal(`<div class="ficha-modal">
+        <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold" style="color:var(--gris);">${escapeHtml(a.nombre)} — otras organizaciones</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
+        <div class="mb-2">${filas}</div>
+        <div class="kpi-card mb-3"><span class="kpi-label">Deuda total en todas las organizaciones</span><div class="text-lg font-bold">${formatoMoneda(totalGeneral)}</div></div>
+        <button onclick="generarInformeConsolidado('${normalizarRut(a.rut)}', '${escapeHtml(a.nombre)}')" class="w-full text-white text-sm font-medium py-2.5 rounded-xl bg-accent">📄 Generar informe consolidado (organizaciones marcadas)</button>
+    </div>`);
+}
+
+function generarInformeConsolidado(rutNorm, nombre) {
+    const seleccionadas = Array.from(document.querySelectorAll('.chkOrgReporte:checked')).map(chk => chk.value);
+    if (!seleccionadas.length) { toast('Selecciona al menos una organización.', 'warning'); return; }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFillColor(54, 69, 79); doc.rect(0, 0, 210, 26, 'F');
+    doc.setTextColor(255, 255, 255); doc.setFontSize(13); doc.setFont(undefined, 'bold');
+    doc.text('Informe consolidado multi-organización', 14, 12);
+    doc.setFontSize(9); doc.setFont(undefined, 'normal');
+    doc.text(nombre, 14, 19);
+    doc.setTextColor(54, 69, 79);
+
+    let total = 0;
+    const filas = [];
+    db.organizaciones.filter(o => seleccionadas.includes(o.id)).forEach(org => {
+        const encontrado = org.alumnos.find(x => x.rut && normalizarRut(x.rut) === rutNorm);
+        if (!encontrado) return;
+        const pendFijas = (encontrado.cuotas || []).filter(c => c.estado === 'pendiente' && cuotaVencida(c.numero)).reduce((s, c) => s + Number(c.monto), 0);
+        const pendExtra = (encontrado.extraordinarias || []).filter(c => c.estado === 'pendiente' && c.obligatoria && extraVencida(c)).reduce((s, c) => s + Number(c.monto), 0);
+        const deuda = pendFijas + pendExtra;
+        total += deuda;
+        filas.push([org.nombre, encontrado.grupo || '-', deuda > 0 ? 'Con deuda' : 'Al día', formatoMoneda(deuda)]);
+    });
+    doc.autoTable({ startY: 32, head: [['Organización', 'Grupo/Curso', 'Estado', 'Deuda vencida']], body: filas, theme: 'grid', headStyles: { fillColor: [54, 69, 79] }, styles: { fontSize: 9, cellPadding: 2 } });
+    const y = doc.lastAutoTable.finalY + 10;
+    doc.setFont(undefined, 'bold'); doc.setFontSize(11);
+    doc.text(`TOTAL DEUDA EN TODAS LAS ORGANIZACIONES: ${formatoMoneda(total)}`, 14, y);
+    doc.save(`Informe_Consolidado_${nombre.replace(/\s+/g, '_')}.pdf`);
+}
+
+function cambiarEstadoCuota(alumnoId, numero, nuevoEstado) {
+    const org = getOrgActiva();
+    const a = org.alumnos.find(x => x.id === alumnoId); if (!a) return;
+    const cuota = a.cuotas.find(c => c.numero === numero); if (!cuota) return;
+    const eraPagado = cuota.estado === 'pagado';
+    cuota.estado = nuevoEstado;
+    cuota.fechaPago = nuevoEstado === 'pagado' ? new Date().toISOString().slice(0, 10) : '';
+    const refId = 'cuota_' + alumnoId + '_' + numero;
+    const existente = org.transacciones.find(t => t.ref === refId);
+    if (nuevoEstado === 'pagado' && !eraPagado && !existente) {
+        org.transacciones.push({ id: uid(), ref: refId, fecha: cuota.fechaPago, tipo: 'ingreso', origen: 'digital', destino: 'tesoreria', concepto: `Cuota ${cuota.mes} · ${a.nombre}`, monto: Number(cuota.monto) || 0, alumnoId: a.id, rendido: true });
+    } else if (nuevoEstado === 'pendiente' && eraPagado && existente) {
+        org.transacciones = org.transacciones.filter(t => t.ref !== refId);
+    }
+    guardarEstado(); renderDashboard(); abrirFicha(alumnoId);
+}
+
+function abrirFormExtra(alumnoId) {
+    mostrarModal(`<div class="ficha-modal">
+        <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold" style="color:var(--gris);">Cargo extraordinario</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
+        <div class="space-y-2">
+            <div><label class="label-sm">Concepto</label><input type="text" id="exConcepto" placeholder="Ej: Día del profesor, paseo de curso..." class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+            <div><label class="label-sm">Monto ($)</label><input type="number" id="exMonto" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+            <div><label class="label-sm">Fecha límite de pago (opcional)</label><input type="date" id="exFechaFin" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+            <div class="flex items-center justify-between pt-1">
+                <label class="label-sm">¿Es un gasto obligatorio?<br><span class="normal-case text-slate-400" style="text-transform:none; font-weight:400;">Si no, se contabiliza como "otros ingresos", no como deuda</span></label>
+                <div class="toggle-switch" id="exObligatorioToggle" onclick="this.classList.toggle('active')"></div>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+                <label class="label-sm">¿Aplicar a todo el grupo?<br><span class="normal-case text-slate-400" style="text-transform:none; font-weight:400;">Se agrega el mismo cargo a todos los integrantes de esta organización</span></label>
+                <div class="toggle-switch" id="exGrupoToggle" onclick="this.classList.toggle('active')"></div>
+            </div>
+        </div>
+        <button onclick="guardarExtra('${alumnoId}')" class="w-full mt-4 text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Agregar cargo</button>
+    </div>`);
+}
+
+function guardarExtra(alumnoId) {
+    const concepto = document.getElementById('exConcepto').value.trim();
+    const monto = Number(document.getElementById('exMonto').value);
+    if (!concepto || !monto) { toast('Completa el concepto y el monto.', 'warning'); return; }
+    const obligatoria = document.getElementById('exObligatorioToggle').classList.contains('active');
+    const paraTodoElGrupo = document.getElementById('exGrupoToggle').classList.contains('active');
+    const fechaFin = document.getElementById('exFechaFin').value || '';
+    const org = getOrgActiva();
+    const objetivo = paraTodoElGrupo ? org.alumnos : [org.alumnos.find(x => x.id === alumnoId)];
+    objetivo.forEach(a => {
+        a.extraordinarias = a.extraordinarias || [];
+        a.extraordinarias.push({ id: uid(), concepto, monto, estado: 'pendiente', fecha: '', fechaFin, obligatoria });
+    });
+    guardarEstado();
+    if (paraTodoElGrupo) { cerrarModal(); renderAlumnos(); toast(`Cargo aplicado a ${objetivo.length} integrante(s).`, 'success'); }
+    else { abrirFicha(alumnoId); }
+    renderDashboard();
+}
+
+function cambiarEstadoExtra(alumnoId, extraId, nuevoEstado) {
+    const org = getOrgActiva(); const a = org.alumnos.find(x => x.id === alumnoId);
+    const c = (a.extraordinarias || []).find(x => x.id === extraId); if (!c) return;
+    const eraPagado = c.estado === 'pagado';
+    c.estado = nuevoEstado;
+    c.fecha = nuevoEstado === 'pagado' ? new Date().toISOString().slice(0, 10) : '';
+    const refId = 'extra_' + extraId;
+    const existente = org.transacciones.find(t => t.ref === refId);
+    if (nuevoEstado === 'pagado' && !eraPagado && !existente) {
+        org.transacciones.push({ id: uid(), ref: refId, fecha: c.fecha, tipo: 'ingreso', origen: 'digital', destino: 'tesoreria', concepto: `${c.concepto} · ${a.nombre}`, monto: Number(c.monto) || 0, alumnoId: a.id, rendido: true });
+    } else if (nuevoEstado === 'pendiente' && eraPagado && existente) {
+        org.transacciones = org.transacciones.filter(t => t.ref !== refId);
+    }
+    guardarEstado(); renderDashboard(); abrirFicha(alumnoId);
+}
+
+function eliminarExtra(alumnoId, extraId) {
+    confirmModal('¿Eliminar este cargo extraordinario?', () => {
+        const org = getOrgActiva(); const a = org.alumnos.find(x => x.id === alumnoId);
+        a.extraordinarias = (a.extraordinarias || []).filter(x => x.id !== extraId);
+        org.transacciones = org.transacciones.filter(t => t.ref !== ('extra_' + extraId));
+        guardarEstado(); abrirFicha(alumnoId); renderDashboard();
+    }, 'Eliminar');
+}
+
+function eliminarAlumno(id) {
+    requiereClave(() => {
+        confirmModal('¿Eliminar este integrante y su historial? Esta acción no se puede deshacer.', () => {
+            const org = getOrgActiva();
+            org.alumnos = org.alumnos.filter(a => a.id !== id);
+            org.transacciones = org.transacciones.filter(t => t.alumnoId !== id);
+            guardarEstado(); cerrarModal(); renderAlumnos(); renderDashboard();
+        }, 'Eliminar');
+    });
+}
+
+/* ==================================================================
+   ASIGNACIÓN MASIVA DE CARGOS EXTRAORDINARIOS
+================================================================== */
+function abrirAsignacionMasiva() {
+    mostrarModal(`<div class="ficha-modal">
+        <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold" style="color:var(--gris);">Asignación masiva</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
+        <div class="space-y-2">
+            <div><label class="label-sm">Concepto</label><input type="text" id="amConcepto" placeholder="Ej: Cuota actividad aniversario" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+            <div><label class="label-sm">Monto por integrante ($)</label><input type="number" id="amMonto" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+            <div><label class="label-sm">Alcance</label>
+                <select id="amAlcance" class="w-full p-2 border border-slate-200 rounded-xl text-sm">
+                    <option value="todos">Todos los integrantes</option>
+                    <option value="socios">Solo socios</option>
+                </select>
+            </div>
+            <div><label class="label-sm">Fecha límite de pago (opcional)</label><input type="date" id="amFechaFin" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+            <div class="flex items-center justify-between pt-1">
+                <label class="label-sm">¿Es un gasto obligatorio?<br><span class="normal-case text-slate-400" style="text-transform:none; font-weight:400;">Si no, se contabiliza como "otros ingresos", no como deuda</span></label>
+                <div class="toggle-switch" id="amObligatorioToggle" onclick="this.classList.toggle('active')"></div>
+            </div>
+        </div>
+        <button onclick="aplicarAsignacionMasiva()" class="w-full mt-4 text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Aplicar a todos</button>
+    </div>`);
+}
+
+function aplicarAsignacionMasiva() {
+    const concepto = document.getElementById('amConcepto').value.trim();
+    const monto = Number(document.getElementById('amMonto').value);
+    const alcance = document.getElementById('amAlcance').value;
+    const obligatoria = document.getElementById('amObligatorioToggle').classList.contains('active');
+    const fechaFin = document.getElementById('amFechaFin').value || '';
+    if (!concepto || !monto) { toast('Completa el concepto y el monto.', 'warning'); return; }
+    const org = getOrgActiva();
+    const objetivo = alcance === 'socios' ? org.alumnos.filter(a => a.esSocio) : org.alumnos;
+    if (!objetivo.length) { toast('No hay integrantes que cumplan ese criterio.', 'warning'); return; }
+    objetivo.forEach(a => {
+        a.extraordinarias = a.extraordinarias || [];
+        a.extraordinarias.push({ id: uid(), concepto, monto, estado: 'pendiente', fecha: '', fechaFin, obligatoria });
+    });
+    guardarEstado(); cerrarModal(); renderAlumnos(); renderDashboard();
+    toast(`Cargo aplicado a ${objetivo.length} integrante(s).`, 'success');
+}
+
+/* ==================================================================
+   ESTADO DE CUENTA · PDF / WHATSAPP / CORREO
+================================================================== */
+function firmaTexto(org) {
+    const c = org.config;
+    return `${c.firmaNombre || ''}\n${c.firmaCargo || ''}\n${c.firmaSectores || ''}\n${c.firmaCelular || ''}\n"${c.firmaLema || ''}"`;
+}
+
+function resumenEstadoCuentaTexto(a, org) {
+    const pendFijas = (a.cuotas || []).filter(c => c.estado === 'pendiente');
+    const pagFijas = (a.cuotas || []).filter(c => c.estado === 'pagado');
+    const pendExtra = (a.extraordinarias || []).filter(c => c.estado === 'pendiente');
+    const totalPendiente = pendFijas.reduce((s, c) => s + Number(c.monto), 0) + pendExtra.reduce((s, c) => s + Number(c.monto), 0);
+    const c = org.config;
+
+    let txt = `*Estado de cuenta - ${org.nombre}*%0A`;
+    txt += `Integrante: *${a.nombre}*%0A%0A`;
+    txt += `*Cuotas mensuales*%0APagadas: ${pagFijas.length} / Pendientes: ${pendFijas.length}%0A`;
+    if (pendFijas.length) txt += `Meses pendientes: ${pendFijas.map(x => x.mes).join(', ')}%0A`;
+    if (pendExtra.length) {
+        txt += `%0A*Cuotas extraordinarias pendientes*%0A`;
+        pendExtra.forEach(x => { txt += `- ${x.concepto}: ${formatoMoneda(x.monto)}%0A`; });
+    }
+    txt += `%0A*Total adeudado: ${formatoMoneda(totalPendiente)}*%0A%0A`;
+    txt += `*Datos para transferencia*%0ABanco: ${c.banco || '-'}%0ATipo de cuenta: ${c.tipo || '-'}%0AN° de cuenta: ${c.numero || '-'}%0ARUT: ${c.rut || '-'}%0AEnviar comprobante a: ${c.correo || '-'}%0A%0A`;
+    txt += `${c.firmaNombre ? '*' + c.firmaNombre + '*%0A' : ''}${c.firmaCargo ? c.firmaCargo + '%0A' : ''}${c.firmaCelular ? c.firmaCelular + '%0A' : ''}${c.firmaLema ? '"' + c.firmaLema + '"' : ''}`;
+    return txt;
+}
+
+function dibujarEncabezadoPDF(doc, org, titulo) {
+    doc.setFillColor(54, 69, 79);
+    doc.rect(0, 0, 210, 30, 'F');
+    if (org.config.logo) { try { doc.addImage(org.config.logo, 'JPEG', 14, 5, 20, 20); } catch (e) {} }
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(13); doc.setFont(undefined, 'bold');
+    doc.text(org.nombre, org.config.logo ? 38 : 14, 13);
+    doc.setFontSize(9); doc.setFont(undefined, 'normal');
+    doc.text(`RUT: ${org.config.rut || '-'}  ·  Año contable: ${org.config.anioContable || '-'}`, org.config.logo ? 38 : 14, 19);
+    doc.setDrawColor(255, 90, 0); doc.setLineWidth(1.2);
+    doc.line(0, 30, 210, 30);
+    doc.setTextColor(54, 69, 79);
+    doc.setFontSize(12); doc.setFont(undefined, 'bold');
+    doc.text(titulo, 14, 40);
+    doc.setFont(undefined, 'normal');
+    return 46;
+}
+
+function dibujarFirmaPDF(doc, org, y) {
+    const c = org.config;
+    doc.setDrawColor(230, 230, 230);
+    doc.line(14, y, 196, y);
+    doc.setFontSize(9); doc.setTextColor(54, 69, 79); doc.setFont(undefined, 'bold');
+    doc.text(c.firmaNombre || '', 14, y + 6);
+    doc.setFont(undefined, 'normal');
+    doc.text(c.firmaCargo || '', 14, y + 11);
+    doc.setTextColor(255, 90, 0);
+    doc.text(c.firmaSectores || '', 14, y + 16);
+    doc.setTextColor(54, 69, 79);
+    doc.text(`${c.firmaCelular || ''}   "${c.firmaLema || ''}"`, 14, y + 21);
+}
+
+function descargarFichaIndividualPDF(alumnoId) {
+    const org = getOrgActiva(); const et = getEtiquetas();
+    const a = org.alumnos.find(x => x.id === alumnoId); if (!a) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    let y = dibujarEncabezadoPDF(doc, org, 'Ficha individual del ' + et.miembro.toLowerCase());
+
+    if (a.foto) { try { doc.addImage(a.foto, 'JPEG', 14, y, 40, 40); } catch (e) {} }
+    else { doc.setDrawColor(200,200,200); doc.rect(14, y, 40, 40); }
+
+    const xTexto = 62;
+    doc.setFontSize(13); doc.setFont(undefined, 'bold'); doc.setTextColor(54,69,79);
+    doc.text(a.nombre, xTexto, y + 8);
+    doc.setFontSize(10); doc.setFont(undefined, 'normal');
+    doc.text(`RUT: ${a.rut || '-'}`, xTexto, y + 16);
+    doc.text(`${et.grupo}: ${a.grupo || '-'}`, xTexto, y + 22);
+    doc.text(`Teléfono: ${a.telefono ? '+569' + a.telefono : '-'}`, xTexto, y + 28);
+    doc.text(`Correo: ${a.correo || '-'}`, xTexto, y + 34);
+    if (a.esSocio) {
+        doc.setTextColor(255, 90, 0); doc.setFont(undefined, 'bold');
+        doc.text(`Socio N° ${a.numeroSocio} · Categoría: ${a.categoriaSocio || '-'}`, xTexto, y + 40);
+        doc.setTextColor(54,69,79); doc.setFont(undefined, 'normal');
+    }
+
+    y += 52;
+    doc.setDrawColor(230,230,230); doc.line(14, y, 196, y);
+    y += 7;
+    if (a.tutores && a.tutores.length) {
+        doc.setFont(undefined, 'bold'); doc.setFontSize(10);
+        doc.text('Responsables / Tutores', 14, y); y += 6;
+        doc.setFont(undefined, 'normal'); doc.setFontSize(9);
+        a.tutores.forEach(t => {
+            doc.text(`${t.nombre}${t.rut ? ' · RUT ' + t.rut : ''}${t.telefono ? ' · Tel ' + t.telefono : ''}`, 14, y);
+            y += 5;
+        });
+        y += 2;
+    }
+    y += 8;
+    doc.setFont(undefined, 'bold'); doc.setFontSize(10);
+    doc.text(`Cuota mensual fija: ${formatoMoneda(a.mensualidad)}`, 14, y);
+    y += 6;
+    doc.setFont(undefined, 'normal'); doc.setFontSize(9);
+    doc.text(`Organización: ${org.nombre}   Año contable: ${org.config.anioContable || '-'}`, 14, y);
+
+    dibujarFirmaPDF(doc, org, y + 14);
+    doc.save(`Ficha_${a.nombre.replace(/\s+/g, '_')}.pdf`);
+}
+
+function descargarEstadoCuentaPDF(alumnoId) {
+    const org = getOrgActiva();
+    const a = org.alumnos.find(x => x.id === alumnoId); if (!a) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    let y = dibujarEncabezadoPDF(doc, org, 'Estado de cuenta individual');
+
+    if (a.foto) { try { doc.addImage(a.foto, 'JPEG', 14, y, 24, 24); } catch (e) {} }
+    const xTexto = a.foto ? 44 : 14;
+    doc.setFontSize(11); doc.setFont(undefined, 'bold');
+    doc.text(a.nombre, xTexto, y + 8);
+    doc.setFontSize(9); doc.setFont(undefined, 'normal');
+    doc.text(`RUT: ${a.rut || '-'}   ${getEtiquetas().grupo}: ${a.grupo || '-'}`, xTexto, y + 14);
+    if (a.esSocio) doc.text(`Socio N° ${a.numeroSocio} · Categoría: ${a.categoriaSocio || '-'}`, xTexto, y + 19);
+
+    y += 32;
+    doc.setFontSize(11); doc.setFont(undefined, 'bold'); doc.setTextColor(54,69,79);
+    doc.text('Cuotas mensuales fijas', 14, y);
+    doc.autoTable({ startY: y + 3, head: [['Mes', 'Monto', 'Estado', 'Fecha de pago']], body: (a.cuotas || []).map(c => [c.mes, formatoMoneda(c.monto), c.estado === 'pagado' ? 'Pagado' : 'Pendiente', c.fechaPago || '-']), theme: 'grid', headStyles: { fillColor: [54, 69, 79] }, styles: { fontSize: 8.5, cellPadding: 2 } });
+    y = doc.lastAutoTable.finalY + 8;
+
+    const extra = a.extraordinarias || [];
+    if (extra.length) {
+        doc.setFontSize(11); doc.setFont(undefined, 'bold');
+        doc.text('Cuotas extraordinarias', 14, y);
+        doc.autoTable({ startY: y + 3, head: [['Concepto', 'Monto', 'Estado', 'Fecha de pago']], body: extra.map(c => [c.concepto, formatoMoneda(c.monto), c.estado === 'pagado' ? 'Pagado' : 'Pendiente', c.fecha || '-']), theme: 'grid', headStyles: { fillColor: [255, 90, 0] }, styles: { fontSize: 8.5, cellPadding: 2 } });
+        y = doc.lastAutoTable.finalY + 8;
+    }
+
+    const totalPagado = (a.cuotas || []).filter(c => c.estado === 'pagado').reduce((s, c) => s + Number(c.monto), 0) + extra.filter(c => c.estado === 'pagado').reduce((s, c) => s + Number(c.monto), 0);
+    const totalPendiente = (a.cuotas || []).filter(c => c.estado === 'pendiente').reduce((s, c) => s + Number(c.monto), 0) + extra.filter(c => c.estado === 'pendiente').reduce((s, c) => s + Number(c.monto), 0);
+    doc.setFont(undefined, 'bold'); doc.setFontSize(10);
+    doc.text(`Total pagado: ${formatoMoneda(totalPagado)}`, 14, y);
+    doc.setTextColor(255, 90, 0);
+    doc.text(`Total pendiente: ${formatoMoneda(totalPendiente)}`, 14, y + 6);
+    doc.setTextColor(54, 69, 79);
+
+    y += 16;
+    doc.setFont(undefined, 'bold'); doc.setFontSize(10);
+    doc.text('Datos para transferencia', 14, y);
+    doc.setFont(undefined, 'normal'); doc.setFontSize(9);
+    doc.text(`Banco: ${org.config.banco || '-'}   Tipo: ${org.config.tipo || '-'}   Cuenta: ${org.config.numero || '-'}`, 14, y + 6);
+    doc.text(`Enviar comprobante a: ${org.config.correo || '-'}`, 14, y + 11);
+
+    dibujarFirmaPDF(doc, org, y + 20);
+    doc.save(`Estado_Cuenta_${a.nombre.replace(/\s+/g, '_')}.pdf`);
+}
+
+function generarReciboExpress(transaccionId) {
+    const org = getOrgActiva();
+    const t = org.transacciones.find(x => x.id === transaccionId); if (!t) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: [80, 150] });
+    doc.setFillColor(54, 69, 79); doc.rect(0, 0, 80, 22, 'F');
+    doc.setTextColor(255,255,255); doc.setFontSize(10); doc.setFont(undefined, 'bold');
+    doc.text(org.nombre, 5, 10, { maxWidth: 70 });
+    doc.setFontSize(7); doc.setFont(undefined, 'normal');
+    doc.text('Recibo Express de Caja', 5, 17);
+    doc.setTextColor(54,69,79);
+    let y = 30;
+    doc.setFontSize(8);
+    doc.text(`Fecha: ${t.fecha}`, 5, y); y += 6;
+    doc.text(`Tipo: ${t.tipo === 'ingreso' ? 'Ingreso' : 'Gasto'}`, 5, y); y += 6;
+    doc.text(`Origen: ${t.origen === 'digital' ? 'Digital' : 'Manual'}`, 5, y); y += 6;
+    doc.setFont(undefined, 'bold');
+    doc.text('Concepto:', 5, y); y += 5;
+    doc.setFont(undefined, 'normal');
+    doc.text(doc.splitTextToSize(t.concepto, 70), 5, y); y += 10;
+    doc.setTextColor(255, 90, 0); doc.setFontSize(13); doc.setFont(undefined, 'bold');
+    doc.text(formatoMoneda(t.monto), 5, y); y += 10;
+    doc.setTextColor(54,69,79); doc.setFontSize(7); doc.setFont(undefined, 'normal');
+    doc.text(`${org.config.firmaNombre || ''} · ${org.config.firmaCelular || ''}`, 5, y);
+    doc.save(`Recibo_${t.id}.pdf`);
+}
+
+function enviarWhatsapp(alumnoId) {
+    const org = getOrgActiva();
+    const a = org.alumnos.find(x => x.id === alumnoId); if (!a) return;
+    if (!a.telefono) { toast('Este integrante no tiene un teléfono registrado.', 'warning'); return; }
+    const numero = '569' + a.telefono.replace(/\D/g, '');
+    window.open(`https://wa.me/${numero}?text=${resumenEstadoCuentaTexto(a, org)}`, '_blank');
+}
+
+function enviarCorreo(alumnoId) {
+    const org = getOrgActiva();
+    const a = org.alumnos.find(x => x.id === alumnoId); if (!a) return;
+    if (!a.correo) { toast('Este integrante no tiene un correo registrado.', 'warning'); return; }
+    const asunto = encodeURIComponent(`Estado de cuenta - ${a.nombre} (${org.nombre})`);
+    const cuerpo = resumenEstadoCuentaTexto(a, org).replace(/%0A/g, '\n').replace(/\*/g, '');
+    window.location.href = `mailto:${a.correo}?subject=${asunto}&body=${encodeURIComponent(cuerpo)}`;
+}
+
+/* ==================================================================
+   LIBRO DE CAJA / TRANSACCIONES (con destino, custodio, anular/editar)
+================================================================== */
+function filtrarTransacciones(tipo) {
+    filtroTransaccion = tipo;
+    ['tabTodas', 'tabIngresos', 'tabGastos'].forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById(tipo === 'todas' ? 'tabTodas' : (tipo === 'ingreso' ? 'tabIngresos' : 'tabGastos')).classList.add('active');
+    renderTransacciones();
+}
+
+function renderTransacciones() {
+    const org = getOrgActiva();
+    const cont = document.getElementById('listaTransacciones');
+    let lista = [...org.transacciones].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    if (filtroTransaccion !== 'todas') lista = lista.filter(t => t.tipo === filtroTransaccion);
+    if (lista.length === 0) { cont.innerHTML = '<div class="empty-state">No hay movimientos para mostrar.</div>'; return; }
+    cont.innerHTML = lista.map(t => {
+        const esIngreso = t.tipo === 'ingreso';
+        return `<div class="actividad-item ${t.anulada ? 'opacity-40' : ''}">
+            <div class="flex justify-between items-center">
+                <div>
+                    <div class="text-sm font-medium">${escapeHtml(t.concepto)} ${t.anulada ? '<span class="text-red-500 text-xs font-bold">· ANULADA</span>' : ''}</div>
+                    <div class="text-xs text-slate-400 flex items-center gap-1 flex-wrap">
+                        <span>${t.fecha}</span>
+                        <span class="origen-badge ${t.origen === 'digital' ? 'origen-digital' : 'origen-manual'}">${t.origen === 'digital' ? 'Digital' : 'Manual'}</span>
+                        ${t.tipo === 'gasto' && t.destino === 'tercero' ? `<span class="text-amber-600">· Custodio: ${escapeHtml(t.custodio || '-')} ${t.rendido ? '(rendido)' : '(sin rendir)'}</span>` : ''}
+                        ${t.tipo === 'gasto' && (t.emisor || t.comprador) ? `<span>· ${escapeHtml(t.emisor || '')}${t.emisor && t.comprador ? ' / ' : ''}${t.comprador ? 'Compró: ' + escapeHtml(t.comprador) : ''}</span>` : ''}
+                        ${t.comprobanteImg ? `<span onclick="verComprobante('${t.id}')" style="cursor:pointer; color:var(--gris); text-decoration:underline;">📎 Ver respaldo</span>` : ''}
+                    </div>
+                </div>
+                <div class="text-sm font-semibold" style="color: ${esIngreso ? '#16a34a' : '#dc2626'};">${esIngreso ? '+' : '-'}${formatoMoneda(t.monto)}</div>
+            </div>
+            <div class="flex gap-1 justify-end mt-1">
+                <button class="btn-icon" title="Recibo express" onclick="generarReciboExpress('${t.id}')">🧾</button>
+                <button class="btn-icon" title="Editar" onclick="editarTransaccion('${t.id}')">✏️</button>
+                <button class="btn-icon" title="${t.anulada ? 'Restaurar' : 'Anular'}" onclick="anularTransaccion('${t.id}')">${t.anulada ? '↩️' : '🚫'}</button>
+                <button class="btn-icon" title="Eliminar" onclick="eliminarTransaccion('${t.id}')">🗑️</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function verComprobante(id) {
+    const org = getOrgActiva();
+    const t = org.transacciones.find(x => x.id === id); if (!t || !t.comprobanteImg) return;
+    mostrarModal(`<div class="ficha-modal">
+        <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold" style="color:var(--gris);">Respaldo del gasto</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
+        <img src="${t.comprobanteImg}" style="width:100%; border-radius:0.75rem;" />
+    </div>`);
+}
+
+function previsualizarComprobante(event) {
+    const file = event.target.files[0]; if (!file) return;
+    comprimirImagen(file, dataUrl => {
+        document.getElementById('tfComprobanteData').value = dataUrl;
+        document.getElementById('tfComprobantePreview').innerHTML = `<img src="${dataUrl}" style="max-width:100%; border-radius:0.5rem;" />`;
+    });
+}
+
+function abrirFormTransaccion(idEditar) {
+    const org = getOrgActiva();
+    const t = idEditar ? org.transacciones.find(x => x.id === idEditar) : null;
+    const html = `
+        <div class="ficha-modal">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold" style="color:var(--gris);">${t ? 'Editar movimiento' : 'Nuevo movimiento'}</h3>
+                <button class="btn-icon" onclick="cerrarModal()">✕</button>
+            </div>
+            <input type="hidden" id="tfId" value="${t ? t.id : ''}" />
+            <input type="hidden" id="tfComprobanteData" value="${t && t.comprobanteImg ? t.comprobanteImg : ''}" />
+            <div class="space-y-2">
+                <div>
+                    <label class="label-sm">Tipo</label>
+                    <div class="flex gap-2 mt-1">
+                        <button type="button" id="tfIngresoBtn" class="tab-btn ${!t || t.tipo === 'ingreso' ? 'active' : ''} flex-1" onclick="seleccionarTipoTx('ingreso')">Ingreso</button>
+                        <button type="button" id="tfGastoBtn" class="tab-btn ${t && t.tipo === 'gasto' ? 'active' : ''} flex-1" onclick="seleccionarTipoTx('gasto')">Gasto</button>
+                    </div>
+                    <input type="hidden" id="tfTipo" value="${t ? t.tipo : 'ingreso'}" />
+                </div>
+                <div>
+                    <label class="label-sm">Origen</label>
+                    <div class="flex gap-2 mt-1">
+                        <button type="button" id="tfManualBtn" class="tab-btn ${!t || t.origen === 'manual' ? 'active' : ''} flex-1" onclick="seleccionarOrigenTx('manual')">Manual (efectivo)</button>
+                        <button type="button" id="tfDigitalBtn" class="tab-btn ${t && t.origen === 'digital' ? 'active' : ''} flex-1" onclick="seleccionarOrigenTx('digital')">Digital</button>
+                    </div>
+                    <input type="hidden" id="tfOrigen" value="${t ? t.origen : 'manual'}" />
+                </div>
+                <div><label class="label-sm">Concepto</label><input type="text" id="tfConcepto" value="${t ? escapeHtml(t.concepto) : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                <div><label class="label-sm">Monto ($)</label><input type="number" id="tfMonto" value="${t ? t.monto : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                <div><label class="label-sm">Fecha</label><input type="date" id="tfFecha" value="${t ? t.fecha : new Date().toISOString().slice(0,10)}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                <div id="tfGastoExtra" class="space-y-2" style="display:${(t ? t.tipo : 'ingreso') === 'gasto' ? 'block' : 'none'};">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><label class="label-sm">Emisor (local/proveedor)</label><input type="text" id="tfEmisor" value="${t ? escapeHtml(t.emisor || '') : ''}" placeholder="Ej: Jumbo, boleta N°..." class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                        <div><label class="label-sm">Quién realizó la compra</label><input type="text" id="tfComprador" value="${t ? escapeHtml(t.comprador || '') : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                    </div>
+                    <label class="label-sm">Destino del flujo</label>
+                    <div class="flex gap-2">
+                        <button type="button" id="tfTesoreriaBtn" class="tab-btn ${!t || t.destino !== 'tercero' ? 'active' : ''} flex-1" onclick="seleccionarDestinoTx('tesoreria')">Tesorería</button>
+                        <button type="button" id="tfTerceroBtn" class="tab-btn ${t && t.destino === 'tercero' ? 'active' : ''} flex-1" onclick="seleccionarDestinoTx('tercero')">Entregado a tercero</button>
+                    </div>
+                    <input type="hidden" id="tfDestino" value="${t ? (t.destino || 'tesoreria') : 'tesoreria'}" />
+                    <div id="tfCustodioWrap" style="display:${t && t.destino === 'tercero' ? 'block' : 'none'};">
+                        <label class="label-sm">Nombre del custodio</label>
+                        <input type="text" id="tfCustodio" value="${t ? escapeHtml(t.custodio || '') : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="label-sm">Gasto ya rendido</label>
+                        <div class="toggle-switch ${!t || t.rendido ? 'active' : ''}" id="tfRendidoToggle" onclick="this.classList.toggle('active')"></div>
+                    </div>
+                    <label class="label-sm">Respaldo (foto de boleta/comprobante)</label>
+                    <div class="flex items-center gap-3">
+                        <div class="foto-upload-box" id="tfComprobantePreview">${t && t.comprobanteImg ? `<img src="${t.comprobanteImg}" />` : '<span class="text-xl opacity-30">📎</span>'}</div>
+                        <div class="file-input-wrapper flex-1">
+                            <button class="text-xs px-4 py-2 rounded-full border" style="border-color: var(--naranja); color: var(--naranja);">Escanear / subir</button>
+                            <input type="file" accept="image/*" capture="environment" onchange="previsualizarComprobante(event)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="guardarTransaccion()" class="w-full mt-4 text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Guardar movimiento</button>
+        </div>`;
+    mostrarModal(html);
+}
+
+function editarTransaccion(id) { abrirFormTransaccion(id); }
+
+function seleccionarTipoTx(tipo) {
+    document.getElementById('tfTipo').value = tipo;
+    document.getElementById('tfIngresoBtn').classList.toggle('active', tipo === 'ingreso');
+    document.getElementById('tfGastoBtn').classList.toggle('active', tipo === 'gasto');
+    document.getElementById('tfGastoExtra').style.display = tipo === 'gasto' ? 'block' : 'none';
+}
+function seleccionarOrigenTx(origen) {
+    document.getElementById('tfOrigen').value = origen;
+    document.getElementById('tfManualBtn').classList.toggle('active', origen === 'manual');
+    document.getElementById('tfDigitalBtn').classList.toggle('active', origen === 'digital');
+}
+function seleccionarDestinoTx(destino) {
+    document.getElementById('tfDestino').value = destino;
+    document.getElementById('tfTesoreriaBtn').classList.toggle('active', destino === 'tesoreria');
+    document.getElementById('tfTerceroBtn').classList.toggle('active', destino === 'tercero');
+    document.getElementById('tfCustodioWrap').style.display = destino === 'tercero' ? 'block' : 'none';
+}
+
+function guardarTransaccion() {
+    const concepto = document.getElementById('tfConcepto').value.trim();
+    const monto = Number(document.getElementById('tfMonto').value);
+    if (!concepto || !monto) { toast('Completa el concepto y el monto.', 'warning'); return; }
+    const tipo = document.getElementById('tfTipo').value;
+    const org = getOrgActiva();
+    const id = document.getElementById('tfId').value;
+    const datos = {
+        fecha: document.getElementById('tfFecha').value || new Date().toISOString().slice(0, 10),
+        tipo,
+        origen: document.getElementById('tfOrigen').value,
+        concepto, monto,
+        emisor: tipo === 'gasto' ? document.getElementById('tfEmisor').value.trim() : '',
+        comprador: tipo === 'gasto' ? document.getElementById('tfComprador').value.trim() : '',
+        comprobanteImg: tipo === 'gasto' ? (document.getElementById('tfComprobanteData').value || null) : null,
+        destino: tipo === 'gasto' ? document.getElementById('tfDestino').value : 'tesoreria',
+        custodio: tipo === 'gasto' && document.getElementById('tfDestino').value === 'tercero' ? document.getElementById('tfCustodio').value.trim() : '',
+        rendido: tipo === 'gasto' ? document.getElementById('tfRendidoToggle').classList.contains('active') : true
+    };
+    if (id) {
+        const t = org.transacciones.find(x => x.id === id);
+        Object.assign(t, datos);
+    } else {
+        org.transacciones.push(Object.assign({ id: uid() }, datos));
+    }
+    guardarEstado(); cerrarModal(); renderTransacciones(); renderDashboard();
+}
+
+function anularTransaccion(id) {
+    requiereClave(() => {
+        const org = getOrgActiva();
+        const t = org.transacciones.find(x => x.id === id);
+        t.anulada = !t.anulada;
+        guardarEstado(); renderTransacciones(); renderDashboard();
+    });
+}
+
+function eliminarTransaccion(id) {
+    requiereClave(() => {
+        confirmModal('¿Eliminar este movimiento definitivamente?', () => {
+            const org = getOrgActiva();
+            org.transacciones = org.transacciones.filter(t => t.id !== id);
+            guardarEstado(); renderTransacciones(); renderDashboard();
+        }, 'Eliminar');
+    });
+}
+
+/* ==================================================================
+   MODAL GENÉRICO
+================================================================== */
+function mostrarModal(html) { const modal = document.getElementById('modalContainer'); modal.innerHTML = html; modal.classList.remove('hidden'); }
+function cerrarModal() { const modal = document.getElementById('modalContainer'); modal.classList.add('hidden'); modal.innerHTML = ''; }
+
+function imprimirModalActual() {
+    document.body.classList.add('modo-impresion-modal');
+    window.print();
+    setTimeout(() => document.body.classList.remove('modo-impresion-modal'), 300);
+}
+
+function imprimirResumen() {
+    if (seccionActual !== 'secResumen') cambiarSeccion('secResumen');
+    setTimeout(() => window.print(), 100);
+}
+
+/* ==================================================================
+   EXPORTACIÓN: EXCEL (organización activa) Y JSON (backup total)
+================================================================== */
+/* ==================================================================
+   PLANILLA GENERAL (vista tipo Excel con todo lo cancelado por todos)
+================================================================== */
+function obtenerConceptosExtra(org) {
+    const set = [];
+    org.alumnos.forEach(a => (a.extraordinarias || []).forEach(e => { if (!set.includes(e.concepto)) set.push(e.concepto); }));
+    return set;
+}
+
+function construirFilasPlanilla(org) {
+    const et = getEtiquetas();
+    const conceptos = obtenerConceptosExtra(org);
+    const encabezados = ['N°', 'RUT', 'Nombre', et.grupo, 'Apoderado/Contacto', ...conceptos, ...MESES, 'Total'];
+    const filas = org.alumnos.map((a, i) => {
+        const fila = {};
+        fila['N°'] = i + 1;
+        fila['RUT'] = a.rut || '';
+        fila['Nombre'] = a.nombre;
+        fila[et.grupo] = a.grupo || '';
+        fila['Apoderado/Contacto'] = a.apoderado || (a.tutores && a.tutores[0] ? a.tutores[0].nombre : '');
+        let total = 0;
+        conceptos.forEach(c => {
+            const monto = (a.extraordinarias || []).filter(e => e.concepto === c && e.estado === 'pagado').reduce((s, e) => s + Number(e.monto), 0);
+            fila[c] = monto || '';
+            total += monto;
+        });
+        MESES.forEach((m, idx) => {
+            const cuota = (a.cuotas || []).find(c => c.numero === idx + 1);
+            const monto = cuota && cuota.estado === 'pagado' ? Number(cuota.monto) : 0;
+            fila[m] = monto || '';
+            total += monto;
+        });
+        fila['Total'] = total;
+        return fila;
+    });
+    return { encabezados, filas, conceptos };
+}
+
+function abrirPlanillaGeneral() {
+    const org = getOrgActiva();
+    const { encabezados, filas, conceptos } = construirFilasPlanilla(org);
+    const esColMonto = h => h === 'Total' || MESES.includes(h) || conceptos.includes(h);
+
+    const theadHtml = '<tr>' + encabezados.map(h => `<th>${escapeHtml(h)}</th>`).join('') + '</tr>';
+    const tbodyHtml = filas.map((fila, i) => {
+        const esMoroso = esMorosoPorFila(org.alumnos[i]);
+        return '<tr>' + encabezados.map(h => {
+            const val = fila[h];
+            if (esColMonto(h)) {
+                const texto = val ? formatoMoneda(val) : '-';
+                const clase = (h === 'Total' && esMoroso) ? 'moroso' : '';
+                return `<td class="${clase}">${texto}</td>`;
+            }
+            return `<td>${escapeHtml(val || '-')}</td>`;
+        }).join('') + '</tr>';
+    }).join('');
+
+    const totalesFila = '<tr style="font-weight:700; background:#f1f5f9;">' + encabezados.map(h => {
+        if (h === 'N°') return '<td>Σ</td>';
+        if (esColMonto(h)) {
+            const suma = filas.reduce((s, f) => s + (Number(f[h]) || 0), 0);
+            return `<td>${suma ? formatoMoneda(suma) : '-'}</td>`;
+        }
+        return '<td></td>';
+    }).join('') + '</tr>';
+
+    const html = `<div class="planilla-modal">
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="text-lg font-bold" style="color:var(--gris);">Planilla general — ${escapeHtml(org.nombre)}</h3>
+            <div class="flex gap-2 no-print">
+                <button class="toolbar-btn" onclick="exportarExcel()">📊 Excel</button>
+                <button class="toolbar-btn" onclick="imprimirModalActual()">🖶 Imprimir</button>
+                <button class="btn-icon" onclick="cerrarModal()">✕</button>
+            </div>
+        </div>
+        <div class="table-scroll"><table class="planilla">${theadHtml}${tbodyHtml}${totalesFila}</table></div>
+    </div>`;
+    mostrarModal(html);
+}
+
+function esMorosoPorFila(a) { return a ? esMoroso(a) : false; }
+
+function exportarExcel() {
+    const org = getOrgActiva();
+    const wb = XLSX.utils.book_new();
+
+    const k = calcularKPIs();
+    const resumenGeneral = [
+        { Concepto: 'INGRESOS TOTALES', Monto: k.ingresos },
+        { Concepto: 'EGRESOS TOTALES', Monto: k.gastos },
+        { Concepto: 'SALDO EN TESORERÍA', Monto: k.saldo },
+        { Concepto: 'RECAUDADO (cuotas mensuales)', Monto: k.recaudado },
+        { Concepto: 'DEUDA VENCIDA (cuotas hasta el mes en curso)', Monto: k.adeudado },
+        { Concepto: 'OTROS INGRESOS (actividades no obligatorias)', Monto: k.otrosIngresos },
+        { Concepto: 'MONTO EN TRÁNSITO / SIN RENDIR', Monto: k.sinRendir },
+        { Concepto: 'INTEGRANTES', Monto: k.integrantes },
+        { Concepto: 'SOCIOS', Monto: k.socios }
+    ];
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(resumenGeneral), 'Resumen_General');
+
+    const resumenMiembros = org.alumnos.map(a => {
+        const pagadoFijo = (a.cuotas || []).filter(c => c.estado === 'pagado').reduce((s, c) => s + Number(c.monto), 0);
+        const pendienteFijo = (a.cuotas || []).filter(c => c.estado === 'pendiente').reduce((s, c) => s + Number(c.monto), 0);
+        const pagadoExtra = (a.extraordinarias || []).filter(c => c.estado === 'pagado').reduce((s, c) => s + Number(c.monto), 0);
+        const pendienteExtra = (a.extraordinarias || []).filter(c => c.estado === 'pendiente').reduce((s, c) => s + Number(c.monto), 0);
+        return {
+            Nombre: a.nombre, RUT: a.rut, [getEtiquetas().grupo]: a.grupo,
+            Telefono: a.telefono ? '+569' + a.telefono : '', Correo: a.correo,
+            Socio: a.esSocio ? 'Sí' : 'No', 'N° Socio': a.numeroSocio || '', 'Categoría Socio': a.categoriaSocio || '',
+            'Cuota mensual': a.mensualidad, 'Total pagado': pagadoFijo + pagadoExtra, 'Total pendiente': pendienteFijo + pendienteExtra
+        };
+    });
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(resumenMiembros), 'Resumen_Miembros');
+
+    const historialCaja = org.transacciones.map(t => ({
+        Fecha: t.fecha, Tipo: t.tipo === 'ingreso' ? 'Ingreso' : 'Gasto', Origen: t.origen === 'digital' ? 'Digital' : 'Manual',
+        Concepto: t.concepto, Monto: t.monto,
+        Destino: t.destino === 'tercero' ? 'Entregado a tercero' : 'Tesorería',
+        Custodio: t.custodio || '', Rendido: t.tipo === 'gasto' ? (t.rendido ? 'Sí' : 'No') : '',
+        Anulada: t.anulada ? 'Sí' : 'No'
+    })).sort((a, b) => new Date(a.Fecha) - new Date(b.Fecha));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(historialCaja), 'Historial_Caja');
+
+    const { filas: filasPlanilla } = construirFilasPlanilla(org);
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(filasPlanilla), 'Planilla_General');
+
+    XLSX.writeFile(wb, `${org.nombre.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+function exportarJSON() {
+    const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = `LUMO_Backup_Completo_${new Date().toISOString().slice(0,10)}.json`;
+    link.click(); URL.revokeObjectURL(url);
+}
+
+function importarJSON(event) {
+    const file = event.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (!data.organizaciones || !Array.isArray(data.organizaciones)) throw new Error('Formato inválido');
+            let mensaje = 'Esto reemplazará TODOS los datos actuales en este dispositivo. ¿Continuar?';
+            if (data.actualizadoEn && db.actualizadoEn && new Date(data.actualizadoEn) < new Date(db.actualizadoEn)) {
+                mensaje = `El archivo que importas es del ${new Date(data.actualizadoEn).toLocaleString('es-CL')}, pero los datos de este dispositivo son más recientes (${new Date(db.actualizadoEn).toLocaleString('es-CL')}). Si continúas, podrías perder cambios más nuevos. ¿Continuar de todas formas?`;
+            }
+            confirmModal(mensaje, () => {
+                db = data;
+                if (!db.orgActivaId) db.orgActivaId = db.organizaciones[0].id;
+                guardarEstado(); cerrarModal(); renderTodo();
+                toast('Datos importados correctamente.', 'success');
+            }, 'Importar');
+        } catch (err) { toast('El archivo no tiene un formato válido.', 'warning'); }
+    };
+    reader.readAsText(file);
+}
+
+/* ==================================================================
+   RENDER GLOBAL E INICIALIZACIÓN
+================================================================== */
+function renderTodo() {
+    renderSelectorOrg(); renderConfigForm(); renderDashboard(); renderAlumnos(); renderTransacciones();
+}
+
+async function init() {
+    await cargarEstado();
+    registrarPWA();
+    cargarPreferenciaModoOscuro();
+    renderTodo();
+    cambiarSeccion('secResumen');
+
+    document.addEventListener('keydown', e => {
+        const modal = document.getElementById('modalContainer');
+        const modalAbierto = !modal.classList.contains('hidden');
+        if (e.key === 'Escape' && modalAbierto) {
+            cerrarModal();
+        } else if (e.key === 'Enter' && modalAbierto && e.target.tagName === 'INPUT' && e.target.type !== 'file') {
+            const boton = modal.querySelector('.bg-accent, #btnConfirmModal, #btnClaveConfirmar, #btnBorrarTodoConfirmar');
+            if (boton) { e.preventDefault(); boton.click(); }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
