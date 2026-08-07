@@ -370,6 +370,24 @@ function generarIconoLGF(size) {
 
 let eventoInstalarPWA = null;
 
+// Estos listeners se registran de inmediato al cargar el script (no dentro de
+// registrarPWA/init) porque Chrome puede disparar 'beforeinstallprompt' antes
+// de que termine la carga asíncrona de datos desde IndexedDB. Si el listener
+// se registrara después, el evento podría perderse y el botón de instalar
+// nunca aparecería.
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    eventoInstalarPWA = e;
+    const btn = document.getElementById('btnInstalarPWA');
+    if (btn) btn.style.display = 'inline-flex';
+});
+window.addEventListener('appinstalled', () => {
+    eventoInstalarPWA = null;
+    const btn = document.getElementById('btnInstalarPWA');
+    if (btn) btn.style.display = 'none';
+    toast('¡Aplicación instalada correctamente!', 'success');
+});
+
 function registrarPWA() {
     try {
         const yaTieneManifestEstatico = !!document.querySelector('link[rel="manifest"]');
@@ -405,71 +423,56 @@ function registrarPWA() {
         const esHttpOHttps = location.protocol === 'https:' || location.protocol === 'http:';
         if ('serviceWorker' in navigator && esHttpOHttps) {
             if (yaTieneManifestEstatico) {
-                // Este paquete incluye sw.js como archivo real junto al index.html
                 navigator.serviceWorker.register('sw.js').catch(err => {
                     console.warn('No se pudo registrar sw.js:', err.message);
                 });
             } else {
-                // Archivo HTML suelto, sin sw.js al lado: se genera uno de respaldo
-                const swCode = `
-                    const CACHE_NAME = 'lumo-gf-cache-v1';
-                    const RECURSOS = [
-                        self.registration.scope,
-                        'https://cdn.tailwindcss.com',
-                        'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
-                        'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-                        'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js'
-                    ];
-                    self.addEventListener('install', e => {
-                        e.waitUntil(
-                            caches.open(CACHE_NAME)
-                                .then(cache => Promise.all(RECURSOS.map(url => cache.add(url).catch(() => null))))
-                        );
-                        self.skipWaiting();
-                    });
-                    self.addEventListener('activate', e => {
-                        e.waitUntil(
-                            caches.keys().then(nombres => Promise.all(nombres.filter(n => n !== CACHE_NAME).map(n => caches.delete(n))))
-                        );
-                        self.clients.claim();
-                    });
-                    self.addEventListener('fetch', e => {
-                        e.respondWith(
-                            caches.match(e.request).then(respuestaCache => {
-                                const redFetch = fetch(e.request).then(respuestaRed => {
-                                    if (respuestaRed && respuestaRed.status === 200) {
-                                        const copia = respuestaRed.clone();
-                                        caches.open(CACHE_NAME).then(cache => cache.put(e.request, copia));
-                                    }
-                                    return respuestaRed;
-                                }).catch(() => respuestaCache);
-                                return respuestaCache || redFetch;
-                            })
-                        );
-                    });
-                `;
-                const swBlob = new Blob([swCode], { type: 'text/javascript' });
-                const swUrl = URL.createObjectURL(swBlob);
-                navigator.serviceWorker.register(swUrl).catch(err => {
-                    console.warn('No se pudo registrar el Service Worker:', err.message);
+            const swCode = `
+                const CACHE_NAME = 'lumo-gf-cache-v1';
+                const RECURSOS = [
+                    self.registration.scope,
+                    'https://cdn.tailwindcss.com',
+                    'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js'
+                ];
+                self.addEventListener('install', e => {
+                    e.waitUntil(
+                        caches.open(CACHE_NAME)
+                            .then(cache => Promise.all(RECURSOS.map(url => cache.add(url).catch(() => null))))
+                    );
+                    self.skipWaiting();
                 });
+                self.addEventListener('activate', e => {
+                    e.waitUntil(
+                        caches.keys().then(nombres => Promise.all(nombres.filter(n => n !== CACHE_NAME).map(n => caches.delete(n))))
+                    );
+                    self.clients.claim();
+                });
+                self.addEventListener('fetch', e => {
+                    e.respondWith(
+                        caches.match(e.request).then(respuestaCache => {
+                            const redFetch = fetch(e.request).then(respuestaRed => {
+                                if (respuestaRed && respuestaRed.status === 200) {
+                                    const copia = respuestaRed.clone();
+                                    caches.open(CACHE_NAME).then(cache => cache.put(e.request, copia));
+                                }
+                                return respuestaRed;
+                            }).catch(() => respuestaCache);
+                            return respuestaCache || redFetch;
+                        })
+                    );
+                });
+            `;
+            const swBlob = new Blob([swCode], { type: 'text/javascript' });
+            const swUrl = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swUrl).catch(err => {
+                console.warn('No se pudo registrar el Service Worker:', err.message);
+            });
             }
         } else if (!esHttpOHttps) {
             console.info('PWA: para instalar esta app y usarla offline, sirve este archivo desde http/https (por ejemplo GitHub Pages, Netlify o un servidor local). Abrirlo como archivo local (file://) no permite instalación.');
         }
-
-        window.addEventListener('beforeinstallprompt', e => {
-            e.preventDefault();
-            eventoInstalarPWA = e;
-            const btn = document.getElementById('btnInstalarPWA');
-            if (btn) btn.style.display = 'inline-flex';
-        });
-        window.addEventListener('appinstalled', () => {
-            eventoInstalarPWA = null;
-            const btn = document.getElementById('btnInstalarPWA');
-            if (btn) btn.style.display = 'none';
-            toast('¡Aplicación instalada correctamente!', 'success');
-        });
     } catch (e) {
         console.warn('PWA no disponible en este entorno:', e.message);
     }
