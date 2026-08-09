@@ -169,7 +169,7 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="kpi-card col-span-2 flex justify-between items-center">
+                    <div class="kpi-card col-span-2 flex justify-between items-center" style="cursor:pointer;" onclick="abrirPlanillaCaja('todas')">
                         <div>
                             <span class="kpi-label">Saldo en tesorería</span>
                             <div class="kpi-value" id="kpiSaldo">$0</div>
@@ -177,15 +177,15 @@
                         </div>
                         <span class="badge-state text-xs font-bold px-3 py-1 rounded-full" id="kpiSaldoBadge">A favor</span>
                     </div>
-                    <div class="kpi-card"><span class="kpi-label">Recaudado (cuotas)</span><div class="kpi-value" id="kpiRecaudado">$0</div></div>
-                    <div class="kpi-card"><span class="kpi-label">Deuda vencida (cuotas)</span><div class="kpi-value" id="kpiAdeudado">$0</div></div>
-                    <div class="kpi-card col-span-2" style="background: var(--naranja);"><span class="kpi-label" style="color:#fff0e6;">Monto en tránsito / no rendido</span><div class="kpi-value" id="kpiSinRendir">$0</div></div>
-                    <div class="kpi-card col-span-2" style="background: #dc2626;"><span class="kpi-label" style="color:#fee2e2;">Dinero no entregado a Tesorería</span><div class="kpi-value" id="kpiDineroNoEntregado">$0</div><span class="text-xs" style="color:#fee2e2;">En poder de otras personas (ver Planilla de Caja)</span></div>
-                    <div class="kpi-card"><span class="kpi-label">Ingresos totales</span><div class="kpi-value" id="kpiIngresosTotal">$0</div></div>
-                    <div class="kpi-card"><span class="kpi-label">Egresos totales</span><div class="kpi-value" id="kpiGastosTotal">$0</div></div>
-                    <div class="kpi-card col-span-2"><span class="kpi-label">Otros ingresos (actividades: día profesor, día alumno, día libro, rifas, etc.)</span><div class="kpi-value" id="kpiOtrosIngresos">$0</div></div>
-                    <div class="kpi-card"><span class="kpi-label" id="kpiIntegrantesLabel">Integrantes</span><div class="kpi-value" id="kpiIntegrantes">0</div></div>
-                    <div class="kpi-card"><span class="kpi-label">Socios</span><div class="kpi-value" id="kpiSocios">0</div></div>
+                    <div class="kpi-card" style="cursor:pointer;" onclick="abrirPlanillaCaja('cuota')"><span class="kpi-label">Recaudado (cuotas)</span><div class="kpi-value" id="kpiRecaudado">$0</div></div>
+                    <div class="kpi-card" style="cursor:pointer;" onclick="cambiarSeccion('secAlumnos'); filtrarMiembros('morosos');"><span class="kpi-label">Deuda vencida (cuotas)</span><div class="kpi-value" id="kpiAdeudado">$0</div></div>
+                    <div class="kpi-card col-span-2" style="background: var(--naranja); cursor:pointer;" onclick="abrirPlanillaCaja('gasto')"><span class="kpi-label" style="color:#fff0e6;">Monto en tránsito / no rendido</span><div class="kpi-value" id="kpiSinRendir">$0</div></div>
+                    <div class="kpi-card col-span-2" style="background: #dc2626; cursor:pointer;" onclick="abrirPlanillaCaja('todas')"><span class="kpi-label" style="color:#fee2e2;">Dinero no entregado a Tesorería</span><div class="kpi-value" id="kpiDineroNoEntregado">$0</div><span class="text-xs" style="color:#fee2e2;">En poder de otras personas (toca para ver el detalle)</span></div>
+                    <div class="kpi-card" style="cursor:pointer;" onclick="abrirPlanillaCaja('ingresos')"><span class="kpi-label">Ingresos totales</span><div class="kpi-value" id="kpiIngresosTotal">$0</div></div>
+                    <div class="kpi-card" style="cursor:pointer;" onclick="abrirPlanillaCaja('egresos')"><span class="kpi-label">Egresos totales</span><div class="kpi-value" id="kpiGastosTotal">$0</div></div>
+                    <div class="kpi-card col-span-2" style="cursor:pointer;" onclick="abrirPlanillaCaja('otras')"><span class="kpi-label">Otros ingresos (actividades: día profesor, día alumno, día libro, rifas, etc.)</span><div class="kpi-value" id="kpiOtrosIngresos">$0</div></div>
+                    <div class="kpi-card" style="cursor:pointer;" onclick="cambiarSeccion('secAlumnos')"><span class="kpi-label" id="kpiIntegrantesLabel">Integrantes</span><div class="kpi-value" id="kpiIntegrantes">0</div></div>
+                    <div class="kpi-card" style="cursor:pointer;" onclick="cambiarSeccion('secAlumnos'); filtrarMiembros('socios');"><span class="kpi-label">Socios</span><div class="kpi-value" id="kpiSocios">0</div></div>
                 </div>
                 <p class="text-xs text-slate-400 px-1">La deuda vencida solo considera cuotas mensuales de meses ya cumplidos (hasta el día 30) y actividades marcadas como obligatorias. Las demás actividades se muestran en "Otros ingresos".</p>
             </div>
@@ -293,8 +293,9 @@
                         <div><label class="label-sm">Tipo de cuenta</label>
                             <select id="configTipo" class="w-full p-2 border border-slate-200 rounded-xl text-sm"></select>
                         </div>
+                        <div><label class="label-sm">RUT del titular</label><input type="text" id="configRutCuenta" placeholder="12.345.678-9" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
                         <div><label class="label-sm">Número</label><input type="text" id="configNumero" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
-                        <div><label class="label-sm">Correo confirmación</label><input type="email" id="configCorreo" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                        <div class="col-span-2"><label class="label-sm">Correo confirmación</label><input type="email" id="configCorreo" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
                     </div>
                     <p class="text-xs text-slate-400">Puedes reutilizar la misma cuenta guardada en varias organizaciones, o usar cuentas distintas para cada una.</p>
 
@@ -717,6 +718,7 @@ function aplicarCuentaGuardada(id) {
     document.getElementById('configBanco').value = cuenta.banco;
     document.getElementById('configTipo').value = cuenta.tipoCuenta;
     document.getElementById('configNumero').value = cuenta.numero;
+    document.getElementById('configRutCuenta').value = cuenta.rutTitular || '';
 }
 
 function abrirGestionCuentasBancarias() {
@@ -1049,6 +1051,7 @@ function guardarConfig() {
         c.banco = document.getElementById('configBanco').value.trim();
         c.tipo = document.getElementById('configTipo').value.trim();
         c.numero = document.getElementById('configNumero').value.trim();
+        c.rutCuenta = document.getElementById('configRutCuenta').value.trim();
         c.correo = document.getElementById('configCorreo').value.trim();
         c.firmaNombre = document.getElementById('firmaNombre').value.trim();
         c.firmaCargo = document.getElementById('firmaCargo').value.trim();
@@ -1151,6 +1154,7 @@ function renderConfigForm() {
     document.getElementById('configComprobantesToggle').classList.toggle('active', c.comprobantesHabilitados !== false);
     renderSelectsBancarios();
     document.getElementById('configNumero').value = c.numero || '';
+    document.getElementById('configRutCuenta').value = c.rutCuenta || '';
     document.getElementById('configCorreo').value = c.correo || '';
     document.getElementById('firmaNombre').value = c.firmaNombre || '';
     document.getElementById('firmaCargo').value = c.firmaCargo || '';
@@ -1999,7 +2003,7 @@ function resumenEstadoCuentaTexto(a, org) {
     txt += `%0A*Total adeudado: ${formatoMoneda(totalPendiente)}*%0A%0A`;
     const k = calcularKPIs();
     txt += `*Resumen general de ${org.nombre}*%0ASaldo en tesorería: ${formatoMoneda(k.saldo)}%0AIngresos totales: ${formatoMoneda(k.ingresos)}%0AEgresos totales: ${formatoMoneda(k.gastos)}%0A%0A`;
-    txt += `*Datos para transferencia*%0ABanco: ${c.banco || '-'}%0ATipo de cuenta: ${c.tipo || '-'}%0AN° de cuenta: ${c.numero || '-'}%0ARUT: ${c.rut || '-'}%0AEnviar comprobante a: ${c.correo || '-'}%0A%0A`;
+    txt += `*Datos para transferencia*%0ABanco: ${c.banco || '-'}%0ATipo de cuenta: ${c.tipo || '-'}%0AN° de cuenta: ${c.numero || '-'}%0ARUT: ${c.rutCuenta || c.rut || '-'}%0AEnviar comprobante a: ${c.correo || '-'}%0A%0A`;
     txt += `${c.firmaNombre ? '*' + c.firmaNombre + '*%0A' : ''}${c.firmaCargo ? c.firmaCargo + '%0A' : ''}${c.firmaCelular ? c.firmaCelular + '%0A' : ''}${c.firmaLema ? '"' + c.firmaLema + '"' : ''}`;
     return txt;
 }
@@ -2141,7 +2145,7 @@ function descargarEstadoCuentaPDF(alumnoId) {
     doc.text('Datos para transferencia', 14, y);
     doc.setFont(undefined, 'normal'); doc.setFontSize(9);
     doc.text(`Banco: ${org.config.banco || '-'}   Tipo: ${org.config.tipo || '-'}   Cuenta: ${org.config.numero || '-'}`, 14, y + 6);
-    doc.text(`Enviar comprobante a: ${org.config.correo || '-'}`, 14, y + 11);
+    doc.text(`RUT titular: ${org.config.rutCuenta || org.config.rut || '-'}   Enviar comprobante a: ${org.config.correo || '-'}`, 14, y + 11);
 
     y += 22;
     if (y > 250) { doc.addPage(); y = 20; }
@@ -2560,7 +2564,7 @@ function renderTablaCaja() {
     </table></div>`;
 }
 
-function abrirPlanillaCaja() {
+function abrirPlanillaCaja(filtroInicial) {
     const org = getOrgActiva();
     const saldoPersonas = calcularSaldoPorPersona(org);
     const personasHtml = Object.keys(saldoPersonas).length
@@ -2572,7 +2576,7 @@ function abrirPlanillaCaja() {
             </div>`).join('')
         : '<p class="text-xs text-slate-400">Aún no hay movimientos con "quién recibió" o "custodio" registrado.</p>';
 
-    filtroCaja = 'todas';
+    filtroCaja = filtroInicial || 'todas';
     const html = `<div class="planilla-modal">
         <div class="flex justify-between items-center mb-3">
             <h3 class="text-lg font-bold" style="color:var(--gris);">Planilla de Caja — ${escapeHtml(org.nombre)}</h3>
@@ -2587,14 +2591,14 @@ function abrirPlanillaCaja() {
         <div class="grid grid-cols-2 gap-2 mb-4">${personasHtml}</div>
 
         <div class="flex gap-2 mb-3 flex-wrap no-print">
-            <button class="chip chipCaja active" data-filtro="todas" onclick="filtrarCaja('todas')">Todas</button>
-            <button class="chip chipCaja" data-filtro="ingresos" onclick="filtrarCaja('ingresos')">Ingresos</button>
-            <button class="chip chipCaja" data-filtro="egresos" onclick="filtrarCaja('egresos')">Egresos</button>
-            <button class="chip chipCaja" data-filtro="cuota" onclick="filtrarCaja('cuota')">Cuotas mensuales</button>
-            <button class="chip chipCaja" data-filtro="obligatoria" onclick="filtrarCaja('obligatoria')">Extraordinarias obligatorias</button>
-            <button class="chip chipCaja" data-filtro="otras" onclick="filtrarCaja('otras')">Otros ingresos / extras</button>
-            <button class="chip chipCaja" data-filtro="general" onclick="filtrarCaja('general')">Ingresos generales</button>
-            <button class="chip chipCaja" data-filtro="gasto" onclick="filtrarCaja('gasto')">Gastos</button>
+            <button class="chip chipCaja ${filtroCaja === 'todas' ? 'active' : ''}" data-filtro="todas" onclick="filtrarCaja('todas')">Todas</button>
+            <button class="chip chipCaja ${filtroCaja === 'ingresos' ? 'active' : ''}" data-filtro="ingresos" onclick="filtrarCaja('ingresos')">Ingresos</button>
+            <button class="chip chipCaja ${filtroCaja === 'egresos' ? 'active' : ''}" data-filtro="egresos" onclick="filtrarCaja('egresos')">Egresos</button>
+            <button class="chip chipCaja ${filtroCaja === 'cuota' ? 'active' : ''}" data-filtro="cuota" onclick="filtrarCaja('cuota')">Cuotas mensuales</button>
+            <button class="chip chipCaja ${filtroCaja === 'obligatoria' ? 'active' : ''}" data-filtro="obligatoria" onclick="filtrarCaja('obligatoria')">Extraordinarias obligatorias</button>
+            <button class="chip chipCaja ${filtroCaja === 'otras' ? 'active' : ''}" data-filtro="otras" onclick="filtrarCaja('otras')">Otros ingresos / extras</button>
+            <button class="chip chipCaja ${filtroCaja === 'general' ? 'active' : ''}" data-filtro="general" onclick="filtrarCaja('general')">Ingresos generales</button>
+            <button class="chip chipCaja ${filtroCaja === 'gasto' ? 'active' : ''}" data-filtro="gasto" onclick="filtrarCaja('gasto')">Gastos</button>
         </div>
 
         <div id="tablaCajaContainer"></div>
