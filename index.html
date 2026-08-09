@@ -27,7 +27,8 @@
     .card-dark { background: var(--gris); color: #fff; border-radius: 1.1rem; padding: 1.25rem 1rem; }
     .label-sm { font-size: 0.7rem; font-weight: 600; color: var(--gris); letter-spacing: 0.02em; text-transform: uppercase; opacity: 0.7; }
     .divider-light { border-top: 1px solid rgba(0,0,0,0.06); margin: 1rem 0; }
-    .kpi-card { background: var(--gris); color: #fff; border-radius: 1rem; padding: 1rem; }
+    .kpi-card { background: linear-gradient(155deg, var(--gris), #2b363f); color: #fff; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 14px rgba(54,69,79,0.18); transition: transform 0.15s ease; }
+    .kpi-card:active { transform: scale(0.98); }
     .kpi-value { font-size: 1.45rem; font-weight: 800; line-height: 1.2; }
     .kpi-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; color: #cbd3d9; font-weight: 600; }
     .accent { color: var(--naranja); }
@@ -52,7 +53,8 @@
     .tab-btn.active { background: var(--gris); color: white; border-color: var(--gris); }
     .chip { padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.7rem; font-weight: 600; border: 1px solid #d7dce0; color: var(--gris); background: white; }
     .chip.active { background: var(--naranja); color: white; border-color: var(--naranja); }
-    .toolbar-btn { background: white; border: 1px solid #d7dce0; padding: 0.4rem 0.8rem; border-radius: 30px; font-size: 0.68rem; font-weight: 600; color: var(--gris); display: inline-flex; align-items: center; gap: 0.3rem; }
+    .toolbar-btn { background: white; border: 1px solid #d7dce0; padding: 0.4rem 0.8rem; border-radius: 30px; font-size: 0.68rem; font-weight: 600; color: var(--gris); display: inline-flex; align-items: center; gap: 0.3rem; transition: background 0.15s, transform 0.1s; }
+    .toolbar-btn:active { transform: scale(0.96); }
     .toolbar-btn:hover { background: #f1f5f9; }
     .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 0.2rem 0.4rem; color: #94a3b8; }
     .row-alumno { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.4rem; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
@@ -171,12 +173,14 @@
                         <div>
                             <span class="kpi-label">Saldo en tesorería</span>
                             <div class="kpi-value" id="kpiSaldo">$0</div>
+                            <span class="text-xs" style="color:#cbd3d9;">Total de la organización, incluye dinero que otras personas aún no entregan</span>
                         </div>
                         <span class="badge-state text-xs font-bold px-3 py-1 rounded-full" id="kpiSaldoBadge">A favor</span>
                     </div>
                     <div class="kpi-card"><span class="kpi-label">Recaudado (cuotas)</span><div class="kpi-value" id="kpiRecaudado">$0</div></div>
                     <div class="kpi-card"><span class="kpi-label">Deuda vencida (cuotas)</span><div class="kpi-value" id="kpiAdeudado">$0</div></div>
                     <div class="kpi-card col-span-2" style="background: var(--naranja);"><span class="kpi-label" style="color:#fff0e6;">Monto en tránsito / no rendido</span><div class="kpi-value" id="kpiSinRendir">$0</div></div>
+                    <div class="kpi-card col-span-2" style="background: #dc2626;"><span class="kpi-label" style="color:#fee2e2;">Dinero no entregado a Tesorería</span><div class="kpi-value" id="kpiDineroNoEntregado">$0</div><span class="text-xs" style="color:#fee2e2;">En poder de otras personas (ver Planilla de Caja)</span></div>
                     <div class="kpi-card"><span class="kpi-label">Ingresos totales</span><div class="kpi-value" id="kpiIngresosTotal">$0</div></div>
                     <div class="kpi-card"><span class="kpi-label">Egresos totales</span><div class="kpi-value" id="kpiGastosTotal">$0</div></div>
                     <div class="kpi-card col-span-2"><span class="kpi-label">Otros ingresos (actividades: día profesor, día alumno, día libro, rifas, etc.)</span><div class="kpi-value" id="kpiOtrosIngresos">$0</div></div>
@@ -227,6 +231,7 @@
                 <h2 class="text-md font-semibold flex items-center gap-2" style="color: var(--gris);"><span>💳</span> Libro de caja</h2>
             </div>
             <div class="card">
+                <button onclick="abrirPlanillaCaja()" class="w-full toolbar-btn justify-center mb-3" style="border-color: var(--gris); color: var(--gris);">📒 Ver planilla completa de caja</button>
                 <div class="flex gap-2 mb-3 flex-wrap">
                     <button class="tab-btn active" id="tabTodas" onclick="filtrarTransacciones('todas')">Todas</button>
                     <button class="tab-btn" id="tabIngresos" onclick="filtrarTransacciones('ingreso')">Ingresos</button>
@@ -267,6 +272,10 @@
                     <div class="grid grid-cols-2 gap-2">
                         <div><label class="label-sm">Clave de administrador</label><input type="password" id="configClave" placeholder="Opcional" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
                         <div><label class="label-sm">Alerta caja crítica ($)</label><input type="number" id="configAlerta" placeholder="Ej: 20000" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+                    </div>
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="label-sm">Adjuntar comprobantes a los movimientos<br><span class="normal-case text-slate-400" style="text-transform:none; font-weight:400;">Permite escanear/subir fotos de boletas y comprobantes en ingresos y gastos</span></label>
+                        <div class="toggle-switch active" id="configComprobantesToggle" onclick="this.classList.toggle('active')"></div>
                     </div>
 
                     <div class="divider-light"></div>
@@ -1036,6 +1045,7 @@ function guardarConfig() {
         c.anioContable = document.getElementById('configAnio').value.trim();
         c.clave = document.getElementById('configClave').value;
         c.alertaCaja = document.getElementById('configAlerta').value;
+        c.comprobantesHabilitados = document.getElementById('configComprobantesToggle').classList.contains('active');
         c.banco = document.getElementById('configBanco').value.trim();
         c.tipo = document.getElementById('configTipo').value.trim();
         c.numero = document.getElementById('configNumero').value.trim();
@@ -1138,6 +1148,7 @@ function renderConfigForm() {
     document.getElementById('configAnio').value = c.anioContable || '';
     document.getElementById('configClave').value = c.clave || '';
     document.getElementById('configAlerta').value = c.alertaCaja || '';
+    document.getElementById('configComprobantesToggle').classList.toggle('active', c.comprobantesHabilitados !== false);
     renderSelectsBancarios();
     document.getElementById('configNumero').value = c.numero || '';
     document.getElementById('configCorreo').value = c.correo || '';
@@ -1214,7 +1225,17 @@ function calcularKPIs() {
     });
     const saldo = ingresos - gastos;
     const socios = org.alumnos.filter(a => a.esSocio).length;
-    return { ingresos, gastos, sinRendir, recaudado, adeudado, otrosIngresos, saldo, integrantes: org.alumnos.length, socios };
+    const dineroNoEntregado = calcularDineroNoEntregado(org);
+    return { ingresos, gastos, sinRendir, recaudado, adeudado, otrosIngresos, saldo, integrantes: org.alumnos.length, socios, dineroNoEntregado };
+}
+
+function calcularDineroNoEntregado(org) {
+    const mapa = calcularSaldoPorPersona(org);
+    let total = 0;
+    Object.entries(mapa).forEach(([persona, saldo]) => {
+        if (saldo > 0 && persona.toLowerCase().indexOf('tesorer') === -1) total += saldo;
+    });
+    return total;
 }
 
 function renderDashboard() {
@@ -1233,6 +1254,7 @@ function renderDashboard() {
     document.getElementById('kpiIngresosTotal').textContent = formatoMoneda(k.ingresos);
     document.getElementById('kpiGastosTotal').textContent = formatoMoneda(k.gastos);
     document.getElementById('kpiOtrosIngresos').textContent = formatoMoneda(k.otrosIngresos);
+    document.getElementById('kpiDineroNoEntregado').textContent = formatoMoneda(k.dineroNoEntregado);
 
     const alertaEl = document.getElementById('alertaCritica');
     const umbral = Number(org.config.alertaCaja);
@@ -1658,27 +1680,42 @@ function abrirFicha(id) {
     const totalPendienteExtra = (a.extraordinarias || []).filter(c => c.estado === 'pendiente' && c.obligatoria && extraVencida(c)).reduce((s, c) => s + Number(c.monto), 0);
     const alDia = !esMoroso(a);
 
-    const cuotasHtml = (a.cuotas || []).map(c => `
-        <div class="cuota-item" style="${c.estado === 'pagado' && c.monto > 0 ? 'background:#eafbf1; border-color:#bbf0d0;' : ''}">
+    const vigDesdeFicha = a.vigenciaDesde || 1;
+    const vigHastaFicha = a.vigenciaHasta || 12;
+    const cuotasHtml = (a.cuotas || []).map(c => {
+        const fueraDeVigencia = c.numero < vigDesdeFicha || c.numero > vigHastaFicha;
+        if (fueraDeVigencia) {
+            return `<div class="cuota-item" style="opacity:0.4;">
+                <div class="font-semibold">${c.mes}</div>
+                <div class="text-slate-400 mb-1">—</div>
+                <div class="text-xs text-slate-400">Sin cobro</div>
+            </div>`;
+        }
+        const vencida = c.estado === 'pendiente' && cuotaVencida(c.numero);
+        const colorEstado = c.estado === 'pagado' ? 'color:#16a34a; font-weight:700;' : (vencida ? 'color:var(--naranja); font-weight:700;' : '');
+        return `<div class="cuota-item" style="${c.estado === 'pagado' && c.monto > 0 ? 'background:#eafbf1; border-color:#bbf0d0;' : (vencida ? 'background:#fff1e8; border-color:#ffd9bd;' : '')}">
             <div class="font-semibold">${c.mes}</div>
             <div class="text-slate-400 mb-1">${formatoMoneda(c.monto)}</div>
-            <select onchange="cambiarEstadoCuota('${a.id}', ${c.numero}, this.value)" style="${c.estado === 'pagado' ? 'color:#16a34a; font-weight:700;' : ''}">
-                <option value="pendiente" ${c.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+            <select onchange="cambiarEstadoCuota('${a.id}', ${c.numero}, this.value)" style="${colorEstado}">
+                <option value="pendiente" ${c.estado === 'pendiente' ? 'selected' : ''}>${vencida ? 'Vencido' : 'Pendiente'}</option>
                 <option value="pagado" ${c.estado === 'pagado' ? 'selected' : ''}>Pagado</option>
             </select>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 
-    const extraHtml = (a.extraordinarias || []).map(c => `
-        <div class="actividad-item flex justify-between items-center" style="${c.estado === 'pagado' ? 'background:#eafbf1; border-color:#bbf0d0;' : ''}">
+    const extraHtml = (a.extraordinarias || []).map(c => {
+        const vencida = c.estado === 'pendiente' && c.obligatoria && extraVencida(c);
+        return `<div class="actividad-item flex justify-between items-center" style="${c.estado === 'pagado' ? 'background:#eafbf1; border-color:#bbf0d0;' : (vencida ? 'background:#fff1e8; border-color:#ffd9bd;' : '')}">
             <div><div class="text-sm font-medium">${escapeHtml(c.concepto)} ${c.obligatoria ? '<span class="socio-badge" style="background:#fee2e2; color:#991b1b;">Obligatorio</span>' : '<span class="socio-badge">Otros ingresos</span>'} ${c.estado === 'pagado' ? '<span style="color:#16a34a;">✔</span>' : ''}</div><div class="text-xs text-slate-400">${formatoMoneda(c.monto)}</div></div>
             <div class="flex items-center gap-2">
-                <select onchange="cambiarEstadoExtra('${a.id}', '${c.id}', this.value)" class="text-xs border border-slate-200 rounded-full px-2 py-1">
-                    <option value="pendiente" ${c.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                <select onchange="cambiarEstadoExtra('${a.id}', '${c.id}', this.value)" class="text-xs border border-slate-200 rounded-full px-2 py-1" style="${vencida ? 'color:var(--naranja); font-weight:700;' : ''}">
+                    <option value="pendiente" ${c.estado === 'pendiente' ? 'selected' : ''}>${vencida ? 'Vencido' : 'Pendiente'}</option>
                     <option value="pagado" ${c.estado === 'pagado' ? 'selected' : ''}>Pagado</option>
                 </select>
                 <button class="btn-icon" onclick="eliminarExtra('${a.id}', '${c.id}')">🗑️</button>
             </div>
-        </div>`).join('') || '<div class="empty-state">Sin cargos extraordinarios.</div>';
+        </div>`;
+    }).join('') || '<div class="empty-state">Sin cargos extraordinarios.</div>';
 
     const tutoresHtml = (a.tutores || []).map(t => `
         <div class="actividad-item">
@@ -1814,6 +1851,7 @@ function cambiarEstadoCuota(alumnoId, numero, nuevoEstado) {
         org.transacciones = org.transacciones.filter(t => t.ref !== refId);
     }
     guardarEstado(); renderDashboard(); abrirFicha(alumnoId);
+    toast('Cambios guardados.', 'success');
 }
 
 function abrirFormExtra(alumnoId) {
@@ -1869,6 +1907,7 @@ function cambiarEstadoExtra(alumnoId, extraId, nuevoEstado) {
         org.transacciones = org.transacciones.filter(t => t.ref !== refId);
     }
     guardarEstado(); renderDashboard(); abrirFicha(alumnoId);
+    toast('Cambios guardados.', 'success');
 }
 
 function eliminarExtra(alumnoId, extraId) {
@@ -1958,6 +1997,8 @@ function resumenEstadoCuentaTexto(a, org) {
         pendExtra.forEach(x => { txt += `- ${x.concepto}: ${formatoMoneda(x.monto)}%0A`; });
     }
     txt += `%0A*Total adeudado: ${formatoMoneda(totalPendiente)}*%0A%0A`;
+    const k = calcularKPIs();
+    txt += `*Resumen general de ${org.nombre}*%0ASaldo en tesorería: ${formatoMoneda(k.saldo)}%0AIngresos totales: ${formatoMoneda(k.ingresos)}%0AEgresos totales: ${formatoMoneda(k.gastos)}%0A%0A`;
     txt += `*Datos para transferencia*%0ABanco: ${c.banco || '-'}%0ATipo de cuenta: ${c.tipo || '-'}%0AN° de cuenta: ${c.numero || '-'}%0ARUT: ${c.rut || '-'}%0AEnviar comprobante a: ${c.correo || '-'}%0A%0A`;
     txt += `${c.firmaNombre ? '*' + c.firmaNombre + '*%0A' : ''}${c.firmaCargo ? c.firmaCargo + '%0A' : ''}${c.firmaCelular ? c.firmaCelular + '%0A' : ''}${c.firmaLema ? '"' + c.firmaLema + '"' : ''}`;
     return txt;
@@ -2039,7 +2080,22 @@ function descargarFichaIndividualPDF(alumnoId) {
     doc.setFont(undefined, 'normal'); doc.setFontSize(9);
     doc.text(`Organización: ${org.nombre}   Año contable: ${org.config.anioContable || '-'}`, 14, y);
 
-    dibujarFirmaPDF(doc, org, y + 14);
+    y += 12;
+    if (y > 250) { doc.addPage(); y = 20; }
+    const k = calcularKPIs();
+    doc.setDrawColor(230, 230, 230); doc.line(14, y, 196, y);
+    y += 7;
+    doc.setFont(undefined, 'bold'); doc.setFontSize(10); doc.setTextColor(54, 69, 79);
+    doc.text(`Resumen general de ${org.nombre}`, 14, y);
+    doc.autoTable({
+        startY: y + 3,
+        head: [['Saldo en tesorería', 'Ingresos totales', 'Egresos totales', 'Deuda vencida (curso)']],
+        body: [[formatoMoneda(k.saldo), formatoMoneda(k.ingresos), formatoMoneda(k.gastos), formatoMoneda(k.adeudado)]],
+        theme: 'grid', headStyles: { fillColor: [54, 69, 79] }, styles: { fontSize: 8.5, cellPadding: 2, halign: 'center' }
+    });
+    y = doc.lastAutoTable.finalY + 10;
+
+    dibujarFirmaPDF(doc, org, y);
     doc.save(`Ficha_${a.nombre.replace(/\s+/g, '_')}.pdf`);
 }
 
@@ -2087,7 +2143,23 @@ function descargarEstadoCuentaPDF(alumnoId) {
     doc.text(`Banco: ${org.config.banco || '-'}   Tipo: ${org.config.tipo || '-'}   Cuenta: ${org.config.numero || '-'}`, 14, y + 6);
     doc.text(`Enviar comprobante a: ${org.config.correo || '-'}`, 14, y + 11);
 
-    dibujarFirmaPDF(doc, org, y + 20);
+    y += 22;
+    if (y > 250) { doc.addPage(); y = 20; }
+    const k = calcularKPIs();
+    doc.setDrawColor(230, 230, 230); doc.line(14, y, 196, y);
+    y += 7;
+    doc.setFont(undefined, 'bold'); doc.setFontSize(10); doc.setTextColor(54, 69, 79);
+    doc.text(`Resumen general de ${org.nombre}`, 14, y);
+    y += 3;
+    doc.autoTable({
+        startY: y + 3,
+        head: [['Saldo en tesorería', 'Ingresos totales', 'Egresos totales', 'Deuda vencida (curso)']],
+        body: [[formatoMoneda(k.saldo), formatoMoneda(k.ingresos), formatoMoneda(k.gastos), formatoMoneda(k.adeudado)]],
+        theme: 'grid', headStyles: { fillColor: [54, 69, 79] }, styles: { fontSize: 8.5, cellPadding: 2, halign: 'center' }
+    });
+    y = doc.lastAutoTable.finalY + 10;
+
+    dibujarFirmaPDF(doc, org, y);
     doc.save(`Estado_Cuenta_${a.nombre.replace(/\s+/g, '_')}.pdf`);
 }
 
@@ -2160,6 +2232,7 @@ function renderTransacciones() {
                     <div class="text-xs text-slate-400 flex items-center gap-1 flex-wrap">
                         <span>${t.fecha}</span>
                         <span class="origen-badge ${t.origen === 'digital' ? 'origen-digital' : 'origen-manual'}">${t.origen === 'digital' ? 'Digital' : 'Manual'}</span>
+                        ${t.tipo === 'ingreso' && t.recibidoPor ? `<span style="color:#0369a1;">· Recibió: ${escapeHtml(t.recibidoPor)}</span>` : ''}
                         ${t.tipo === 'gasto' && t.destino === 'tercero' ? `<span class="text-amber-600">· Custodio: ${escapeHtml(t.custodio || '-')} ${t.rendido ? '(rendido)' : '(sin rendir)'}</span>` : ''}
                         ${t.tipo === 'gasto' && (t.emisor || t.comprador) ? `<span>· ${escapeHtml(t.emisor || '')}${t.emisor && t.comprador ? ' / ' : ''}${t.comprador ? 'Compró: ' + escapeHtml(t.comprador) : ''}</span>` : ''}
                         ${t.comprobanteImg ? `<span onclick="verComprobante('${t.id}')" style="cursor:pointer; color:var(--gris); text-decoration:underline;">📎 Ver respaldo</span>` : ''}
@@ -2180,14 +2253,26 @@ function renderTransacciones() {
 function verComprobante(id) {
     const org = getOrgActiva();
     const t = org.transacciones.find(x => x.id === id); if (!t || !t.comprobanteImg) return;
+    const esPdf = t.comprobanteImg.indexOf('application/pdf') === 0 || t.comprobanteImg.indexOf('data:application/pdf') === 0;
     mostrarModal(`<div class="ficha-modal">
-        <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold" style="color:var(--gris);">Respaldo del gasto</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
-        <img src="${t.comprobanteImg}" style="width:100%; border-radius:0.75rem;" />
+        <div class="flex justify-between items-center mb-3"><h3 class="text-lg font-bold" style="color:var(--gris);">Comprobante</h3><button class="btn-icon" onclick="cerrarModal()">✕</button></div>
+        ${esPdf
+            ? `<div class="text-center p-6" style="background:#f8fafc; border-radius:0.75rem;"><span style="font-size:2.5rem;">📄</span><p class="text-sm text-slate-500 mt-2">Documento PDF adjunto</p><a href="${t.comprobanteImg}" download="comprobante.pdf" class="toolbar-btn justify-center inline-flex mt-3" style="border-color:var(--naranja); color:var(--naranja);">⬇️ Descargar / abrir PDF</a></div>`
+            : `<img src="${t.comprobanteImg}" style="width:100%; border-radius:0.75rem;" />`}
     </div>`);
 }
 
 function previsualizarComprobante(event) {
     const file = event.target.files[0]; if (!file) return;
+    if (file.type === 'application/pdf') {
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('tfComprobanteData').value = e.target.result;
+            document.getElementById('tfComprobantePreview').innerHTML = `<span style="font-size:1.8rem;">📄</span>`;
+        };
+        reader.readAsDataURL(file);
+        return;
+    }
     comprimirImagen(file, dataUrl => {
         document.getElementById('tfComprobanteData').value = dataUrl;
         document.getElementById('tfComprobantePreview').innerHTML = `<img src="${dataUrl}" style="max-width:100%; border-radius:0.5rem;" />`;
@@ -2197,6 +2282,7 @@ function previsualizarComprobante(event) {
 function abrirFormTransaccion(idEditar) {
     const org = getOrgActiva();
     const t = idEditar ? org.transacciones.find(x => x.id === idEditar) : null;
+    const comprobantesOn = org.config.comprobantesHabilitados !== false;
     const html = `
         <div class="ficha-modal">
             <div class="flex justify-between items-center mb-4">
@@ -2225,6 +2311,12 @@ function abrirFormTransaccion(idEditar) {
                 <div><label class="label-sm">Concepto</label><input type="text" id="tfConcepto" value="${t ? escapeHtml(t.concepto) : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
                 <div><label class="label-sm">Monto ($)</label><input type="number" id="tfMonto" value="${t ? t.monto : ''}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
                 <div><label class="label-sm">Fecha</label><input type="date" id="tfFecha" value="${t ? t.fecha : new Date().toISOString().slice(0,10)}" class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
+
+                <div id="tfIngresoExtra" style="display:${(t ? t.tipo : 'ingreso') === 'ingreso' ? 'block' : 'none'};">
+                    <label class="label-sm">¿Quién recibió este dinero?</label>
+                    <input type="text" id="tfRecibidoPor" value="${t ? escapeHtml(t.recibidoPor || '') : ''}" placeholder="Ej: Tesorería, Presidenta, Juan Pérez..." class="w-full p-2 border border-slate-200 rounded-xl text-sm" />
+                </div>
+
                 <div id="tfGastoExtra" class="space-y-2" style="display:${(t ? t.tipo : 'ingreso') === 'gasto' ? 'block' : 'none'};">
                     <div class="grid grid-cols-2 gap-2">
                         <div><label class="label-sm">Emisor (local/proveedor)</label><input type="text" id="tfEmisor" value="${t ? escapeHtml(t.emisor || '') : ''}" placeholder="Ej: Jumbo, boleta N°..." class="w-full p-2 border border-slate-200 rounded-xl text-sm" /></div>
@@ -2244,15 +2336,19 @@ function abrirFormTransaccion(idEditar) {
                         <label class="label-sm">Gasto ya rendido</label>
                         <div class="toggle-switch ${!t || t.rendido ? 'active' : ''}" id="tfRendidoToggle" onclick="this.classList.toggle('active')"></div>
                     </div>
-                    <label class="label-sm">Respaldo (foto de boleta/comprobante)</label>
+                </div>
+
+                ${comprobantesOn ? `
+                <div>
+                    <label class="label-sm">Comprobante (foto o PDF de boleta, transferencia, etc.)</label>
                     <div class="flex items-center gap-3">
-                        <div class="foto-upload-box" id="tfComprobantePreview">${t && t.comprobanteImg ? `<img src="${t.comprobanteImg}" />` : '<span class="text-xl opacity-30">📎</span>'}</div>
+                        <div class="foto-upload-box" id="tfComprobantePreview">${t && t.comprobanteImg ? (t.comprobanteImg.indexOf('application/pdf') !== -1 ? '<span style="font-size:1.8rem;">📄</span>' : `<img src="${t.comprobanteImg}" />`) : '<span class="text-xl opacity-30">📎</span>'}</div>
                         <div class="file-input-wrapper flex-1">
                             <button class="text-xs px-4 py-2 rounded-full border" style="border-color: var(--naranja); color: var(--naranja);">Escanear / subir</button>
-                            <input type="file" accept="image/*" capture="environment" onchange="previsualizarComprobante(event)" />
+                            <input type="file" accept="image/*,application/pdf" onchange="previsualizarComprobante(event)" />
                         </div>
                     </div>
-                </div>
+                </div>` : ''}
             </div>
             <button onclick="guardarTransaccion()" class="w-full mt-4 text-white text-sm font-medium py-2.5 rounded-xl bg-accent">Guardar movimiento</button>
         </div>`;
@@ -2266,6 +2362,7 @@ function seleccionarTipoTx(tipo) {
     document.getElementById('tfIngresoBtn').classList.toggle('active', tipo === 'ingreso');
     document.getElementById('tfGastoBtn').classList.toggle('active', tipo === 'gasto');
     document.getElementById('tfGastoExtra').style.display = tipo === 'gasto' ? 'block' : 'none';
+    document.getElementById('tfIngresoExtra').style.display = tipo === 'ingreso' ? 'block' : 'none';
 }
 function seleccionarOrigenTx(origen) {
     document.getElementById('tfOrigen').value = origen;
@@ -2291,9 +2388,10 @@ function guardarTransaccion() {
         tipo,
         origen: document.getElementById('tfOrigen').value,
         concepto, monto,
+        recibidoPor: tipo === 'ingreso' ? document.getElementById('tfRecibidoPor').value.trim() : '',
         emisor: tipo === 'gasto' ? document.getElementById('tfEmisor').value.trim() : '',
         comprador: tipo === 'gasto' ? document.getElementById('tfComprador').value.trim() : '',
-        comprobanteImg: tipo === 'gasto' ? (document.getElementById('tfComprobanteData').value || null) : null,
+        comprobanteImg: document.getElementById('tfComprobanteData').value || null,
         destino: tipo === 'gasto' ? document.getElementById('tfDestino').value : 'tesoreria',
         custodio: tipo === 'gasto' && document.getElementById('tfDestino').value === 'tercero' ? document.getElementById('tfCustodio').value.trim() : '',
         rendido: tipo === 'gasto' ? document.getElementById('tfRendidoToggle').classList.contains('active') : true
@@ -2305,6 +2403,7 @@ function guardarTransaccion() {
         org.transacciones.push(Object.assign({ id: uid() }, datos));
     }
     guardarEstado(); cerrarModal(); renderTransacciones(); renderDashboard();
+    toast('Movimiento guardado.', 'success');
 }
 
 function anularTransaccion(id) {
@@ -2384,6 +2483,126 @@ function construirFilasPlanilla(org) {
     return { encabezados, filas, conceptos };
 }
 
+/* ==================================================================
+   PLANILLA DE CAJA (todos los ingresos/egresos, filtrable por categoría,
+   y saldo de lo que tiene/debe cada persona que ha recibido dinero)
+================================================================== */
+let filtroCaja = 'todas';
+
+function categorizarTransaccion(t, org) {
+    if (t.tipo === 'gasto') return 'gasto';
+    if (t.ref && t.ref.indexOf('cuota_') === 0) return 'cuota';
+    if (t.ref && t.ref.indexOf('extra_') === 0) {
+        const extraId = t.ref.slice(6);
+        for (const a of org.alumnos) {
+            const e = (a.extraordinarias || []).find(x => x.id === extraId);
+            if (e) return e.obligatoria ? 'obligatoria' : 'otras';
+        }
+        return 'otras';
+    }
+    return 'general';
+}
+
+const ETIQUETAS_CATEGORIA_CAJA = {
+    cuota: 'Cuota mensual', obligatoria: 'Extraordinaria obligatoria',
+    otras: 'Otros ingresos', general: 'Ingreso general', gasto: 'Gasto'
+};
+
+function calcularSaldoPorPersona(org) {
+    const mapa = {};
+    org.transacciones.filter(t => !t.anulada).forEach(t => {
+        if (t.tipo === 'ingreso' && t.recibidoPor) {
+            mapa[t.recibidoPor] = (mapa[t.recibidoPor] || 0) + Number(t.monto);
+        }
+        if (t.tipo === 'gasto' && t.custodio) {
+            mapa[t.custodio] = (mapa[t.custodio] || 0) - Number(t.monto);
+        }
+    });
+    return mapa;
+}
+
+function filtrarCaja(tipo) {
+    filtroCaja = tipo;
+    renderTablaCaja();
+    document.querySelectorAll('.chipCaja').forEach(el => el.classList.toggle('active', el.dataset.filtro === tipo));
+}
+
+function renderTablaCaja() {
+    const org = getOrgActiva();
+    const cont = document.getElementById('tablaCajaContainer');
+    if (!cont) return;
+    let lista = [...org.transacciones].filter(t => !t.anulada).sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    lista = lista.map(t => Object.assign({ _categoria: categorizarTransaccion(t, org) }, t));
+
+    if (filtroCaja === 'ingresos') lista = lista.filter(t => t.tipo === 'ingreso');
+    else if (filtroCaja === 'egresos') lista = lista.filter(t => t.tipo === 'gasto');
+    else if (filtroCaja !== 'todas') lista = lista.filter(t => t._categoria === filtroCaja);
+
+    if (!lista.length) { cont.innerHTML = '<div class="empty-state">No hay movimientos en esta categoría.</div>'; return; }
+
+    const filas = lista.map(t => `<tr>
+        <td>${t.fecha}</td>
+        <td>${t.tipo === 'ingreso' ? 'Ingreso' : 'Gasto'}</td>
+        <td>${ETIQUETAS_CATEGORIA_CAJA[t._categoria]}</td>
+        <td style="text-align:left;">${escapeHtml(t.concepto)}</td>
+        <td>${escapeHtml(t.tipo === 'ingreso' ? (t.recibidoPor || '-') : (t.custodio || t.comprador || '-'))}</td>
+        <td style="color:${t.tipo === 'ingreso' ? '#16a34a' : '#dc2626'}; font-weight:700;">${t.tipo === 'ingreso' ? '+' : '-'}${formatoMoneda(t.monto)}</td>
+        <td>${t.comprobanteImg ? `<span onclick="verComprobante('${t.id}')" style="cursor:pointer;">📎</span>` : '-'}</td>
+    </tr>`).join('');
+
+    const totalIngresos = lista.filter(t => t.tipo === 'ingreso').reduce((s, t) => s + Number(t.monto), 0);
+    const totalEgresos = lista.filter(t => t.tipo === 'gasto').reduce((s, t) => s + Number(t.monto), 0);
+
+    cont.innerHTML = `<div class="table-scroll"><table class="planilla">
+        <tr><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Concepto</th><th>Quién recibió / Custodio</th><th>Monto</th><th>📎</th></tr>
+        ${filas}
+        <tr style="font-weight:700; background:#f1f5f9;"><td colspan="5">Totales de esta vista</td><td colspan="2">${formatoMoneda(totalIngresos)} / -${formatoMoneda(totalEgresos)}</td></tr>
+    </table></div>`;
+}
+
+function abrirPlanillaCaja() {
+    const org = getOrgActiva();
+    const saldoPersonas = calcularSaldoPorPersona(org);
+    const personasHtml = Object.keys(saldoPersonas).length
+        ? Object.entries(saldoPersonas).map(([persona, saldo]) => `
+            <div class="kpi-card" style="background:${saldo >= 0 ? 'var(--gris)' : '#dc2626'};">
+                <span class="kpi-label">${escapeHtml(persona)}</span>
+                <div class="text-lg font-bold">${formatoMoneda(saldo)}</div>
+                <span class="text-xs" style="color:#fff0e6;">${saldo >= 0 ? 'en su poder' : 'gastó de más / debe rendir'}</span>
+            </div>`).join('')
+        : '<p class="text-xs text-slate-400">Aún no hay movimientos con "quién recibió" o "custodio" registrado.</p>';
+
+    filtroCaja = 'todas';
+    const html = `<div class="planilla-modal">
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="text-lg font-bold" style="color:var(--gris);">Planilla de Caja — ${escapeHtml(org.nombre)}</h3>
+            <div class="flex gap-2 no-print">
+                <button class="toolbar-btn" onclick="exportarExcel()">📊 Excel</button>
+                <button class="toolbar-btn" onclick="imprimirModalActual()">🖶 Imprimir</button>
+                <button class="btn-icon" onclick="cerrarModal()">✕</button>
+            </div>
+        </div>
+
+        <p class="label-sm mb-2">Lo que tiene o debe cada persona</p>
+        <div class="grid grid-cols-2 gap-2 mb-4">${personasHtml}</div>
+
+        <div class="flex gap-2 mb-3 flex-wrap no-print">
+            <button class="chip chipCaja active" data-filtro="todas" onclick="filtrarCaja('todas')">Todas</button>
+            <button class="chip chipCaja" data-filtro="ingresos" onclick="filtrarCaja('ingresos')">Ingresos</button>
+            <button class="chip chipCaja" data-filtro="egresos" onclick="filtrarCaja('egresos')">Egresos</button>
+            <button class="chip chipCaja" data-filtro="cuota" onclick="filtrarCaja('cuota')">Cuotas mensuales</button>
+            <button class="chip chipCaja" data-filtro="obligatoria" onclick="filtrarCaja('obligatoria')">Extraordinarias obligatorias</button>
+            <button class="chip chipCaja" data-filtro="otras" onclick="filtrarCaja('otras')">Otros ingresos / extras</button>
+            <button class="chip chipCaja" data-filtro="general" onclick="filtrarCaja('general')">Ingresos generales</button>
+            <button class="chip chipCaja" data-filtro="gasto" onclick="filtrarCaja('gasto')">Gastos</button>
+        </div>
+
+        <div id="tablaCajaContainer"></div>
+    </div>`;
+    mostrarModal(html);
+    renderTablaCaja();
+}
+
 function abrirPlanillaGeneral() {
     const org = getOrgActiva();
     const { encabezados, filas, conceptos } = construirFilasPlanilla(org);
@@ -2461,10 +2680,14 @@ function exportarExcel() {
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(resumenMiembros), 'Resumen_Miembros');
 
     const historialCaja = org.transacciones.map(t => ({
-        Fecha: t.fecha, Tipo: t.tipo === 'ingreso' ? 'Ingreso' : 'Gasto', Origen: t.origen === 'digital' ? 'Digital' : 'Manual',
+        Fecha: t.fecha, Tipo: t.tipo === 'ingreso' ? 'Ingreso' : 'Gasto',
+        Categoría: ETIQUETAS_CATEGORIA_CAJA[categorizarTransaccion(t, org)],
+        Origen: t.origen === 'digital' ? 'Digital' : 'Manual',
         Concepto: t.concepto, Monto: t.monto,
+        'Quién recibió': t.tipo === 'ingreso' ? (t.recibidoPor || '') : '',
         Destino: t.destino === 'tercero' ? 'Entregado a tercero' : 'Tesorería',
         Custodio: t.custodio || '', Rendido: t.tipo === 'gasto' ? (t.rendido ? 'Sí' : 'No') : '',
+        'Comprobante adjunto': t.comprobanteImg ? 'Sí' : 'No',
         Anulada: t.anulada ? 'Sí' : 'No'
     })).sort((a, b) => new Date(a.Fecha) - new Date(b.Fecha));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(historialCaja), 'Historial_Caja');
