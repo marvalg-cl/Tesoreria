@@ -41,8 +41,63 @@
   async function deleteMovement(id){if(!confirm('¿Eliminar este movimiento? Esta acción no se puede deshacer.'))return;await remove('movements',id);await audit('Eliminar movimiento',id);await render();toast('Movimiento eliminado')}
   async function deleteQuota(id){if(!confirm('¿Eliminar esta cuota?'))return;await remove('quotas',id);await audit('Eliminar cuota',id);await render();toast('Cuota eliminada')}
   async function deleteOrg(id){const o=await get('organizations',id);if(!o)return;if(!confirm(`¿Borrar “${o.name}” y todos sus datos asociados?`))return;for(const store of ['memberships','movements','quotas','accounts']){for(const r of (await all(store)).filter(x=>x.orgId===id))await remove(store,r.id)}await remove('organizations',id);if(state.orgId===id)state.orgId=(await orgs())[0]?.id||'';await saveSetting('currentOrgId',state.orgId);await audit('Eliminar organización',o.name);await render();toast('Organización eliminada')}
-  async function exportJSON(){const data={format:'tesoreria-multiorganizacional',version:2,exportedAt:new Date().toISOString()};for(const s of window.TDB.STORES)data[s]=await all(s);const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`tesoreria_respaldo_${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);await audit('Exportar JSON','Respaldo completo');toast('Respaldo JSON generado')}
-  async function importJSON(file){const data=JSON.parse(await file.text());if(!data||!['tesoreria-multiorganizacional','tesoreria-multiorganizacional-v2'].includes(data.format||'')&&(!data.organizations&&!data.organizaciones))throw new Error('Formato JSON no reconocido.');const normalized={organizations:data.organizations||data.organizaciones||[],people:data.people||data.integrantes||[],memberships:data.memberships||data.membresias||[],movements:data.movements||data.movimientos||[],quotas:data.quotas||data.cuotas||[],accounts:data.accounts||data.cuentas||[],settings:data.settings||[],audit:[]};if(!confirm('La importación reemplazará los datos actuales de la suite. ¿Continuar?'))return;await clearAll();for(const s of ['organizations','people','memberships','movements','quotas','accounts'])for(const r of normalized[s])await put(s,{...r,id:r.id||uid()});if(normalized.settings.length)for(const r of normalized.settings)await put('settings',r);state.orgId=normalized.organizations[0]?.id||'';await saveSetting('currentOrgId',state.orgId);await audit('Importar JSON',`${normalized.organizations.length} organizaciones · ${normalized.people.length} personas · ${normalized.movements.length} movimientos`);await render();toast('Importación completada desde cero')}
+  async function exportJSON(){
+    // Respaldo real: captura TODOS los almacenes de IndexedDB, no sólo la organización activa.
+    const stores={};
+    for(const store of window.TDB.STORES) stores[store]=await all(store);
+    const counts=Object.fromEntries(Object.entries(stores).map(([k,v])=>[k,v.length]));
+    const snapshot={
+      format:'tesoreria-multiorganizacional',
+      schemaVersion:3,
+      version:3,
+      exportedAt:new Date().toISOString(),
+      application:'Tesorería Multiorganizacional',
+      storage:'IndexedDB',
+      currentOrgId:state.orgId||'',
+      counts,
+      data:stores,
+      // Copias en raíz para mantener compatibilidad con versiones anteriores.
+      ...stores
+    };
+    const json=JSON.stringify(snapshot,null,2);
+    const blob=new Blob([json],{type:'application/json;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`tesoreria_respaldo_completo_${today()}.json`;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),3000);
+    await audit('Exportar JSON',`Respaldo completo · ${counts.organizations} organizaciones · ${counts.people} personas · ${counts.memberships} vínculos · ${counts.movements} movimientos · ${counts.quotas} cuotas · ${counts.accounts} cuentas`);
+    toast('Respaldo completo generado');
+  }
+  async function importJSON(file){
+    const data=JSON.parse(await file.text());
+    const source=data?.data&&typeof data.data==='object'?data.data:data;
+    const validFormat=['tesoreria-multiorganizacional','tesoreria-multiorganizacional-v2'].includes(data?.format||'');
+    if(!data||(!validFormat&&!source.organizations&&!source.organizaciones)) throw new Error('Formato JSON no reconocido.');
+    const normalized={
+      organizations:source.organizations||source.organizaciones||[],
+      people:source.people||source.integrantes||[],
+      memberships:source.memberships||source.membresias||[],
+      movements:source.movements||source.movimientos||[],
+      quotas:source.quotas||source.cuotas||[],
+      accounts:source.accounts||source.cuentas||[],
+      settings:source.settings||[],
+      audit:source.audit||[]
+    };
+    const total=Object.values(normalized).reduce((n,v)=>n+v.length,0);
+    if(total===0) throw new Error('El archivo no contiene registros para importar.');
+    if(!confirm(`La importación reemplazará los datos actuales de la suite por ${normalized.organizations.length} organizaciones, ${normalized.people.length} personas, ${normalized.movements.length} movimientos y ${normalized.quotas.length} cuotas. ¿Continuar?`))return;
+    await clearAll();
+    for(const s of ['organizations','people','memberships','movements','quotas','accounts','settings','audit']){
+      for(const r of normalized[s]) await put(s,{...r,id:r.id||uid()});
+    }
+    state.orgId=data.currentOrgId&&normalized.organizations.some(o=>o.id===data.currentOrgId)?data.currentOrgId:(normalized.organizations[0]?.id||'');
+    await saveSetting('currentOrgId',state.orgId);
+    await audit('Importar JSON',`${normalized.organizations.length} organizaciones · ${normalized.people.length} personas · ${normalized.movements.length} movimientos · ${normalized.quotas.length} cuotas`);
+    await render();
+    toast('Importación completa restaurada');
+  }
   async function resetSuite(){const phrase=prompt('Esta acción elimina TODOS los datos. Escribe BORRAR para confirmar:');if(phrase!=='BORRAR'){if(phrase!==null)toast('Borrado cancelado');return}await clearAll();state.orgId='';state.route='dashboard';await render();toast('Suite completamente limpia')}
   async function reportGeneral(){const o=await currentOrg();const [movs,quotas,ms]=await Promise.all([all('movements'),all('quotas'),all('memberships')]);const tx=movs.filter(m=>m.orgId===o.id&&!m.cancelled);const inc=tx.filter(m=>m.kind==='Ingreso').reduce((s,m)=>s+Number(m.amount||0),0),out=tx.filter(m=>m.kind==='Egreso').reduce((s,m)=>s+Number(m.amount||0),0);const q=quotas.filter(x=>x.orgId===o.id).reduce((s,x)=>s+Number(x.amountPaid||0),0);const html=`<h1>${esc(o.name)}</h1><div class="meta">${esc(o.type||'Organización')} · ${o.year||''} · Informe general · ${new Date().toLocaleDateString('es-CL')}</div><div class="grid"><div class="box"><b>Ingresos efectivos</b><br>${money(inc)}</div><div class="box"><b>Egresos efectivos</b><br>${money(out)}</div><div class="box"><b>Saldo disponible</b><br>${money(inc-out)}</div><div class="box"><b>Cuotas recibidas</b><br>${money(q)}</div></div><h2>Movimientos</h2><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Medio</th><th>Responsable</th><th>Monto</th></tr></thead><tbody>${tx.map(m=>`<tr><td>${esc(m.date)}</td><td>${esc(m.kind)}</td><td>${esc(m.detail)}</td><td>${esc(m.method)}</td><td>${esc(m.receiver)}</td><td>${money(m.amount)}</td></tr>`).join('')}</tbody></table><h2>Personas vinculadas</h2><p>${ms.filter(m=>m.orgId===o.id).length}</p>`;printDocument(`Informe general · ${o.name}`,html)}
   async function reportPeople(){const o=await currentOrg();const [people,ms]=await Promise.all([all('people'),all('memberships')]);const by=new Map(people.map(p=>[p.id,p]));const rows=ms.filter(m=>m.orgId===o.id).map(m=>{const p=by.get(m.personId)||{};return `<tr><td>${esc(`${p.firstName||''} ${p.lastName||''}`)}</td><td>${esc(p.rut||'')}</td><td>${esc((m.roles||[]).join(', '))}</td><td>${esc(p.phone||'')}</td><td>${esc(p.whatsapp||'')}</td><td>${esc(p.email||'')}</td></tr>`}).join('');printDocument(`Personas · ${o.name}`,`<h1>${esc(o.name)}</h1><div class="meta">Listado de personas · ${new Date().toLocaleDateString('es-CL')}</div><table><thead><tr><th>Nombre</th><th>RUT</th><th>Roles</th><th>Teléfono</th><th>WhatsApp</th><th>Correo</th></tr></thead><tbody>${rows}</tbody></table>`)}

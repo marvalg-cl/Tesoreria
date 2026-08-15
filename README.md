@@ -22,3 +22,7 @@ Versión reconstruida desde cero, sin datos precargados.
 
 ## Instalación
 Subir todos los archivos y carpetas manteniendo la estructura. GitHub Pages debe publicar la carpeta raíz del repositorio.
+
+
+## Respaldo JSON
+La opción Exportar JSON genera un respaldo completo de IndexedDB: organizaciones, personas, vínculos, movimientos, cuotas, cuentas, configuración y auditoría. La importación acepta este formato y restaura todos los registros.
