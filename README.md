@@ -1,4 +1,4 @@
-# Tesorería Multiorganizacional — versión limpia
+# Tesorería Multiorganizacional — versión 3 — arranque robusto
 
 Aplicación PWA HTML/CSS/JS sin framework, con **IndexedDB** como almacenamiento local.
 
@@ -23,3 +23,10 @@ La aplicación no contiene datos precargados. Los datos se cargan mediante JSON 
 
 ## Publicación
 Subir todos los archivos a la raíz del repositorio de GitHub Pages. Abrir la URL HTTPS publicada; no abrir `content://` ni el archivo HTML directamente.
+
+
+## Corrección v3
+- Service Worker versionado con actualización inmediata y red prioritaria para HTML/CSS/JS.
+- Base IndexedDB nueva `TesoreriaMultiorganizacional_v3`, sin datos heredados.
+- Modal creado dinámicamente: no puede aparecer una ventana blanca vacía durante el arranque.
+- Pantalla de arranque y captura de errores de interfaz para evitar una pantalla blanca silenciosa.
