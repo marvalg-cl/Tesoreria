@@ -1,8 +1,11 @@
 {
-  "version": 1,
+  "format": "tesoreria-multiorganizacional",
+  "version": 2,
   "organizations": [],
   "people": [],
+  "memberships": [],
   "movements": [],
-  "dues": [],
-  "treasurers": []
+  "quotas": [],
+  "accounts": [],
+  "settings": []
 }

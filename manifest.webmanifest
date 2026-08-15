@@ -1,1 +1,16 @@
-{"name":"Tesorería Multiorganizacional","short_name":"Tesorería","start_url":"./","display":"standalone","background_color":"#f4f6f7","theme_color":"#33454f","description":"Control de tesorería multiorganizacional con IndexedDB","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{
+  "name":"Tesorería Multiorganizacional",
+  "short_name":"Tesorería",
+  "description":"Gestión local multiorganizacional con IndexedDB",
+  "lang":"es-CL",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "orientation":"portrait",
+  "background_color":"#f4f6f7",
+  "theme_color":"#31434b",
+  "icons":[
+    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}

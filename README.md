@@ -1,32 +1,24 @@
-# Tesorería Multiorganizacional — versión 3 — arranque robusto
+# Tesorería Multiorganizacional v2
 
-Aplicación PWA HTML/CSS/JS sin framework, con **IndexedDB** como almacenamiento local.
+Versión reconstruida desde cero, sin datos precargados.
 
-## Inicio limpio
-La aplicación no contiene datos precargados. Los datos se cargan mediante JSON o se crean desde la interfaz.
+## Principios
+- IndexedDB como persistencia de datos.
+- Sin localStorage para datos de la suite.
+- Multi-organización.
+- Personas maestras reutilizables entre organizaciones.
+- Fotografía y múltiples datos de contacto.
+- Roles múltiples y tipos de organización.
+- Tutor/apoderado/responsable ampliado.
+- Ingresos efectivos y egresos efectivos separados.
+- Receptores: Tesorería, Secretaría, Presidencia, Responsable, Apoderado/a, Comisión, Encargado/a y Otro.
+- Importación JSON que reemplaza la base actual.
+- Exportación JSON completa.
+- Borrado total confirmado mediante la palabra BORRAR.
+- Navegación inferior optimizada para celulares.
+- Iconografía SVG propia, sin emojis ni fuentes de iconos.
+- Informes preparados con HTML de impresión independiente del CSS de pantalla.
+- PWA con service worker y caché de archivos locales.
 
-## Funciones incluidas
-- IndexedDB para organizaciones, personas, movimientos, cuotas, tesoreros y comprobantes.
-- Importación y exportación JSON.
-- Exportación Excel compatible (`tesoreria_GENERAL.xls`) con hoja GENERAL y hojas de apoyo.
-- Informe GENERAL horizontal preparado para impresión/Guardar como PDF, con texto oscuro y alto contraste.
-- Adjuntos de respaldos/comprobantes guardados como Blob en IndexedDB.
-- Cuotas separadas en obligatorias anuales y extraordinarias.
-- Monto real en tesorería y detalle de últimos gastos.
-- Cuenta bancaria de la organización.
-- RUT con guion automático.
-- Teléfono y WhatsApp Chile con +569 precargado.
-- Personas reutilizables en múltiples organizaciones, con roles, contacto, foto y tutor/apoderado/responsable.
-- Tipos de organización ampliados.
-- Barra lateral en escritorio y barra inferior en celulares.
-- Botón para borrar completamente la suite y comenzar desde cero.
-
-## Publicación
-Subir todos los archivos a la raíz del repositorio de GitHub Pages. Abrir la URL HTTPS publicada; no abrir `content://` ni el archivo HTML directamente.
-
-
-## Corrección v3
-- Service Worker versionado con actualización inmediata y red prioritaria para HTML/CSS/JS.
-- Base IndexedDB nueva `TesoreriaMultiorganizacional_v3`, sin datos heredados.
-- Modal creado dinámicamente: no puede aparecer una ventana blanca vacía durante el arranque.
-- Pantalla de arranque y captura de errores de interfaz para evitar una pantalla blanca silenciosa.
+## Instalación
+Subir todos los archivos y carpetas manteniendo la estructura. GitHub Pages debe publicar la carpeta raíz del repositorio.
