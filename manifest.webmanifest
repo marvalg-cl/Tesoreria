@@ -1,16 +1,33 @@
 {
   "name": "Tesorería Multiorganizacional",
   "short_name": "Tesorería",
-  "start_url": "./",
-  "scope": "./",
+  "id": "/Tesoreria/",
+  "start_url": "/Tesoreria/",
+  "scope": "/Tesoreria/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#f4f7fb",
   "theme_color": "#17324d",
-  "description": "Gestión local de aportes, movimientos, responsables y respaldos para organizaciones.",
+  "lang": "es-CL",
+  "description": "Gestión de aportes, ingresos, egresos, responsables, bancos e informes.",
   "icons": [
-    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
-    {"src":"icons/icon-512-maskable.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+    {
+      "src": "/Tesoreria/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Tesoreria/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Tesoreria/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
