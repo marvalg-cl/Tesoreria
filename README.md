@@ -1,37 +1,30 @@
-# Tesorería Multiorganizacional v11
+# Tesorería Multiorganizacional — PWA
 
-HTML + IndexedDB + PWA, preparada para GitHub Pages.
+Aplicación HTML + IndexedDB preparada para GitHub Pages.
 
-## Publicación en GitHub Pages
-1. Sube `index.html`, `manifest.webmanifest`, `sw.js`, `icons/` y los JSON de respaldo al repositorio.
-2. En **Settings → Pages**, selecciona **Deploy from a branch**, rama `main` y carpeta `/root`.
-3. Abre la URL HTTPS de GitHub Pages.
-4. En Android Chrome/Brave usa **Instalar aplicación** o **Añadir a pantalla de inicio**.
+## IMPORTANTE: repositorio ≠ aplicación
 
-> Una PWA **no puede instalarse** si el HTML se abre desde `content://` o `file://`. Necesita HTTPS (GitHub Pages) o localhost.
+La página `github.com/.../repository` solamente muestra los archivos. Para que sea una PWA debes abrir el sitio publicado por GitHub Pages, bajo HTTPS.
 
-## Datos base verificados
-- 37 participantes.
-- 190 aportes, incluidos 97 aportes extraordinarios.
-- 24 movimientos.
-- Ingresos Tesorería: $404.000.
-- Ingresos Presidenta: $106.000.
-- Egresos Tesorería: $200.970.
-- Egresos Presidenta: $74.692.
-- Saldo real Tesorería: $203.030.
-- Saldo real Presidenta/otros: $31.308.
-- Saldo teórico consolidado: $234.338.
+### Opción recomendada
 
-La v11 utiliza una base IndexedDB nueva (`tesoreria_multi_v11_clean`) para evitar que datos duplicados de versiones anteriores alteren el resumen. El respaldo JSON permite importar/restaurar la información.
+1. Sube **el contenido de esta carpeta a la raíz del repositorio** en `main`.
+2. GitHub ejecutará `.github/workflows/pages.yml`.
+3. En el repositorio entra a **Settings → Pages** y, si aparece la opción, selecciona **GitHub Actions** como fuente.
+4. Espera a que termine el workflow `Publicar Tesorería en GitHub Pages`.
+5. Abre la URL que aparece en el workflow, con formato `https://USUARIO.github.io/REPOSITORIO/`.
+6. Abre esa URL en Chrome/Brave Android. No abras el archivo desde `github.com` ni desde una descarga `content://`.
+7. Después de cargar la aplicación, usa el menú del navegador y selecciona **Instalar aplicación** cuando esté disponible.
 
-## Mejoras v11
-- PWA corregida: manifest enlazado + Service Worker registrado + scope/start URL correctos.
-- Botones **Guardar PDF** en los informes; se abre el diálogo de impresión del dispositivo para elegir **Guardar como PDF**.
-- Documentos con diseño A4, saltos de página y bloque inferior único con organización, transferencia y Tesorero.
-- Tesorero precargado: **Mario H. Valdés González · +56967567970**.
-- Bancos de Chile en selector.
-- RUT con formato automático `12.345.678-9`.
-- Teléfonos normalizados a `+569XXXXXXXX`.
-- Teléfono, correo y WhatsApp representados por iconos.
-- Aportes extraordinarios separados de la cuota anual.
-- Base limpia para que el resumen llegue a $234.338 y no a cifras infladas por migraciones anteriores.
+## PWA
+
+- manifest.webmanifest
+- sw.js
+- iconos 192/512
+- display standalone
+- HTTPS mediante GitHub Pages
+- Service Worker con fetch
+
+## Datos
+
+IndexedDB local. Los JSON son respaldos/importación y no sustituyen a la base local.

@@ -1,7 +1,6 @@
 {
   "name": "Tesorería Multiorganizacional",
   "short_name": "Tesorería",
-  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -10,8 +9,8 @@
   "theme_color": "#17324d",
   "description": "Gestión local de aportes, movimientos, responsables y respaldos para organizaciones.",
   "icons": [
-    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png"},
-    {"src":"./icons/icon-512-maskable.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icons/icon-512-maskable.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
   ]
 }
