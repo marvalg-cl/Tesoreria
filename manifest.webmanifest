@@ -1,11 +1,14 @@
 {
   "name":"Tesorería Multiorganizacional",
   "short_name":"Tesorería",
+  "description":"Control comunitario claro y trazable",
   "start_url":"./",
   "scope":"./",
   "display":"standalone",
-  "background_color":"#f7f8f9",
-  "theme_color":"#31434b",
-  "lang":"es",
-  "icons":[{"src":"./icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "orientation":"any",
+  "background_color":"#f4f6f7",
+  "theme_color":"#34454c",
+  "icons":[
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
 }

@@ -3,82 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#31434b">
-  <meta name="description" content="Tesorería Multiorganizacional">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
-  <title>Tesorería</title>
+  <meta name="theme-color" content="#34454c">
+  <meta name="description" content="Tesorería Multiorganizacional — control comunitario claro y trazable">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Tesorería Multiorganizacional</title>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brandmark">₲</div>
-      <span>Tesorería</span>
-    </div>
-    <select id="orgSelect" class="org-select" aria-label="Organización">
-      <option value="">Sin organizaciones</option>
-    </select>
-    <button class="role">Administrador</button>
-  </header>
-
-  <main id="app" class="app">
-    <section class="hero">
-      <div class="hero-icon">₲</div>
-      <h1>Tesorería</h1>
-      <p id="statusText">Aplicación lista.</p>
-      <div id="dbWarning" class="warning hidden"></div>
-    </section>
-
-    <section id="dashboard" class="cards">
-      <article class="card"><span>Organizaciones</span><strong id="countOrg">0</strong></article>
-      <article class="card"><span>Ingresos</span><strong id="countIn">0</strong></article>
-      <article class="card"><span>Egresos</span><strong id="countOut">0</strong></article>
-      <article class="card"><span>Saldo</span><strong id="balance">$0</strong></article>
-    </section>
-
-    <section class="actions">
-      <button id="newOrgBtn" class="primary">＋ Nueva organización</button>
-      <button id="importBtn">Importar JSON</button>
-      <button id="exportBtn">Exportar JSON</button>
-      <button id="resetBtn" class="danger">Borrar toda la suite</button>
-      <input id="fileInput" type="file" accept=".json,application/json" hidden>
-    </section>
-
-    <section class="info">
-      <h2>Inicio limpio</h2>
-      <p>No hay datos precargados. Los datos se almacenan localmente en IndexedDB y pueden cargarse mediante JSON.</p>
-    </section>
-  </main>
-
-  <nav class="bottomnav">
-    <button class="navitem active"><span>⌂</span><small>Panel</small></button>
-    <button class="navitem" id="orgNav"><span>▦</span><small>Organizaciones</small></button>
-    <button class="navitem"><span>↗</span><small>Ingresos</small></button>
-    <button class="navitem"><span>↘</span><small>Egresos</small></button>
-    <button class="navitem"><span>⚙</span><small>Más</small></button>
-  </nav>
-
-  <div id="modal" class="modal hidden">
-    <div class="modalbox">
-      <h2 id="modalTitle">Nueva organización</h2>
-      <form id="orgForm">
-        <label>Nombre de la organización
-          <input id="orgName" required autocomplete="off">
-        </label>
-        <label>Identificador (opcional)
-          <input id="orgId" autocomplete="off">
-        </label>
-        <div class="modal-actions">
-          <button type="button" id="cancelModal">Cancelar</button>
-          <button class="primary" type="submit">Guardar</button>
-        </div>
-      </form>
-    </div>
+<div id="app">
+  <div id="boot" class="boot">
+    <div class="boot-mark">₲</div>
+    <strong>Cargando Tesorería</strong>
+    <span>Preparando datos y controles…</span>
   </div>
+</div>
 
-  <div id="toast" class="toast"></div>
+<template id="icon-template">
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use></use></svg>
+</template>
 
-<script src="./app.js"></script>
+<script src="app.js" defer></script>
 </body>
 </html>

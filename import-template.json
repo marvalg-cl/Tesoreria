@@ -1,0 +1,10 @@
+{
+  "schema": "tesoreria-multi-v2",
+  "organizations": [],
+  "people": [],
+  "movements": [],
+  "attachments": [],
+  "settings": {
+    "treasurer": {}
+  }
+}
