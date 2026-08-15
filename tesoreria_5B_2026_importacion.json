@@ -1,0 +1,1897 @@
+{
+  "format": "tesoreria-multiorganizacional",
+  "version": 1,
+  "organization": {
+    "name": "5°B",
+    "year": 2026,
+    "type": "Curso",
+    "color": "#2563eb",
+    "notes": "Importado desde Tesorería 5°B 2026."
+  },
+  "treasurer": {
+    "name": "Mario H. Valdés González",
+    "rut": "",
+    "phone": "+56967567970",
+    "email": "",
+    "notes": "5°B Escuela C. Correa"
+  },
+  "accounts": [],
+  "people": [
+    {
+      "name": "ARAYA PINO RENATA ANTONELA",
+      "rut": "25310795-2",
+      "tutor": "PATRICIA PINO"
+    },
+    {
+      "name": "ASTUDILLO PINO TABATA JESÚS",
+      "rut": "25299343-6",
+      "tutor": "ROXANA PINO"
+    },
+    {
+      "name": "AZAGRA ABRIGO AMARO ALONSO",
+      "rut": "25172569-1",
+      "tutor": "BEATRIZ ABRIGO"
+    },
+    {
+      "name": "BECERRA CARRASCO AGUSTIN SALVADOR THOMAS",
+      "rut": "25074761-6",
+      "tutor": "ALICIA ARAYA"
+    },
+    {
+      "name": "BERTEL MONTES GLEYMIS",
+      "rut": "",
+      "tutor": ""
+    },
+    {
+      "name": "CASTILLO DÍAZ NAHUEL ANDRÉS",
+      "rut": "25186502-7",
+      "tutor": ""
+    },
+    {
+      "name": "CASTILLO GRACIA JOSEFA ANTONIA",
+      "rut": "24387554-4",
+      "tutor": ""
+    },
+    {
+      "name": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "rut": "25117099-1",
+      "tutor": "ANA VALDERRAMA"
+    },
+    {
+      "name": "DONOSO MONSALVE ANGEL ISAAC",
+      "rut": "25091106-8",
+      "tutor": ""
+    },
+    {
+      "name": "DONOSO MONSALVE THOMAS IGNACIO",
+      "rut": "25091116-5",
+      "tutor": ""
+    },
+    {
+      "name": "DONOSO ZAMORA SOFÍA ELENA",
+      "rut": "24953133-2",
+      "tutor": "JENNY ZAMORA"
+    },
+    {
+      "name": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "rut": "24751135-0",
+      "tutor": "OLGA MOLINA"
+    },
+    {
+      "name": "ITURRIETA HERNÁNDEZ MAXIMILIANO ALEJANDRO",
+      "rut": "25049508-0",
+      "tutor": "VALERIA HERNANDEZ"
+    },
+    {
+      "name": "ITURRIETA HERNÁNDEZ VICENTE IGNACIO",
+      "rut": "25049482-3",
+      "tutor": "VALERIA HERNANDEZ"
+    },
+    {
+      "name": "JATIB DÍAZ ABDOLASIS MAXIMILIANO",
+      "rut": "25067494-5",
+      "tutor": "MARISOL DIAZ"
+    },
+    {
+      "name": "MENESES YÁÑEZ ALEXANDRA MODESTA",
+      "rut": "25015009-1",
+      "tutor": ""
+    },
+    {
+      "name": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "rut": "25179616-5",
+      "tutor": "STEFANY ALIAGA"
+    },
+    {
+      "name": "MOYA SALAS COLOMBA AYLÉN",
+      "rut": "25026561-1",
+      "tutor": "NATALIE SALAS"
+    },
+    {
+      "name": "MUÑOZ BECERRA AGUSTINA ISIDORA",
+      "rut": "25012737-5",
+      "tutor": "YERI"
+    },
+    {
+      "name": "MUÑOZ NAVARRETE ANTONELLA ESTEFANÍA",
+      "rut": "25276474-7",
+      "tutor": "JANETTE NAVARRETE"
+    },
+    {
+      "name": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "rut": "25280245-2",
+      "tutor": "NATALIA VALENZUELA"
+    },
+    {
+      "name": "ORELLANA IBARRA PABLO ALFONSO",
+      "rut": "25312924-7",
+      "tutor": ""
+    },
+    {
+      "name": "OYARCE CABELLO MONSERRAT ANTONELLA",
+      "rut": "25006274-5",
+      "tutor": "MONSERRAT OLLARCE"
+    },
+    {
+      "name": "PÉREZ HIGUERAS ANTONELLA NICOLE",
+      "rut": "24758384-4",
+      "tutor": "NELLY HIGUERAS"
+    },
+    {
+      "name": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "rut": "25042952-5",
+      "tutor": "ROSA LLANOS"
+    },
+    {
+      "name": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "rut": "24911564-9",
+      "tutor": "YASNA RODRIGUEZ"
+    },
+    {
+      "name": "RIVERA AVENDAÑO BERTA AMPARO",
+      "rut": "25255361-0",
+      "tutor": "BLANCA AVENDAÑO"
+    },
+    {
+      "name": "RUBIO REYES JOSÉ ALONSO",
+      "rut": "24973619-8",
+      "tutor": ""
+    },
+    {
+      "name": "SANCHEZ ZAMBRANO MIULER DAVID",
+      "rut": "28939190-8",
+      "tutor": "YERKA ZAMBRANO"
+    },
+    {
+      "name": "SOTO URZÚA COLOMBA JANÍS",
+      "rut": "25033740-K",
+      "tutor": "MABEL URZUA"
+    },
+    {
+      "name": "UNZUETA GONZÁLEZ JESÚS VINKO ALEJANDRO",
+      "rut": "25001015-K",
+      "tutor": ""
+    },
+    {
+      "name": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "rut": "",
+      "tutor": ""
+    },
+    {
+      "name": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "rut": "",
+      "tutor": "LUZMENIA BRAVO"
+    },
+    {
+      "name": "GIANELA FLORES",
+      "rut": "",
+      "tutor": "JANIS OYARCE"
+    },
+    {
+      "name": "LUEIZA BELTRAN JUAN PABLO",
+      "rut": "",
+      "tutor": "FABIOLA BELTRAN"
+    },
+    {
+      "name": "FARIAS EMILIA",
+      "rut": "",
+      "tutor": "MARTA VALDIVIA"
+    },
+    {
+      "name": "CUBILLOS MATIAS",
+      "rut": "",
+      "tutor": ""
+    }
+  ],
+  "contributions": [
+    {
+      "person": "ARAYA PINO RENATA ANTONELA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ARAYA PINO RENATA ANTONELA",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ARAYA PINO RENATA ANTONELA",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ARAYA PINO RENATA ANTONELA",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ARAYA PINO RENATA ANTONELA",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ARAYA PINO RENATA ANTONELA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ARAYA PINO RENATA ANTONELA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "ASTUDILLO PINO TABATA JESÚS",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ASTUDILLO PINO TABATA JESÚS",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ASTUDILLO PINO TABATA JESÚS",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "AZAGRA ABRIGO AMARO ALONSO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "AZAGRA ABRIGO AMARO ALONSO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "AZAGRA ABRIGO AMARO ALONSO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "AZAGRA ABRIGO AMARO ALONSO",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "BECERRA CARRASCO AGUSTIN SALVADOR THOMAS",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "BECERRA CARRASCO AGUSTIN SALVADOR THOMAS",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "BECERRA CARRASCO AGUSTIN SALVADOR THOMAS",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "BECERRA CARRASCO AGUSTIN SALVADOR THOMAS",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "BECERRA CARRASCO AGUSTIN SALVADOR THOMAS",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "BECERRA CARRASCO AGUSTIN SALVADOR THOMAS",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "BERTEL MONTES GLEYMIS",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "CASTILLO GRACIA JOSEFA ANTONIA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTILLO GRACIA JOSEFA ANTONIA",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTILLO GRACIA JOSEFA ANTONIA",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTILLO GRACIA JOSEFA ANTONIA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTILLO GRACIA JOSEFA ANTONIA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CASTRO VALDERRAMA EIMY PASCALLE",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "DONOSO MONSALVE ANGEL ISAAC",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE ANGEL ISAAC",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE ANGEL ISAAC",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE ANGEL ISAAC",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE ANGEL ISAAC",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE ANGEL ISAAC",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE ANGEL ISAAC",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "DONOSO MONSALVE THOMAS IGNACIO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE THOMAS IGNACIO",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE THOMAS IGNACIO",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE THOMAS IGNACIO",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE THOMAS IGNACIO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE THOMAS IGNACIO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO MONSALVE THOMAS IGNACIO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "DONOSO ZAMORA SOFÍA ELENA",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Agosto",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "INOSTROZA MOLINA MATÍAS ALONSO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ MAXIMILIANO ALEJANDRO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ MAXIMILIANO ALEJANDRO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ MAXIMILIANO ALEJANDRO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ MAXIMILIANO ALEJANDRO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ VICENTE IGNACIO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ VICENTE IGNACIO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ VICENTE IGNACIO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "ITURRIETA HERNÁNDEZ VICENTE IGNACIO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "JATIB DÍAZ ABDOLASIS MAXIMILIANO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "JATIB DÍAZ ABDOLASIS MAXIMILIANO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "JATIB DÍAZ ABDOLASIS MAXIMILIANO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "JATIB DÍAZ ABDOLASIS MAXIMILIANO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "MENESES YÁÑEZ ALEXANDRA MODESTA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MENESES YÁÑEZ ALEXANDRA MODESTA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "MENESES YÁÑEZ ALEXANDRA MODESTA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "MICHEA ALIAGA JOAQUÍN ELÍAS",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "MOYA SALAS COLOMBA AYLÉN",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MOYA SALAS COLOMBA AYLÉN",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MOYA SALAS COLOMBA AYLÉN",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MOYA SALAS COLOMBA AYLÉN",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MOYA SALAS COLOMBA AYLÉN",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ BECERRA AGUSTINA ISIDORA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ BECERRA AGUSTINA ISIDORA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ BECERRA AGUSTINA ISIDORA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ BECERRA AGUSTINA ISIDORA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ NAVARRETE ANTONELLA ESTEFANÍA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ NAVARRETE ANTONELLA ESTEFANÍA",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ NAVARRETE ANTONELLA ESTEFANÍA",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ NAVARRETE ANTONELLA ESTEFANÍA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ NAVARRETE ANTONELLA ESTEFANÍA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "MUÑOZ NAVARRETE ANTONELLA ESTEFANÍA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "MUÑOZ VALENZUELA BENJAMÍN IGNACIO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "OYARCE CABELLO MONSERRAT ANTONELLA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "OYARCE CABELLO MONSERRAT ANTONELLA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "OYARCE CABELLO MONSERRAT ANTONELLA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "OYARCE CABELLO MONSERRAT ANTONELLA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "OYARCE CABELLO MONSERRAT ANTONELLA",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "PÉREZ HIGUERAS ANTONELLA NICOLE",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "PÉREZ HIGUERAS ANTONELLA NICOLE",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "PÉREZ HIGUERAS ANTONELLA NICOLE",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "PÉREZ HIGUERAS ANTONELLA NICOLE",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "PÉREZ HIGUERAS ANTONELLA NICOLE",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "RAMÍREZ MUÑOZ ANHAI ESPERANZA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Agosto",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "REYES RODRÍGUEZ FERNANDA CATALINA",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Agosto",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Septiembre",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Octubre",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Noviembre",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Diciembre",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "RIVERA AVENDAÑO BERTA AMPARO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "RUBIO REYES JOSÉ ALONSO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "RUBIO REYES JOSÉ ALONSO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "RUBIO REYES JOSÉ ALONSO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "SANCHEZ ZAMBRANO MIULER DAVID",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SANCHEZ ZAMBRANO MIULER DAVID",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SANCHEZ ZAMBRANO MIULER DAVID",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SANCHEZ ZAMBRANO MIULER DAVID",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SANCHEZ ZAMBRANO MIULER DAVID",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SANCHEZ ZAMBRANO MIULER DAVID",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Presidenta"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Julio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "SOTO URZÚA COLOMBA JANÍS",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VALDÉS ORMAZÁBAL LAURA FRANCISCA RAYEN",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "month": "Marzo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "month": "Abril",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "month": "Mayo",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "month": "Junio",
+      "type": "Obligatoria",
+      "amount": 3000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "VÁSQUEZ BRAVO RAÚL FELICIANO",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "GIANELA FLORES",
+      "month": "Especial",
+      "concept": "CUMPL PROFESOR",
+      "type": "Obligatoria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "GIANELA FLORES",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "GIANELA FLORES",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "GIANELA FLORES",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1500.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "LUEIZA BELTRAN JUAN PABLO",
+      "month": "Especial",
+      "concept": "DIA ALUMNO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "LUEIZA BELTRAN JUAN PABLO",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "LUEIZA BELTRAN JUAN PABLO",
+      "month": "Especial",
+      "concept": "RIFA",
+      "type": "Voluntaria",
+      "amount": 1000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "FARIAS EMILIA",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    },
+    {
+      "person": "CUBILLOS MATIAS",
+      "month": "Especial",
+      "concept": "CONVIVENCIA JUNIO",
+      "type": "Obligatoria",
+      "amount": 2000.0,
+      "actor": "Tesorería"
+    }
+  ],
+  "movements": [
+    {
+      "kind": "Ingreso",
+      "date": "2026-07-22",
+      "detail": "VENTA CAFÉ  (REUNION)",
+      "counterparty": "",
+      "amount": 14500.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Registrado"
+    },
+    {
+      "kind": "Ingreso",
+      "date": "2026-03-01",
+      "detail": "RIFA",
+      "counterparty": "",
+      "amount": 15000.0,
+      "actor": "Presidenta",
+      "method": "Efectivo",
+      "status": "Registrado"
+    },
+    {
+      "kind": "Ingreso",
+      "date": "2026-03-01",
+      "detail": "CONVIVENCIA",
+      "counterparty": "",
+      "amount": 36000.0,
+      "actor": "Presidenta",
+      "method": "Efectivo",
+      "status": "Registrado"
+    },
+    {
+      "kind": "Ingreso",
+      "date": "2026-03-01",
+      "detail": "TRANSFERENCIA",
+      "counterparty": "",
+      "amount": 10000.0,
+      "actor": "Presidenta",
+      "method": "Efectivo",
+      "status": "Registrado"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-03-26",
+      "detail": "TORTA",
+      "counterparty": "PANEDERIA MODELO",
+      "receipt": "BOLETA 5346708",
+      "amount": 21490.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-03-26",
+      "detail": "BEBESTIBLES",
+      "counterparty": "JUMBO",
+      "receipt": "BOLETA 3341113655",
+      "amount": 9610.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-04-07",
+      "detail": "REGALO CUMPLEAÑOS PROFESOR ",
+      "counterparty": "FALABELLA",
+      "receipt": "BOLETA 944627229",
+      "amount": 24990.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-04-21",
+      "detail": "DECORACION LIBRO",
+      "counterparty": "PRESIDENTA",
+      "receipt": "TE 8084312",
+      "amount": 10000.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-05-28",
+      "detail": "BEBIDAS",
+      "counterparty": "JUMBO",
+      "receipt": "BOLETA 33883893415",
+      "amount": 7670.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-05-28",
+      "detail": "PLATOS",
+      "counterparty": "COMERCIAL PAMY",
+      "receipt": "BOLETA 113895",
+      "amount": 5540.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-05-28",
+      "detail": "TORTA 16P",
+      "counterparty": "PANEDERIA MODELO",
+      "receipt": "BOLETA 5258358",
+      "amount": 9990.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-05-28",
+      "detail": "TORTA 24P",
+      "counterparty": "PANEDERIA MODELO",
+      "receipt": "BOLETA 5258336",
+      "amount": 13990.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-06-18",
+      "detail": "VIENESA ADEREZOS",
+      "counterparty": "JUMBO",
+      "receipt": "3403993582",
+      "amount": 18550.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-06-19",
+      "detail": "TRANSFERENCIA A PRESIDENTA PALTAS",
+      "counterparty": "BANCOESTADO",
+      "receipt": "8000745",
+      "amount": 5000.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-06-18",
+      "detail": "PAN COMPLETO ABONO",
+      "counterparty": "PANADERIA MULTIMASAS SPA",
+      "receipt": "3196",
+      "amount": 2000.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-06-19",
+      "detail": "PAN COMPLETO",
+      "counterparty": "PANADERIA MULTIMASAS SPA",
+      "receipt": "3231",
+      "amount": 10930.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-06-19",
+      "detail": "TOMATE BEBIDAS",
+      "counterparty": "ROSA VILLACURA",
+      "receipt": "53017",
+      "amount": 13040.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-07-22",
+      "detail": "CUCHARAS",
+      "counterparty": "COMERCIAL PAMY",
+      "receipt": "BOLETA 117765",
+      "amount": 1100.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-07-30",
+      "detail": "TORTA MANJAR CHOCOLATE 32 P",
+      "counterparty": "PANADERIA MODELO",
+      "receipt": "BOLETA 5285166",
+      "amount": 25490.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-08-06",
+      "detail": "POTES HELADOS - PAPEL CELOFAN",
+      "counterparty": "COMERCIAL PAMY",
+      "receipt": "BOLETA 118864",
+      "amount": 17330.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-07-06",
+      "detail": "DIFERENCIA POTES (VASOS)",
+      "counterparty": "COMERCIAL PAMY",
+      "receipt": "BOLETA 118920",
+      "amount": 4250.0,
+      "actor": "Tesorería",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-03-26",
+      "detail": "VASOS SERVILLETAS BOLSA",
+      "counterparty": "COMERCIAL PAMY",
+      "receipt": "BOLETA 108804",
+      "amount": 6920.0,
+      "actor": "Presidenta",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-05-05",
+      "detail": "BOLSAS Y DULCES DEC LIBRO",
+      "counterparty": "NEW YORK",
+      "receipt": "BOLETA 1958809",
+      "amount": 36810.0,
+      "actor": "Presidenta",
+      "method": "Efectivo",
+      "status": "Rendido"
+    },
+    {
+      "kind": "Egreso",
+      "date": "2026-05-05",
+      "detail": "RESALTADORES, PAN JAMON",
+      "counterparty": "JUMBO",
+      "receipt": "BOLETA 3370616301",
+      "amount": 30962.0,
+      "actor": "Presidenta",
+      "method": "Efectivo",
+      "status": "Rendido"
+    }
+  ]
+}
