@@ -1,10 +1,8 @@
 {
-  "schema": "tesoreria-multi-v2",
+  "version": 1,
   "organizations": [],
   "people": [],
   "movements": [],
-  "attachments": [],
-  "settings": {
-    "treasurer": {}
-  }
+  "dues": [],
+  "treasurers": []
 }

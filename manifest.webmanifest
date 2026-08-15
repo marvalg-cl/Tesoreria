@@ -1,14 +1,1 @@
-{
-  "name":"Tesorería Multiorganizacional",
-  "short_name":"Tesorería",
-  "description":"Control comunitario claro y trazable",
-  "start_url":"./",
-  "scope":"./",
-  "display":"standalone",
-  "orientation":"any",
-  "background_color":"#f4f6f7",
-  "theme_color":"#34454c",
-  "icons":[
-    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
-  ]
-}
+{"name":"Tesorería Multiorganizacional","short_name":"Tesorería","start_url":"./","display":"standalone","background_color":"#f4f6f7","theme_color":"#33454f","description":"Control de tesorería multiorganizacional con IndexedDB","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}

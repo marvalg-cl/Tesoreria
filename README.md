@@ -1,39 +1,25 @@
 # Tesorería Multiorganizacional — versión limpia
 
-## Instalación PWA
-1. Sube **todos** los archivos de esta carpeta al repositorio de GitHub Pages.
-2. En GitHub Pages selecciona `main` y `/ (root)`.
-3. Abre la URL de Pages en Chrome/Brave/Edge.
-4. Usa el menú del navegador → **Instalar aplicación** cuando aparezca la opción.
+Aplicación PWA HTML/CSS/JS sin framework, con **IndexedDB** como almacenamiento local.
 
-> La aplicación no usa `localStorage`; la persistencia de datos se realiza con **IndexedDB**.
-
-## Archivos
-- `index.html`: entrada.
-- `app.js`: aplicación completa.
-- `styles.css`: interfaz responsive.
-- `manifest.webmanifest`: configuración PWA.
-- `sw.js`: caché/offline del shell.
-- `icon.svg`: icono.
-- `import-template.json`: plantilla de importación limpia.
+## Inicio limpio
+La aplicación no contiene datos precargados. Los datos se cargan mediante JSON o se crean desde la interfaz.
 
 ## Funciones incluidas
-- Múltiples organizaciones y tipos de organización.
-- Personas reutilizables en múltiples organizaciones.
-- Datos ampliados de integrante, tutor/apoderado/responsable.
-- RUT con formato automático.
-- Teléfonos +569 precargados.
-- Movimientos de ingreso/gasto.
-- Cuotas obligatorias anuales separadas de extraordinarias.
-- Medio efectivo/digital/transferencia y otros.
-- Responsable, autorización, receptor/proveedor.
-- Adjuntos de imágenes/PDF como respaldo.
-- Monto real en tesorería = ingresos registrados − gastos registrados.
-- Planilla maestra horizontal.
-- Exportación Excel compatible (`.xls`) con hoja `GENERAL`.
-- Exportación/importación de respaldo JSON.
-- Informes imprimibles en formato A4 horizontal y opción del navegador de Guardar como PDF.
-- Datos del tesorero al pie de los informes.
-- Botón de borrado total de la suite.
-- Diseño responsive para celular y PC.
-- Navegación inferior en celular y lateral en PC.
+- IndexedDB para organizaciones, personas, movimientos, cuotas, tesoreros y comprobantes.
+- Importación y exportación JSON.
+- Exportación Excel compatible (`tesoreria_GENERAL.xls`) con hoja GENERAL y hojas de apoyo.
+- Informe GENERAL horizontal preparado para impresión/Guardar como PDF, con texto oscuro y alto contraste.
+- Adjuntos de respaldos/comprobantes guardados como Blob en IndexedDB.
+- Cuotas separadas en obligatorias anuales y extraordinarias.
+- Monto real en tesorería y detalle de últimos gastos.
+- Cuenta bancaria de la organización.
+- RUT con guion automático.
+- Teléfono y WhatsApp Chile con +569 precargado.
+- Personas reutilizables en múltiples organizaciones, con roles, contacto, foto y tutor/apoderado/responsable.
+- Tipos de organización ampliados.
+- Barra lateral en escritorio y barra inferior en celulares.
+- Botón para borrar completamente la suite y comenzar desde cero.
+
+## Publicación
+Subir todos los archivos a la raíz del repositorio de GitHub Pages. Abrir la URL HTTPS publicada; no abrir `content://` ni el archivo HTML directamente.
