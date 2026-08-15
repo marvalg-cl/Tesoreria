@@ -1,0 +1,11 @@
+{
+  "name":"Tesorería Multiorganizacional",
+  "short_name":"Tesorería",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#f7f8f9",
+  "theme_color":"#31434b",
+  "lang":"es",
+  "icons":[{"src":"./icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
