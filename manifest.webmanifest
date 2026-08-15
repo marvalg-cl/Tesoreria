@@ -1,20 +1,14 @@
 {
-  "id": "./",
   "name": "Tesorería Multiorganizacional",
   "short_name": "Tesorería",
-  "lang": "es-CL",
-  "start_url": "./?source=pwa",
+  "description": "Gestión local de tesorería, organizaciones, ingresos, egresos, cajas e informes.",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "portrait-primary",
-  "background_color": "#f3f6fa",
-  "theme_color": "#17324d",
-  "description": "Control de tesorería para organizaciones comunitarias",
-  "prefer_related_applications": false,
-  "categories": ["business", "productivity", "finance"],
+  "background_color": "#f4f6f7",
+  "theme_color": "#30444c",
   "icons": [
-    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+    {"src":"./icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
   ]
 }
