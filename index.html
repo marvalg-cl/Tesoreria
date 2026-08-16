@@ -3,45 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#17324d">
-<meta name="description" content="Tesorería Multiorganizacional V3">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<title>Tesorería Multiorganizacional V3</title>
+<meta name="theme-color" content="#183b59">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Tesorería Multiorganizacional</title>
 <style>
-:root{--navy:#17324d;--blue:#2864d7;--orange:#ff6b16;--green:#17845d;--purple:#7542e8;--red:#c53d3d;--bg:#f4f6fa;--card:#fff;--text:#1d2939;--muted:#667085;--line:#d9e0e8}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}button{cursor:pointer}
-.top{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px #0002}
-.brand{font-weight:800;font-size:20px}.sub{font-size:13px;opacity:.8}.brandbox{flex:1}
-.nav{position:sticky;top:68px;z-index:19;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:8px}
-.nav button{border:0;background:transparent;color:#667085;padding:10px 13px;border-radius:18px;white-space:nowrap}.nav button.active{background:#eaf1ff;color:var(--blue);font-weight:700}
-main{max-width:1180px;margin:auto;padding:18px 14px 100px}.pagehead h1{margin:5px 0;font-size:32px}.pagehead p{margin:4px 0 18px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 2px 10px #1d293910;margin-bottom:14px}
-.kpi{border-top:5px solid var(--blue)}.kpi.green{border-color:var(--green)}.kpi.orange{border-color:var(--orange)}.kpi.purple{border-color:var(--purple)}.kpi.red{border-color:var(--red)}
-.kpi .label{color:var(--muted);font-weight:700}.kpi .value{font-size:30px;font-weight:850;margin-top:5px}.small{font-size:13px;color:var(--muted)}
-.actions{display:flex;flex-wrap:wrap;gap:10px}.btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 15px;font-weight:700;color:var(--text)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.orange{background:var(--orange);border-color:var(--orange);color:#fff}.btn.green{background:var(--green);border-color:var(--green);color:#fff}.btn.danger{background:#fff0f0;color:var(--red);border-color:#f0c7c7}
-label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px;color:#475467}input,select,textarea{width:100%;border:1px solid #cfd7e2;border-radius:11px;padding:11px;background:#fff;color:var(--text)}textarea{min-height:90px;resize:vertical}
-.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px}.full{grid-column:1/-1}
-.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:#fff}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:10px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.table th{background:#f7f9fc;position:sticky;top:0}.money{font-weight:800;white-space:nowrap}.income{color:var(--green)}.expense{color:var(--red)}
-.badge{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800;background:#eef2f7}.badge.in{background:#e6f6ef;color:var(--green)}.badge.out{background:#fff0f0;color:var(--red)}
-.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:14px}.tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;white-space:nowrap}.tabs button.active{background:#eaf1ff;color:var(--blue);border-color:#bcd0ff;font-weight:800}
-.empty{padding:30px;text-align:center;color:var(--muted)}.notice{padding:13px 15px;border-radius:12px;background:#eef5ff;border-left:4px solid var(--blue);margin-bottom:14px}.warning{background:#fff8e8;border-color:#e8b33f}
-.hidden{display:none!important}.right{text-align:right}.two{display:flex;gap:10px;align-items:center;justify-content:space-between}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}
-footer{position:fixed;bottom:0;left:0;right:0;background:#17324df5;color:#fff;text-align:center;padding:7px;font-size:11px;z-index:10}
-@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.grid2,.formgrid{grid-template-columns:1fr}.pagehead h1{font-size:27px}.nav{top:68px}.top{padding:10px 12px}.table{min-width:720px}}
-@media(max-width:520px){.grid{grid-template-columns:1fr}.card{padding:14px;border-radius:16px}.actions .btn{flex:1 1 45%}.kpi .value{font-size:28px}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f6fa;color:#1d2939}
+header{background:#183b59;color:#fff;padding:14px 18px 16px;position:sticky;top:0;z-index:5}
+.brand{font-size:22px;font-weight:800}.sub{opacity:.8;margin-top:3px;font-size:14px}
+nav{background:#fff;display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid #d8e0e8;position:sticky;top:76px;z-index:4;padding:8px}
+nav button{border:0;background:#fff;color:#667085;padding:10px 12px;border-radius:18px;white-space:nowrap;font-size:14px}
+nav button.active{background:#e9f1ff;color:#245bc7;font-weight:700}
+main{max-width:1050px;margin:auto;padding:18px 14px 100px}.hero h1{font-size:34px;margin:8px 0}.hero p{color:#667085;font-size:18px;margin:0 0 16px}
+.card{background:#fff;border:1px solid #d9e1ea;border-radius:22px;padding:18px;margin:14px 0;box-shadow:0 3px 12px #1d29390b}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.stat{padding:18px;border-radius:20px;background:#fff;border:1px solid #d9e1ea}.stat b{display:block;font-size:28px;margin-top:8px}.label{font-weight:800;color:#667085;font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-size:16px;font-weight:700;cursor:pointer}.primary{background:#2d67dc;color:#fff}.orange{background:#f97316;color:#fff}.light{background:#edf2f6;color:#243142}.danger{background:#fee4e2;color:#b42318}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label{font-weight:700;font-size:14px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;margin-top:6px;font:inherit;background:#fff}textarea{min-height:90px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e5e7eb;vertical-align:top}th{background:#f8fafc}.scroll{overflow:auto}
+.notice{padding:16px;border-radius:18px;background:#fff8e7;border:1px solid #f2c14e}.empty{padding:28px;text-align:center;color:#667085}
+.small{font-size:13px;color:#667085}.pill{display:inline-block;padding:5px 9px;border-radius:99px;background:#edf2ff;color:#245bc7;font-size:12px;font-weight:700}
+footer{position:fixed;bottom:0;left:0;right:0;background:#183b59;color:#fff;text-align:center;padding:8px;font-size:12px}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;justify-content:center;z-index:20}.modal.open{display:flex}.sheet{background:#fff;width:100%;max-width:720px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:20px}
+@media(min-width:700px){.modal{align-items:center}.sheet{border-radius:22px}.hero h1{font-size:40px}}
+@media print{header,nav,footer,.no-print{display:none!important}main{padding:0}.card{box-shadow:none;break-inside:avoid}body{background:#fff}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="brandbox"><div class="brand">💰 Tesorería Multiorganizacional</div><div class="sub" id="orgHeader">Suite limpia · sin datos precargados</div></div>
-  <button class="btn" id="resetBtn" title="Borrar todos los datos de esta instalación">↻</button>
-</header>
-<nav class="nav" id="nav"></nav>
+<header><div class="brand">💰 Tesorería Multiorganizacional</div><div class="sub" id="orgHeader">Suite limpia · sin datos precargados</div></header>
+<nav id="nav"></nav>
 <main id="app"></main>
 <footer>V3 · Datos locales en este dispositivo · Exporta una copia de seguridad periódicamente</footer>
+<div id="modal" class="modal"><div class="sheet" id="sheet"></div></div>
 <script src="app.js"></script>
 </body>
 </html>
