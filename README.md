@@ -1,66 +1,61 @@
-# Tesorería Super Suite V10
+# Tesorería Pro · Super Suite
 
-PWA multiinstitucional para gestionar integrantes, cuotas fijas, cuotas extraordinarias, ingresos, egresos, reembolsos, reversas/anulaciones, cajas, comprobantes, planillas e informes.
+Aplicación web para la gestión integral de la tesorería de una organización (curso, club, junta de vecinos, etc.): integrantes, cuotas mensuales y extraordinarias, ingresos, egresos, reembolsos, cajas/cuentas, informes en PDF y Excel, y datos de contacto completos de cada integrante y su tutor/apoderado.
 
-## Base técnica
-- IndexedDB como almacenamiento principal de la información.
-- PWA instalable con `manifest.json` y `sw.js`.
-- Interfaz offline para la aplicación cacheada.
-- Una sola `index.html`, un solo bloque `<style>` y un solo `<script>` de aplicación.
-- Sin CDN ni librerías externas para iconos: SVG embebido basado en Font Awesome Free Solid/Regular y composición visual inspirada en Material Design.
+Es una **aplicación de un solo archivo** (`index.html`): no necesita build, ni Node, ni servidor con backend. Todo el HTML, CSS y JavaScript están en ese archivo, y los datos se guardan en el navegador con **IndexedDB**, por lo que funcionan sin conexión una vez cargada la primera vez.
 
-## Identificación y aislamiento
-- Nombre + RUT como identificación visible e histórica.
-- Cada organización trabaja con sus propios movimientos, cuotas, cajas y saldos.
-- El cruce con otras organizaciones solo se genera mediante la acción explícita **Informe cruzado**.
-- Los comprobantes conservan la identificación histórica de la operación.
+## Publicar en GitHub Pages
 
-## Cuotas
-- Cuotas fijas: mensuales, anuales, semestrales, trimestrales y otras.
-- Cuotas extraordinarias separadas.
-- Cargas masivas a integrantes.
-- Estado de cuota con opción en blanco cuando no existe movimiento; AL DÍA, PENDIENTE, CANCELADO, REVERSA, ANULADO, EXIMIDO, NO PARTICIPA, NO APLICA y VENCIDO.
-- Al registrar AL DÍA se sincronizan cuota, movimiento, comprobante, saldos, caja e informes.
+1. Sube todos los archivos de este repositorio (tal cual, sin modificar nombres) a tu repositorio de GitHub.
+2. Ve a **Settings → Pages** del repositorio.
+3. En **Source**, elige la rama (por ejemplo `main`) y la carpeta raíz (`/`).
+4. Guarda. GitHub te dará una URL del tipo `https://tu-usuario.github.io/tu-repositorio/`.
+5. Abre esa URL — la app cargará automáticamente `index.html`.
 
-## Comprobantes y documentos
-- Todo ingreso, egreso, reembolso y cuota registrada genera comprobante.
-- El comprobante se abre tocando directamente el recuadro del documento; no se usa un botón de ojo redundante.
-- Vista previa, PDF, impresión, WhatsApp y correo.
-- PDF individual compacto en una página con base institucional: identificación, resumen del integrante, estado de Tesorería, cuotas fijas, extraordinarias, reembolsos, reversas/anulaciones y datos del tesorero/transferencia.
-- PDFs de planillas en hoja completa horizontal y con mayor resolución.
+> Importante: la persistencia completa de datos (IndexedDB) y la posibilidad de "instalar" la app en el celular como PWA **requieren HTTPS**. GitHub Pages ya sirve todo por HTTPS, así que no necesitas hacer nada extra.
 
-## Planillas
-- Planilla general tipo Excel con Nombre + RUT.
-- Cuotas extraordinarias y cuotas fijas separadas.
-- Totales horizontales y verticales dentro de la propia tabla.
-- Columnas compactas para facilitar el desplazamiento horizontal en celular y PC.
+## Instalar como app (PWA)
 
-## Ficha del integrante
-- Acciones agrupadas en una cuadrícula limpia y responsive: Ingreso, Egreso, Reembolso, Reversas, Guardar PDF, WhatsApp, Correo y Editar.
-- Cerrar queda como icono discreto en el encabezado.
-- Datos bancarios del integrante para reembolsos.
-- Historial y comprobantes clickeables.
-- Informe cruzado separado para otras organizaciones.
+Una vez publicada por HTTPS:
+- **Android/Chrome**: menú ⋮ → "Instalar aplicación" o "Añadir a pantalla de inicio".
+- **iPhone/Safari**: botón compartir → "Añadir a pantalla de inicio".
 
-## Tema e iconografía
-- Tema claro/oscuro mediante botón de icono en la barra superior.
-- Icono de Configuración en la barra superior.
-- Iconografía vectorial con color funcional por acción, manteniendo el mismo lenguaje visual en la suite y los PDFs.
-- Barra inferior móvil con seis módulos e iconos de tamaño uniforme.
+Esto crea un ícono propio en el equipo y la app abre en pantalla completa, sin la barra del navegador.
 
-## GitHub Pages
-1. Sube todos los archivos de esta carpeta al repositorio.
-2. En GitHub: **Settings → Pages → Deploy from branch**.
-3. Selecciona la rama y la carpeta raíz `/root`.
-4. Abre la aplicación mediante la URL HTTPS publicada.
+## Estructura de archivos
 
-### Importante sobre IndexedDB
-Abrir un HTML como `file://` o desde algunos visores de descargas puede restringir IndexedDB y Service Worker. Para probar la versión completa, usa GitHub Pages, un servidor local HTTPS/HTTP o cualquier servidor web.
+| Archivo | Para qué sirve |
+|---|---|
+| `index.html` | La aplicación completa (HTML + CSS + JS + lógica). Es el único archivo que realmente "hace" la app. |
+| `manifest.json` | Metadatos de la PWA (nombre, colores, íconos) para que se pueda instalar. |
+| `sw.js` | Service worker: cachea la app para que funcione sin internet y se actualice sola cuando hay conexión. |
+| `favicon.svg` | Ícono de la pestaña del navegador. |
+| `icon-192.png`, `icon-512.png` | Íconos de la app para Android/PWA. |
+| `apple-touch-icon.png` | Ícono para "Añadir a pantalla de inicio" en iPhone. |
 
-## Archivos
-- `index.html` — aplicación completa.
-- `manifest.json` — configuración PWA.
-- `sw.js` — caché/offline.
-- `favicon.svg`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — iconos PWA.
-- `README.md` — documentación.
-- `.gitignore` — exclusiones de Git.
+No hay `package.json` ni proceso de build: no se necesita `npm install` ni compilar nada.
+
+## Publicar una actualización
+
+Cuando subas cambios nuevos a `index.html`:
+
+1. Abre `sw.js` y sube el número de versión en la primera línea útil, por ejemplo:
+   ```js
+   const CACHE_NAME = 'tesoreria-pro-v2'; // antes v1
+   ```
+   Esto asegura que los usuarios que ya tenían la app instalada reciban la versión nueva en vez de quedarse con una copia vieja en caché.
+2. Sube los cambios a GitHub (commit + push a la rama que usa Pages).
+3. GitHub Pages se actualiza solo, normalmente en uno o dos minutos.
+
+## Datos y respaldos
+
+Los datos (integrantes, movimientos, organización, configuración) viven en el navegador de cada persona que usa la app (IndexedDB), **no** se suben a GitHub ni a ningún servidor. Desde **Configuración → Respaldos** dentro de la app puedes:
+- Exportar todo a un archivo **JSON** (respaldo completo, para restaurar más adelante o pasar a otro equipo).
+- Exportar a **Excel** (organizaciones, integrantes, movimientos, aportes y planillas).
+- Importar datos desde JSON, Excel o CSV.
+
+Se recomienda exportar un respaldo JSON periódicamente, sobre todo antes de borrar datos del navegador o cambiar de equipo.
+
+## Compatibilidad
+
+Funciona en cualquier navegador moderno (Chrome, Edge, Safari, Firefox) de escritorio o celular. No requiere cuenta ni conexión a internet para el uso diario — solo la necesita la primera vez que se carga la página.

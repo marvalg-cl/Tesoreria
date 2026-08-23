@@ -1,10 +1,20 @@
 {
-  "name": "Tesorería Super Suite V10",
-  "short_name": "Tesorería",
-  "start_url": "./",
+  "name": "Tesorería Pro · Super Suite",
+  "short_name": "Tesorería Pro",
+  "description": "Gestión integral de organizaciones, integrantes, cuotas, movimientos, reembolsos, informes y planillas.",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#f3f7fb",
   "theme_color": "#0b2f5b",
-  "lang": "es",
-  "description": "Gestión multiinstitucional de integrantes, cuotas, movimientos, reembolsos, comprobantes, planillas e informes."
+  "lang": "es-CL",
+  "dir": "ltr",
+  "icons": [
+    { "src": "./favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
 }

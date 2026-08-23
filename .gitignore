@@ -1,5 +1,13 @@
+# Sistema operativo
 .DS_Store
 Thumbs.db
+
+# Editores
 .vscode/
 .idea/
-*.log
+*.swp
+
+# Respaldos y exportaciones locales (no subir datos reales al repo)
+*.backup.json
+respaldo_*.json
+*_backup.xlsx
