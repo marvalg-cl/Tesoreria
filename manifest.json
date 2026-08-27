@@ -1,0 +1,16 @@
+{
+  "name": "Tesorería Pro V22",
+  "short_name": "Tesorería Pro",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f7fb",
+  "theme_color": "#0b2f5b",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
