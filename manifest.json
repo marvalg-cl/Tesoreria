@@ -1,10 +1,10 @@
 {
-  "name": "Tesorería Pro V22",
+  "name": "Tesorería Pro V22 · Reimaginada",
   "short_name": "Tesorería Pro",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f3f7fb",
-  "theme_color": "#0b2f5b",
+  "background_color": "#eef3f7",
+  "theme_color": "#102f52",
   "icons": [
     {
       "src": "./favicon.svg",
